@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands</title>
+<meta name="description" content="Bench2Dex is a simulation benchmark for visuo-tactile bimanual manipulation across 12 robot embodiments, with 26 task–embodiment settings, about 1.3K human-teleoperated demonstrations, synchronized multimodal observations, and a shared visuo-tactile representation.">
+<meta property="og:title" content="Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands">
+<meta property="og:description" content="Visuo-tactile bimanual dexterous manipulation across 12 robot embodiments. 26 task–embodiment settings · ≈1.3K demos.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bench2dex.github.io/">
+<meta property="og:image" content="https://bench2dex.github.io/assets/img/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Bench2Dex: visuo-tactile bimanual dexterous manipulation benchmark across 12 robot embodiments.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="BENCH2DEX home">
+      <img src="assets/img/figures/overview_logo.png" alt="BENCH2DEX" id="brand-logo" width="1774" height="887">
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a href="#video">Video</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#overview">Overview</a>
+      <a href="#why">Compare</a>
+      <a href="#embodiments">Dataset</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#evaluation">Evaluation</a>
+      <a href="#results">Results</a>
+      <a href="#docs">Docs</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#docs" class="btn btn-primary">Get started</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-progress" id="nav-progress" aria-hidden="true"></div>
+</nav>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span class="brand-name">BENCH2DEX</span>
+    <button class="drawer-close" id="drawer-close" aria-label="Close menu">×</button>
+  </div>
+  <a href="#video">Video</a>
+  <a href="#abstract">Abstract</a>
+  <a href="#overview">Overview</a>
+  <a href="#why">Compare & baselines</a>
+  <a href="#embodiments">Embodiments</a>
+  <a href="#data">Teleop & data</a>
+  <a href="#tasks">Tasks</a>
+  <a href="#evaluation">Evaluation</a>
+  <a href="#generalization">Generalization</a>
+  <a href="#results">Results</a>
+  <a href="#docs">Docs & get started</a>
+</div>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<header class="hero masthead hero-centered">
+  <div class="hero-atmosphere" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="container">
+    <div class="hero-content">
+      <img class="hero-logo" src="assets/img/figures/overview_logo.png" alt="Bench2Dex: two dexterous robot hands linked by visuo-tactile contact" width="1774" height="887" decoding="async" fetchpriority="high">
+      <h1 class="sr-only">Bench2Dex</h1>
+      <p class="hero-subtitle">Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation<br>Across Dexterous Hands</p>
+      <div class="hero-contributors" aria-label="Authors and affiliations">
+        <p class="hero-author-slot">Zhenjie Yang<sup>3*</sup>, Yideng Zhang<sup>1*</sup>, Dongjie Zhang<sup>2,5*</sup>, Chenyu Jiang<sup>2,5*</sup>, Xianshuai Liu<sup>1</sup>, Yufeng Li<sup>1,5</sup>,<br>
+        Zuhao Ge<sup>2</sup>, Xingyu Jiao<sup>2,5</sup>, Zheng Zhang<sup>1</sup>, Kaiyu He<sup>1</sup>, He Wang<sup>1</sup>, Yuwen Zhong<sup>1</sup>,<br>
+        Yi Deng<sup>1</sup>, Muyun Jiang<sup>7</sup>, Xianliang Huang<sup>2</sup>, Haisheng Su<sup>1</sup>, Donghang Zhang<sup>4</sup>, Jian Zhang<sup>4</sup>,<br>
+        Xue Yang<sup>1,6</sup>, Hongyang Li<sup>3</sup>, Zuxuan Wu<sup>2</sup>, Yu-Gang Jiang<sup>2</sup>, Xiaosong Jia<sup>2†</sup>, Junchi Yan<sup>1†</sup></p>
+        <p class="hero-affiliation-slot"><sup>1</sup>Shanghai Jiao Tong University · <sup>2</sup>Fudan University · <sup>3</sup>The University of Hong Kong · <sup>4</sup>Inspire Robots<br>
+        <sup>5</sup>Zhongguancun Academy · <sup>6</sup>COWARobot Co. Ltd · <sup>7</sup>Nanyang Technological University</p>
+        <p class="hero-affiliation-slot"><sup>*</sup> Core contribution · <sup>†</sup> Corresponding authors</p>
+      </div>
+      <nav class="cta" aria-label="Project resources">
+        <span class="btn btn-resource is-unavailable" aria-disabled="true" title="URL to be confirmed"><svg class="btn-mark mark-arxiv" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.8423 0a1.0037 1.0037 0 0 0-.922.6078c-.1536.3687-.0438.6275.2938 1.1113l6.9185 8.3597-1.0223 1.1058a1.0393 1.0393 0 0 0 .003 1.4229l1.2292 1.3135-5.4391 6.4444c-.2803.299-.4538.823-.2971 1.1986a1.0253 1.0253 0 0 0 .9585.635.9133.9133 0 0 0 .6891-.3405l5.783-6.126 7.4902 8.0051a.8527.8527 0 0 0 .6835.2597.9575.9575 0 0 0 .8777-.6138c.1577-.377-.017-.7502-.306-1.1407l-7.0518-8.3418 1.0632-1.13a.9626.9626 0 0 0 .0089-1.3165L4.6336.4639s-.3733-.4535-.768-.463zm0 .272h.0166c.2179.0052.4874.2715.5644.3639l.005.006.0052.0055 10.169 10.9905a.6915.6915 0 0 1-.0072.945l-1.0666 1.133-1.4982-1.7724-8.5994-10.39c-.3286-.472-.352-.6183-.2592-.841a.7307.7307 0 0 1 .6704-.4401Zm14.341 1.5701a.877.877 0 0 0-.6554.2418l-5.6962 6.1584 1.6944 1.8319 5.3089-6.5138c.3251-.4335.479-.6603.3247-1.0292a1.1205 1.1205 0 0 0-.9763-.689zm-7.6557 12.2823 1.3186 1.4135-5.7864 6.1295a.6494.6494 0 0 1-.4959.26.7516.7516 0 0 1-.706-.4669c-.1119-.2682.0359-.6864.2442-.9083l.0051-.0055.0047-.0055z"/></svg>Paper</span>
+        <a class="btn btn-resource" href="https://bench2dex.github.io/doc/" target="_blank" rel="noopener"><span class="btn-mark mark-doc" aria-hidden="true"></span>Documentation</a>
+        <a class="btn btn-resource" href="https://github.com/Bench2Dex/Bench2Dex" target="_blank" rel="noopener"><svg class="btn-mark mark-github" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a>
+        <a class="btn btn-resource btn-huggingface" href="https://huggingface.co/Bench2Dex" target="_blank" rel="noopener"><svg class="btn-mark mark-hf" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M1.4446 11.5059c0 1.1021.1673 2.1585.4847 3.1563-.0378-.0028-.0691-.0058-.1058-.0058-.4209 0-.8015.16-1.0704.4512-.3454.3737-.4984.8335-.4316 1.293a1.576 1.576 0 0 0 .2148.5978c-.2319.1864-.4018.4456-.4844.7578-.0646.2448-.131.7543.2149 1.2794a1.4552 1.4552 0 0 0-.0625.1055c-.208.3923-.2207.8372-.0371 1.25.2783.6258.9696 1.1175 2.3126 1.6467.8356.3292 1.5988.5411 1.6056.543 1.1046.2847 2.104.4277 2.969.4277 1.4173 0 2.4754-.3849 3.1525-1.1446 1.538.2651 2.791.1403 3.592.006.6773.7555 1.7332 1.1387 3.1467 1.1387.8649 0 1.8643-.143 2.969-.4278.0068-.0019.77-.2138 1.6056-.543 1.343-.5292 2.0343-1.0208 2.3126-1.6466.1836-.4129.171-.8577-.037-1.25a1.4685 1.4685 0 0 0-.0626-.1056c.346-.525.2795-1.0346.2149-1.2793-.0826-.3122-.2525-.5714-.4844-.7579.11-.1816.1831-.3788.2148-.5977.0669-.4595-.0862-.9193-.4316-1.293-.2688-.2913-.6495-.4513-1.0704-.4513-.0209 0-.0376.0008-.0588.0018.3162-.9966.4846-2.0518.4846-3.1523 0-5.807-4.7362-10.5144-10.5789-10.5144-5.8426 0-10.5788 4.7073-10.5788 10.5144Zm10.5788-9.4831c5.2727 0 9.5476 4.246 9.5476 9.483a9.4201 9.4201 0 0 1-.2696 2.2365c-.0039-.0047-.0079-.011-.0117-.0156-.274-.3255-.6679-.5059-1.1075-.5059-.352 0-.714.1155-1.0763.3438-.2403.1517-.5058.422-.7793.7598-.2534-.3492-.608-.5832-1.0137-.6465a1.5174 1.5174 0 0 0-.2344-.0176c-.9263 0-1.4828.7993-1.6935 1.5177-.1046.2426-.6065 1.3482-1.3614 2.0978-1.1681 1.1601-1.4458 2.3534-.8396 3.6382-.843.1029-1.5836.0927-2.365-.006.5906-1.212.3626-2.4388-.8426-3.6322-.755-.7496-1.2568-1.8552-1.3614-2.0978-.2107-.7184-.7673-1.5177-1.6935-1.5177-.078 0-.1568.0054-.2344.0176-.4057.0633-.7604.2973-1.0137.6465-.2735-.3379-.539-.6081-.7794-.7598-.3622-.2283-.7243-.3438-1.0762-.3438-.4266 0-.8094.171-1.0821.4786a9.4208 9.4208 0 0 1-.2598-2.1936c0-5.237 4.2749-9.483 9.5475-9.483zM8.6443 7.0036c-.4838.0043-.9503.2667-1.1934.7227-.3536.6633-.1006 1.4873.5645 1.84.351.1862.4883-.5261.836-.6485.3107-.1095.841.399 1.0078.086.3536-.6634.1025-1.4874-.5625-1.84a1.3659 1.3659 0 0 0-.6524-.1602Zm6.8403 0c-.2199-.002-.4426.05-.6504.1602-.665.3526-.9181 1.1766-.5645 1.84.1669.313.6971-.1955 1.0079-.086.3476.1224.4867.8347.838.6485.6649-.3527.916-1.1767.5624-1.84-.243-.456-.7096-.7184-1.1934-.7227Zm-9.7565 1.418a.8768.8768 0 0 0-.877.877c0 .4846.3925.877.877.877a.8768.8768 0 0 0 .877-.877.8768.8768 0 0 0-.877-.877zm12.6434 0c-.4845 0-.879.3925-.879.877 0 .4846.3945.877.879.877a.8768.8768 0 0 0 .877-.877.8768.8768 0 0 0-.877-.877zM8.7927 11.459c-.179-.003-.2793.1107-.2793.416 0 .8097.3874 2.125 1.4279 2.924.207-.7123 1.3453-1.2832 1.5079-1.2012.2315.1167.2191.4417.6074.7266.3884-.285.374-.6098.6056-.7266.1627-.082 1.3009.4889 1.5079 1.2012 1.0404-.799 1.4278-2.1144 1.4278-2.924 0-1.2212-1.583.6402-3.5413.6485-1.4686-.0061-2.7266-1.0558-3.2639-1.0645zM4.312 14.4768c.5792.365 1.6964 2.2751 2.1056 3.0177.1371.2488.371.3536.582.3536.4188 0 .7465-.4138.0391-.9395-1.0636-.791-.6914-2.0846-.1836-2.1642a.4302.4302 0 0 1 .0664-.004c.4616 0 .666.7892.666.7892s.5959 1.4898 1.6213 2.508c.942.9356 1.062 1.703.4961 2.6661-.0164-.004-.0159.0236-.1484.2149-.1853.2673-.4322.4688-.7188.6152-.5062.2269-1.1397.2696-1.7833.2696-1.037 0-2.1017-.1824-2.6975-.336-.0293-.0075-3.6505-.9567-3.1916-1.8224.0771-.1454.2033-.2031.3633-.2031.6463 0 1.823.9551 2.3283.9551.113 0 .196-.0865.2285-.2031.2249-.8045-3.2787-1.0522-2.9846-2.1642.0519-.1967.193-.2757.3907-.2754.854 0 2.7704 1.4923 3.172 1.4923.0307 0 .0525-.0085.0645-.0274.2012-.3227.1096-.5865-1.3087-1.4395-1.4182-.8533-2.4315-1.329-1.8653-1.9416.0651-.0707.1574-.1015.2695-.1015.8611.0002 2.8948 1.84 2.8948 1.84s.5487.5683.8809.5683c.0762 0 .1416-.0315.1855-.1054.2355-.3946-2.1858-2.2183-2.3224-2.971-.0926-.51.0641-.7676.3555-.7676-.0006.008.1701-.0285.4942.1759zm16.2257.5918c-.1366.7526-2.5579 2.5764-2.3224 2.9709.044.074.1092.1055.1855.1055.3321 0 .881-.5684.881-.5684s2.0336-1.8397 2.8947-1.84c.1121 0 .2044.0308.2695.1016.5662.6125-.447 1.0882-1.8653 1.9415-1.4183.853-1.51 1.1168-1.3087 1.4396.012.0188.0337.0273.0644.0273.4016 0 2.3181-1.4923 3.1721-1.4923.1977-.0002.3388.0787.3907.2754.294 1.112-3.2095 1.3597-2.9846 2.1642.0325.1166.1156.2032.2285.2032.5054 0 1.682-.9552 2.3283-.9552.16 0 .2862.0577.3633.2032.459.8656-3.1623 1.8149-3.1916 1.8224-.5958.1535-1.6605.336-2.6975.336-.6351 0-1.261-.0409-1.7638-.2599-.2949-.1472-.5488-.3516-.7383-.625-.0411-.0682-.1026-.1476-.1426-.205-.5726-.9679-.455-1.7371.4903-2.676 1.0254-1.0182 1.6212-2.508 1.6212-2.508s.2044-.7891.666-.7891a.4318.4318 0 0 1 .0665.0039c.5078.0796.88 1.3732-.1836 2.1642-.7074.5257-.3797.9395.039.9395.211 0 .445-.1047.5821-.3535.4092-.7426 1.5264-2.6527 2.1056-3.0178.5588-.3524.99-.1816.8497.5918z"/></svg>Hugging Face</a>
+        <span class="btn btn-resource is-unavailable" aria-disabled="true" title="URL to be confirmed"><svg class="btn-mark mark-ms" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.667 5.333V8H0v5.333h2.667v-2.666H.5V8.5h2.166v2.166h2.666V8H8V5.333Zm0 8v5.334H8V16H5.333v-2.667Zm13.333-8V8h2.667v2.667h2.666V8.5H23.5v2.166h-2.166v2.666H24V8h-2.667V5.333Zm5.333 8h-2.666V16H16v2.667h5.333zM8 10.667v2.666h2.667v-2.666zm2.667 2.666V16h2.666v-2.667zm2.666 0H16v-2.666h-2.667z"/></svg>ModelScope</span>
+        <a class="btn btn-resource btn-modelscope" href="https://modelscope.cn/organization/Bench2Dex" target="_blank" rel="noopener"><svg class="btn-mark mark-ms" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.667 5.333V8H0v5.333h2.667v-2.666H.5V8.5h2.166v2.166h2.666V8H8V5.333Zm0 8v5.334H8V16H5.333v-2.667Zm13.333-8V8h2.667v2.667h2.666V8.5H23.5v2.166h-2.166v2.666H24V8h-2.667V5.333Zm5.333 8h-2.666V16H16v2.667h5.333zM8 10.667v2.666h2.667v-2.666zm2.667 2.666V16h2.666v-2.667zm2.666 0H16v-2.666h-2.667z"/></svg>ModelScope</a>
+        <a class="btn btn-primary" href="#tasks">Explore Tasks <span class="btn-arrow" aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+  </div>
+  <section class="proof hero-proof" aria-label="Bench2Dex at a glance">
+    <div class="proof-grid" id="proof-grid"></div>
+  </section>
+</header>
+
+<!-- ================= VIDEO ================= -->
+<section class="section video-section" id="video">
+  <div class="container hero-banner">
+    <div class="section-head">
+      <p class="eyebrow">Video</p>
+      <h2>A short project showcase of Bench2Dex.</h2>
+    </div>
+    <figure class="hero-evidence">
+      <div class="hero-evidence-frame">
+        <video class="hero-video" src="assets/video/demo_v2.mp4" poster="assets/img/frames/demo_v2_poster.png" autoplay muted loop playsinline preload="metadata" controls aria-label="Bench2Dex project demo"></video>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= ABSTRACT ================= -->
+<section class="section evidence-band evidence-band--paper" id="abstract" data-section-index="01">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Abstract</p>
+      <h2>A controlled platform for visuo-tactile learning across dexterous hands.</h2>
+    </div>
+    <p class="abstract-text">Tactile sensing provides contact information that can be difficult to infer from vision alone, but tactile hardware for dexterous hands has not converged to a common design. Dexterous hands differ in finger structure, contact surfaces, and sensor layouts, while simulated tactile signals still differ from measurements produced by physical sensors. These factors make it difficult to study visuo-tactile manipulation across diverse dexterous hands within a consistent experimental setting. We present <b>Bench2Dex</b>, a simulation benchmark for visuo-tactile bimanual manipulation across 12 dexterous hands. We adapt existing robot models with a shared simulated tactile interface that converts local contact geometry into image-like tactile observations. The interface provides a consistent observation format across different hand morphologies without attempting to reproduce the output of a specific physical tactile sensor. Bench2Dex includes 26 bimanual manipulation tasks that involve tool use, articulated-object interaction, and multi-stage manipulation, together with about 1.3K human-teleoperated demonstrations. The benchmark provides synchronized visual, tactile, proprioceptive, action, and object-state observations, together with executable task metrics. For robustness, we group seven perturbation types into invariance axis, where the correct action does not change, and equivariance axis, where the correct action changes together with the perturbation. We evaluate ACT, Diffusion Policy, π₀.₅, and GR00T N1.5 on Bench2Dex and report their performance and failure modes. Bench2Dex is meant as a platform for studying visuo-tactile learning across dexterous hands. It does not assume that simulated tactile observations can replace real tactile sensing; it offers a shared setting for algorithm development while tactile hardware and simulation models are still evolving. All code for training, inference, and teleoperation is open-sourced.</p>
+  </div>
+</section>
+
+<!-- ================= SYSTEM OVERVIEW (paper main figure) ================= -->
+<section class="section overview-fig evidence-band evidence-band--figure" id="overview" data-section-index="02">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">System Overview</p>
+      <h2>One pipeline: teleoperation → multimodal acquisition → shared visuo-tactile representation → evaluation.</h2>
+    </div>
+    <figure class="overview-frame">
+      <img src="assets/img/figures/overview.png" alt="BENCH2DEX system overview: human teleoperation drives 12 bimanual dexterous embodiments through Isaac Lab, recording 8 synchronized modalities including a shared visuo-tactile representation, with controlled generalization and executable evaluation." fetchpriority="high">
+      <figcaption class="evidence-caption">BENCH2DEX connects human teleoperation, multimodal data acquisition (RGB, depth, joint/object state, a shared visuo-tactile representation, 2D / 3D boxes, occupancy grids), and executable evaluation under controlled generalization — across 26 long-horizon tasks and 12 bimanual dexterous embodiments.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= WHY ================= -->
+<section class="section evidence-band evidence-band--data" id="why" data-section-index="03">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Comparison · Evaluated Baselines</p>
+      <h2>Comparison with representative manipulation benchmarks.</h2>
+      <p class="lead">Most benchmarks optimize a single axis — many tasks with one gripper, many demonstrations with one hand, or rich contact with one morphology. BENCH2DEX is built so that long-horizon bimanual dexterity, embodiment diversity, synchronized multimodal sensing, and diagnostic generalization are evaluated together.</p>
+    </div>
+    <div class="card-frame">
+      <div class="bm-table-wrap">
+      <table class="bm-table" aria-label="Comparison of BENCH2DEX with representative manipulation benchmarks">
+        <thead><tr>
+          <th class="bm-name">Benchmark</th>
+          <th>Task Num</th>
+          <th>Embodiment</th>
+          <th>Tool/Device Use</th>
+          <th>Dexterous Hand</th>
+          <th>Teleoperation</th>
+          <th>Vision-Based Tactile</th>
+          <th>Articulated</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>LIBERO</td><td>130</td><td>1</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RLBench2</td><td>13</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RoboCasa</td><td>100</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>DROID</td><td>86</td><td>1</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td></tr>
+          <tr><td>DexMimicGen</td><td>9</td><td>3</td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RealMirror</td><td>5</td><td>1</td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RoboTwin 2.0</td><td>50</td><td>5</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RoboMIND 2.0</td><td>739</td><td>6</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td></tr>
+          <tr><td>MuJoCo Manipulus</td><td>16</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td></tr>
+          <tr><td>RoboCasa365</td><td>365</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>BiCoord</td><td>18</td><td>1</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td></tr>
+          <tr><td>DexJoCo</td><td>11</td><td>2</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>DexVerse</td><td>19</td><td>1</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr class="us">
+            <td><b>Bench2Dex (Ours)</b></td><td><b>26</b></td><td><b>12</b></td>
+            <td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="evidence-caption">In this comparison, Bench2Dex jointly supports diverse bimanual dexterous embodiments, teleoperated demonstration collection, vision-based tactile sensing, tool/device use, and articulated-object interaction. The matrix reproduces the paper’s benchmark-comparison table.</p>
+    </div>
+    <div class="leaderboard">
+      <h4 class="lb-title">Evaluated Baselines</h4>
+      <div class="card-frame">
+        <div class="lb-wrap"><table class="lb-table" id="lb-table"></table></div>
+        <p class="evidence-caption">Values reproduce the paper’s four-policy summary: task-macro stable success rate (SR, %) over 1,300 rollouts per channel (26 task–embodiment settings × 50), four-channel mean SR, and all-task mean LSCR.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EMBODIMENTS ================= -->
+<section class="section evidence-band evidence-band--atlas" id="embodiments" data-section-index="04">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Embodiment Atlas · 12 Arm–Hand Morphologies</p>
+      <h2>One benchmark, twelve arm–hand morphologies.</h2>
+      <p class="lead">Difference itself is the object of study. The same teleoperation interface is configured for every hand, while a shared visuo-tactile representation is reconstructed from embodiment-specific contact surfaces. Palm geometry, finger count, wrist, and active kinematics differ.</p>
+    </div>
+    <div class="atlas-grid" id="atlas-grid"></div>
+  </div>
+</section>
+
+<!-- ================= TELEOP + DATA ================= -->
+<section class="section evidence-band evidence-band--split" id="data" data-section-index="05">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Teleoperation Pipeline</p>
+      <h2>From human hands to simulated bimanual dexterity.</h2>
+      <p class="lead">A Manus glove and ARKit wrist stream drive every embodiment through the same retargeting interface, so the 12 hands are controlled by one protocol. The commanded action is recorded before the next simulation step; the resulting post-step observations and evaluator state are retained in a time-aligned unified HDF5 episode.</p>
+    </div>
+    <div class="teleop-split">
+      <figure class="ph evidence-figure">
+        <img src="assets/img/figures/teleop_detail.png" alt="Teleoperation pipeline schematic: Manus glove + ARKit wrist to simulated bimanual robot">
+        <figcaption class="evidence-caption">A shared capture and retargeting path maps human wrist and hand motion onto every arm–hand embodiment.</figcaption>
+      </figure>
+      <div>
+        <div class="teleop-steps">
+          <div class="teleop-step"><div><h4>Capture wrist and hand motion</h4><p>A Manus glove provides a 25-node hand skeleton via shared memory; an ARKit stream provides wrist translation and orientation.</p></div></div>
+          <div class="teleop-step"><div><h4>Retarget skeleton and solve arm IK</h4><p>The skeleton is converted to 21 MediaPipe-style keypoints; DexPilot retargeting solves hand joints, a Pinocchio IK controller solves the arm.</p></div></div>
+          <div class="teleop-step"><div><h4>Record actions, states, observations, traces</h4><p>Per step, the commanded action is stored, then post-step observations and evaluator state are written to a time-aligned HDF5 episode.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EIGHT MODALITIES ================= -->
+<section class="section evidence-band evidence-band--media" id="modalities" data-section-index="06">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Eight Synchronized Data Modalities</p>
+      <h2>Eight time-aligned views of interaction.</h2>
+      <p class="lead">One episode, time-aligned visual, geometric, proprioceptive, and visuo-tactile observations. The commanded action precedes the next simulation step, and the resulting post-step observations are retained with evaluator state in one HDF5 episode. Press play to watch all eight views in sync; drag the timeline to scrub.</p>
+    </div>
+    <div class="modalplayer" data-modalplayer data-manifest="assets/video/modal/manifest.json">
+      <div class="modal-grid"></div>
+      <div class="mp-ctrl">
+        <button class="mp-play" type="button" aria-label="Play synchronized modalities">▶</button>
+        <input type="range" class="mp-seek" min="0" max="1000" value="0" aria-label="Episode timeline scrubber">
+        <span class="mp-frame">0:00 / 0:00</span>
+        <span class="mp-ep">Jigsaw Puzzle Assembly · IIWA7 + Sharpa</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TACTILE INTERFACE ================= -->
+<section class="section evidence-band evidence-band--split" id="tactile" data-section-index="07">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Shared Visuo-Tactile Representation</p>
+      <h2>Different hands, one shared visuo-tactile representation.</h2>
+      <p class="lead">BENCH2DEX reconstructs embodiment-specific contact surfaces and converts local geometric contact into a common image-like, surface-aligned visuo-tactile representation, generated offline by replay.</p>
+    </div>
+    <div class="tactile-wrap">
+      <div>
+        <div class="tactile-switch" id="tactile-switch"></div>
+      </div>
+      <div>
+        <div class="tactile-img"><img id="tactile-img" src="assets/img/tactile/ur5_shadow_hand_flange_43_000002.png" alt="tactile image sample"></div>
+        <p class="dim evidence-caption">An 8-bit tactile image <span class="mono">T<sub>s,t</sub> ∈ {0,…,255}</span> is produced per tactile site per frame: ray-cast contact distance is piecewise-quantized (0.005 mm/level below 0.5 mm, 0.03 mm/level above, saturating near 5.15 mm → 255) for fine near-contact sensitivity, then Gaussian-smoothed.</p>
+      </div>
+    </div>
+    <div class="tactile-steps">
+      <span class="tactile-step">Hand mesh</span><span class="tactile-step"><span class="arrow">→</span> contact surface</span><span class="tactile-step"><span class="arrow">→</span> ray samples</span><span class="tactile-step"><span class="arrow">→</span> depth response</span><span class="tactile-step"><span class="arrow">→</span> 8-bit visuo-tactile image</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TASKS ================= -->
+<section class="section evidence-band evidence-band--atlas" id="tasks" data-section-index="08">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Task Suite · 26 long-horizon tasks</p>
+      <h2>The long-horizon task suite.</h2>
+      <p class="lead">Each task is multi-stage, executable, and anchored to an executable terminal predicate.</p>
+    </div>
+    <div class="task-rail" id="task-filters" role="tablist" aria-label="Task filter"></div>
+    <div class="task-grid" id="all-tasks"></div>
+  </div>
+</section>
+
+<!-- ================= EVALUATION ================= -->
+<section class="section evidence-band evidence-band--protocol" id="evaluation" data-section-index="09">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Executable Evaluation</p>
+      <h2>From “success” to an executable protocol.</h2>
+      <p class="lead">A task is successful only when its executable terminal predicate remains satisfied for the required dwell time. We decompose evaluation into stable success, latched stage progress, efficiency, and safety — conceptually here, with seeds, budgets, and bootstrap CIs in the benchmark docs.</p>
+    </div>
+    <div class="eval-tiers">
+      <div class="eval-tier"><div class="top-bar" style="background:var(--green);"></div><div class="num">01</div><div class="n">Stable task success</div><div class="d">Terminal predicate holds for the configured dwell time (0.5 s default), not at a transient frame.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--cyan);"></div><div class="num">02</div><div class="n">Latched stage progress</div><div class="d">LSCR counts ever-reached, dependency-valid milestones — progress that survives intentional reversals.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--amber);"></div><div class="num">03</div><div class="n">Efficiency</div><div class="d">Mean time to stable success over successful episodes, reported alongside SR.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--brick);"></div><div class="num">04</div><div class="n">Safety & violations</div><div class="d">SafeSR, hard-violation and drop rates, high-speed proxy — diagnostics that complement success.</div></div>
+    </div>
+    <div class="card-frame">
+      <div class="eval-stages" id="eval-stages">
+        <div class="eval-stage" data-i="0"><div class="check">✓</div><div class="nm">Stage 1</div><div class="st">Open Microwave Door</div></div>
+        <div class="eval-stage" data-i="1"><div class="check">✓</div><div class="nm">Stage 2</div><div class="st">Put Baguette In Bowl</div></div>
+        <div class="eval-stage" data-i="2"><div class="check">✓</div><div class="nm">Stage 3</div><div class="st">Put Bowl In Microwave</div></div>
+        <div class="eval-stage" data-i="3"><div class="check">✓</div><div class="nm">Stage 4</div><div class="st">Close Microwave Door</div></div>
+      </div>
+      <p class="evidence-caption">Example: Microwave Bowl Loading is evaluated through four executable stages; the dwell latch is what makes “closed” a success rather than a transient.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GENERALIZATION ================= -->
+<section class="section evidence-band evidence-band--data" id="generalization" data-section-index="10">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Controlled Generalization</p>
+      <h2>Four channels, seven controlled factors.</h2>
+      <p class="lead">Each evaluation keeps the semantic goal, object set, and success conditions unchanged while controlling two groups of scene factors. Invariance factors alter task-irrelevant visual conditions without changing the intended task behavior; equivariance factors alter task-relevant geometry and require corresponding changes in reaching, grasping, and contact trajectories.</p>
+    </div>
+    <div class="channel-grid" aria-label="Four evaluation channels">
+      <div class="channel-card ch-none"><span class="ch-bar"></span><span class="ch-name">None</span><span class="ch-desc">Matched anchor; all factors are replayed exactly.</span></div>
+      <div class="channel-card ch-equi"><span class="ch-bar"></span><span class="ch-name">Equi.</span><span class="ch-desc">Matched anchor; only equivariance factors are resampled while the anchor's invariant context is preserved.</span></div>
+      <div class="channel-card ch-inv"><span class="ch-bar"></span><span class="ch-name">Inv.</span><span class="ch-desc">Matched anchor; only invariance factors are resampled while the anchor's task geometry is preserved.</span></div>
+      <div class="channel-card ch-full"><span class="ch-bar"></span><span class="ch-name">Full</span><span class="ch-desc">Independent full-scene sample; no anchor is used. Both factor groups are resampled.</span></div>
+    </div>
+    <p class="data-note">None / Equi. / Inv. use matched anchors aligned by episode index; Full is sampled independently without an anchor.</p>
+
+    <div class="gen-axes">
+      <div class="gen-group">
+        <div class="group-head inv">Invariance factors <span class="muted">— task-irrelevant visual conditions; resampled by the Inv. channel</span></div>
+        <div class="axis-grid">
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/background_smooth.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Scene background generalization"></video><div class="axis-meta"><span class="axis-name">Scene Background</span><span class="axis-note">Background context used for visual rendering only.</span></div></div>
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/table_surface_smooth.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Tabletop texture generalization"></video><div class="axis-meta"><span class="axis-name">Tabletop Texture</span><span class="axis-note">Support-surface visual material.</span></div></div>
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/light_smooth.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Lighting conditions generalization"></video><div class="axis-meta"><span class="axis-name">Lighting Conditions</span><span class="axis-note">Lighting embedded in the sampled scene.</span></div></div>
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/clutter_smooth.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Distractor objects generalization"></video><div class="axis-meta"><span class="axis-name">Distractor Objects</span><span class="axis-note">Distractor objects on the tabletop.</span></div></div>
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/camera_generalization.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Camera pose generalization"></video><div class="axis-meta"><span class="axis-name">Camera Pose</span><span class="axis-note">World-mounted and wrist-mounted camera perturbations.</span></div></div>
+        </div>
+      </div>
+      <div class="gen-group">
+        <div class="group-head equi">Equivariance factors <span class="muted">— task-relevant geometry; resampled by the Equi. channel</span></div>
+        <div class="axis-grid two">
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/object_pose_generalization.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Object pose generalization"></video><div class="axis-meta"><span class="axis-name">Object Pose</span><span class="axis-note">Task-relevant initial object poses within valid bounds.</span></div></div>
+          <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/table_height_generalization.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Table height generalization"></video><div class="axis-meta"><span class="axis-name">Table Height</span><span class="axis-note">Worksurface height resampling.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section class="section evidence-band evidence-band--results" id="results" data-section-index="11">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Results · 20,800 Rollouts</p>
+      <h2>Task-level evaluation results.</h2>
+      <p class="lead">Stable-success counts (out of 50) for ACT, DP, π₀.₅, and GR00T N1.5 across the None / Equi. / Inv. / Full channels on all 26 task–embodiment settings. Under the matched None condition, GR00T N1.5 has the highest aggregate success; under the combined Full shift, GR00T has the highest aggregate count while π₀.₅ has the most strict task-level leads. Every policy degrades relative to its matched performance. Hover any count cell for successes out of 50.</p>
+    </div>
+
+    <div class="chart-panel wide">
+      <h4>Task-level stable success and stage completion (26 task–embodiment settings)</h4>
+      <div class="table-wrap"><table class="results-table" id="results-table" aria-describedby="rtable-cap"></table></div>
+      <p id="rtable-cap" class="dim evidence-caption">Each count cell is the number of reach-and-stop successes among 50 rollouts. <b>SR</b> and <b>LSCR</b> are the paper-reported four-channel mean stable success rate (%) and latched stage completion rate (%), respectively, for each task–policy pair. Rows are grouped by embodiment; the footer reproduces the paper-reported equal-weight task-macro SR (%) per channel, its four-channel mean, and all-task mean LSCR. Count-cell shading scales with the value.</p>
+      <p class="evidence-caption">⚠ Reporting convention: the 50 rollouts in each task–policy–channel cell are evaluation episodes, not independent retraining replicates, so this table does not estimate between-training variability. Tasks and embodiments are not factorially crossed; task-level contrasts therefore do not isolate embodiment effects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GET STARTED / DOCS ================= -->
+<section class="section evidence-band evidence-band--resources" id="docs" data-section-index="12">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Get Started</p>
+      <h2>From a scene to an evaluation.</h2>
+      <p class="lead">Environment setup, policy training and evaluation, and the full 26-task catalog are in the Bench2Dex Documentation.</p>
+    </div>
+    <div class="resource-grid" id="resource-grid"></div>
+    <div style="margin-top:30px;">
+      <div class="cite-box">
+        <pre id="bibtex">@misc{bench2dex2026,
+  title     = {Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous
+               Manipulation Across Dexterous Hands},
+  author    = {Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and
+               Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and
+               He, Kaiyu and Wang, He and Zhong, Yuwen and Deng, Yi and Jiang, Muyun and
+               Huang, Xianliang and Su, Haisheng and Zhang, Donghang and Zhang, Jian and
+               Yang, Xue and Li, Hongyang and Wu, Zuxuan and Jiang, Yu-Gang and Jia, Xiaosong and Yan, Junchi},
+  year      = {2026}
+}</pre>
+        <div class="actions">
+          <button class="btn" id="copy-bib">Copy BibTeX</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px;">
+          <img src="assets/img/figures/overview_logo.png" alt="BENCH2DEX" width="1774" height="887">
+        </div>
+        <p class="dim" style="max-width:42ch; font-size:14px;">A teleoperated Isaac Lab benchmark for long-horizon bimanual dexterous manipulation. Built on NVIDIA Isaac Sim / Isaac Lab.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <a href="#tasks">Tasks</a>
+        <a href="#embodiments">Embodiments</a>
+        <a href="#data">Teleop & Data</a>
+        <a href="#generalization">Generalization</a>
+        <a href="#results">Results</a>
+      </div>
+      <div>
+        <h5>Reproduce</h5>
+        <a href="#docs">Documentation</a>
+        <a href="#evaluation">Evaluation</a>
+      </div>
+      <div>
+        <h5>Cite</h5>
+        <a href="#docs">BibTeX →</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="ver" id="version-badge">Bench2Dex homepage</span>
+      <span>Dataset & asset licenses listed in the release; uses NVIDIA Isaac Lab / Isaac Sim. © 2026 BENCH2DEX authors.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="copy-toast" id="copy-toast">BibTeX copied</div>
+
+<script src="assets/js/data.js"></script>
+<script type="application/json" id="modal-manifest">{"fps": 20, "duration_s": 41.65, "frame_count": 833, "video_dir": "assets/video/modal", "asset_revision": "20260822-semantic-depth-v3", "modalities": ["rgb", "depth", "joint", "object", "tactile", "box2d", "box3d", "occ"], "labels": {"rgb": "RGB (Overhead)", "depth": "Depth", "joint": "Joint States", "object": "Object States", "tactile": "Tactile Signals", "box2d": "2D Boxes", "box3d": "3D Boxes", "occ": "Occupancy Grid", "occ_table": "Occupancy Grid + Table"}}</script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

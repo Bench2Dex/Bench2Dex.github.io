@@ -1,0 +1,28 @@
+{
+  "fps": 20,
+  "duration_s": 41.65,
+  "frame_count": 833,
+  "video_dir": "assets/video/modal",
+  "asset_revision": "20260822-semantic-depth-v3",
+  "modalities": [
+    "rgb",
+    "depth",
+    "joint",
+    "object",
+    "tactile",
+    "box2d",
+    "box3d",
+    "occ"
+  ],
+  "labels": {
+    "rgb": "RGB (Overhead)",
+    "depth": "Depth",
+    "joint": "Joint States (58-DoF)",
+    "object": "Object States",
+    "tactile": "Tactile Signals",
+    "box2d": "2D Boxes",
+    "box3d": "3D Boxes",
+    "occ": "Occupancy Grid",
+    "occ_table": "Occupancy Grid + Table"
+  }
+}

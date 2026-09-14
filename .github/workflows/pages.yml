@@ -1,0 +1,73 @@
+name: Deploy homepage to GitHub Pages
+
+# Why Actions-based deployment: GitHub Pages branch builds DO NOT resolve
+# Git LFS pointers, so every MP4 in this repo (tracked via *.mp4 in
+# .gitattributes) would be served as a 134-byte pointer stub. This workflow
+# materializes the real LFS objects before uploading the site artifact.
+# Required once: Settings -> Pages -> Build and deployment -> Source:
+# "GitHub Actions".
+
+on:
+  push:
+    branches: [release]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout (tree only; LFS pulled after cache restore)
+        uses: actions/checkout@v4
+
+      - name: Restore Git LFS object cache
+        uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-${{ hashFiles('.gitattributes') }}
+          restore-keys: |
+            lfs-
+
+      - name: Materialize LFS-hosted MP4s
+        run: git lfs pull
+
+      - name: Verify no pointer stubs remain
+        run: |
+          set -e
+          STUBS=0
+          for f in $(find assets/video -name '*.mp4'); do
+            if head -c 100 "$f" | grep -q "oid sha256"; then
+              STUBS=$((STUBS+1))
+              echo "pointer stub: $f"
+            fi
+          done
+          if [ "$STUBS" != "0" ]; then
+            echo "::error::$STUBS MP4(s) are still LFS pointer stubs; refusing to deploy"
+            exit 1
+          fi
+          echo "OK: all $(find assets/video -name '*.mp4' | wc -l) MP4s materialized"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
