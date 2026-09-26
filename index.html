@@ -39,7 +39,7 @@
       <a href="#docs">Docs</a>
     </div>
     <div class="nav-cta">
-      <a href="#docs" class="btn btn-primary">Get started</a>
+      <button type="button" class="btn btn-primary" data-copy-bib>Copy BibTeX</button>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -53,14 +53,14 @@
   <a href="#video">Video</a>
   <a href="#abstract">Abstract</a>
   <a href="#overview">Overview</a>
-  <a href="#why">Compare & baselines</a>
+  <a href="#why">Compare & Baselines</a>
   <a href="#embodiments">Embodiments</a>
-  <a href="#data">Teleop & data</a>
+  <a href="#data">Teleop & Data</a>
   <a href="#tasks">Tasks</a>
   <a href="#evaluation">Evaluation</a>
   <a href="#generalization">Generalization</a>
   <a href="#results">Results</a>
-  <a href="#docs">Docs & get started</a>
+  <a href="#docs">Docs & Get Started</a>
 </div>
 
 <main id="top">
@@ -148,7 +148,7 @@
     </div>
     <div class="card-frame">
       <div class="bm-table-wrap">
-      <table class="bm-table" aria-label="Comparison of BENCH2DEX with representative manipulation benchmarks">
+      <table class="bm-table" aria-label="Comparison of BENCH2DEX with representative manipulation benchmarks" aria-describedby="dexverse-note">
         <thead><tr>
           <th class="bm-name">Benchmark</th>
           <th>Task Num</th>
@@ -165,14 +165,15 @@
           <tr><td>RoboCasa</td><td>100</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
           <tr><td>DROID</td><td>86</td><td>1</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td></tr>
           <tr><td>DexMimicGen</td><td>9</td><td>3</td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
-          <tr><td>RealMirror</td><td>5</td><td>1</td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RealMirror</td><td>5</td><td>1</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
           <tr><td>RoboTwin 2.0</td><td>50</td><td>5</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
-          <tr><td>RoboMIND 2.0</td><td>739</td><td>6</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td></tr>
+          <tr><td>RoboMIND 2.0</td><td>739</td><td>6</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
           <tr><td>MuJoCo Manipulus</td><td>16</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td></tr>
           <tr><td>RoboCasa365</td><td>365</td><td>1</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>RoboDojo</td><td>60</td><td>3</td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
           <tr><td>BiCoord</td><td>18</td><td>1</td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td><td><span class="nx">✗</span></td></tr>
           <tr><td>DexJoCo</td><td>11</td><td>2</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
-          <tr><td>DexVerse</td><td>19</td><td>1</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
+          <tr><td>DexVerse<sup>∗</sup></td><td>19</td><td>1</td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="nx">✗</span></td><td><span class="yk">✓</span></td></tr>
           <tr class="us">
             <td><b>Bench2Dex (Ours)</b></td><td><b>26</b></td><td><b>12</b></td>
             <td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td><td><span class="yk">✓</span></td>
@@ -180,13 +181,15 @@
         </tbody>
       </table>
       </div>
+      <p id="dexverse-note" class="evidence-caption"><em>Note.</em> <sup>∗</sup> Statistics based on publicly available data.</p>
       <p class="evidence-caption">In this comparison, Bench2Dex jointly supports diverse bimanual dexterous embodiments, teleoperated demonstration collection, vision-based tactile sensing, tool/device use, and articulated-object interaction. The matrix reproduces the paper’s benchmark-comparison table.</p>
     </div>
     <div class="leaderboard">
       <h4 class="lb-title">Evaluated Baselines</h4>
+      <p class="data-note"><span class="best-key"><span class="best-value">Best</span> Highest summary value across policies</span></p>
       <div class="card-frame">
         <div class="lb-wrap"><table class="lb-table" id="lb-table"></table></div>
-        <p class="evidence-caption">Values reproduce the paper’s four-policy summary: task-macro stable success rate (SR, %) over 1,300 rollouts per channel (26 task–embodiment settings × 50), four-channel mean SR, and all-task mean LSCR.</p>
+        <p class="evidence-caption">Values reproduce the paper’s four-policy summary: task-macro stable success rate (SR, %) over 1,300 rollouts per channel (26 task–embodiment settings × 50), four-channel mean SR, all-task mean LSCR, and success-conditioned expert-normalized efficiency (Eff.). Highlighted values mark the best SR, LSCR, and Eff. across policies.</p>
       </div>
     </div>
   </div>
@@ -219,9 +222,9 @@
       </figure>
       <div>
         <div class="teleop-steps">
-          <div class="teleop-step"><div><h4>Capture wrist and hand motion</h4><p>A Manus glove provides a 25-node hand skeleton via shared memory; an ARKit stream provides wrist translation and orientation.</p></div></div>
-          <div class="teleop-step"><div><h4>Retarget skeleton and solve arm IK</h4><p>The skeleton is converted to 21 MediaPipe-style keypoints; DexPilot retargeting solves hand joints, a Pinocchio IK controller solves the arm.</p></div></div>
-          <div class="teleop-step"><div><h4>Record actions, states, observations, traces</h4><p>Per step, the commanded action is stored, then post-step observations and evaluator state are written to a time-aligned HDF5 episode.</p></div></div>
+          <div class="teleop-step"><div><h4>Capture Wrist and Hand Motion</h4><p>A Manus glove provides a 25-node hand skeleton via shared memory; an ARKit stream provides wrist translation and orientation.</p></div></div>
+          <div class="teleop-step"><div><h4>Retarget Skeleton and Solve Arm IK</h4><p>The skeleton is converted to 21 MediaPipe-style keypoints; DexPilot retargeting solves hand joints, a Pinocchio IK controller solves the arm.</p></div></div>
+          <div class="teleop-step"><div><h4>Record Actions, States, Observations, Traces</h4><p>Per step, the commanded action is stored, then post-step observations and evaluator state are written to a time-aligned HDF5 episode.</p></div></div>
         </div>
       </div>
     </div>
@@ -275,7 +278,7 @@
 <section class="section evidence-band evidence-band--atlas" id="tasks" data-section-index="08">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Task Suite · 26 long-horizon tasks</p>
+      <p class="eyebrow">Task Suite · 26 Long-Horizon Tasks</p>
       <h2>The long-horizon task suite.</h2>
       <p class="lead">Each task is multi-stage, executable, and anchored to an executable terminal predicate.</p>
     </div>
@@ -293,16 +296,16 @@
       <p class="lead">A task is successful only when its executable terminal predicate remains satisfied for the required dwell time. We decompose evaluation into stable success, latched stage progress, efficiency, and safety — conceptually here, with seeds, budgets, and bootstrap CIs in the benchmark docs.</p>
     </div>
     <div class="eval-tiers">
-      <div class="eval-tier"><div class="top-bar" style="background:var(--green);"></div><div class="num">01</div><div class="n">Stable task success</div><div class="d">Terminal predicate holds for the configured dwell time (0.5 s default), not at a transient frame.</div></div>
-      <div class="eval-tier"><div class="top-bar" style="background:var(--cyan);"></div><div class="num">02</div><div class="n">Latched stage progress</div><div class="d">LSCR counts ever-reached, dependency-valid milestones — progress that survives intentional reversals.</div></div>
-      <div class="eval-tier"><div class="top-bar" style="background:var(--amber);"></div><div class="num">03</div><div class="n">Efficiency</div><div class="d">Mean time to stable success over successful episodes, reported alongside SR.</div></div>
-      <div class="eval-tier"><div class="top-bar" style="background:var(--brick);"></div><div class="num">04</div><div class="n">Safety & violations</div><div class="d">SafeSR, hard-violation and drop rates, high-speed proxy — diagnostics that complement success.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--green);"></div><div class="num">01</div><div class="n">Stable Task Success</div><div class="d">Terminal predicate holds for the configured dwell time (0.5 s default), not at a transient frame.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--cyan);"></div><div class="num">02</div><div class="n">Latched Stage Progress</div><div class="d">LSCR counts ever-reached, dependency-valid milestones — progress that survives intentional reversals.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--amber);"></div><div class="num">03</div><div class="n">Efficiency</div><div class="d">Mean human expert teleoperation steps to completion divided by pooled mean steps to stable success among successful policy episodes.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--brick);"></div><div class="num">04</div><div class="n">Safety & Violations</div><div class="d">SafeSR, hard-violation and drop rates, high-speed proxy — diagnostics that complement success.</div></div>
     </div>
     <div class="card-frame">
       <div class="eval-stages" id="eval-stages">
         <div class="eval-stage" data-i="0"><div class="check">✓</div><div class="nm">Stage 1</div><div class="st">Open Microwave Door</div></div>
-        <div class="eval-stage" data-i="1"><div class="check">✓</div><div class="nm">Stage 2</div><div class="st">Put Baguette In Bowl</div></div>
-        <div class="eval-stage" data-i="2"><div class="check">✓</div><div class="nm">Stage 3</div><div class="st">Put Bowl In Microwave</div></div>
+        <div class="eval-stage" data-i="1"><div class="check">✓</div><div class="nm">Stage 2</div><div class="st">Put Baguette in Bowl</div></div>
+        <div class="eval-stage" data-i="2"><div class="check">✓</div><div class="nm">Stage 3</div><div class="st">Put Bowl in Microwave</div></div>
         <div class="eval-stage" data-i="3"><div class="check">✓</div><div class="nm">Stage 4</div><div class="st">Close Microwave Door</div></div>
       </div>
       <p class="evidence-caption">Example: Microwave Bowl Loading is evaluated through four executable stages; the dwell latch is what makes “closed” a success rather than a transient.</p>
@@ -328,7 +331,7 @@
 
     <div class="gen-axes">
       <div class="gen-group">
-        <div class="group-head inv">Invariance factors <span class="muted">— task-irrelevant visual conditions; resampled by the Inv. channel</span></div>
+        <div class="group-head inv">Invariance Factors <span class="muted">— task-irrelevant visual conditions; resampled by the Inv. channel</span></div>
         <div class="axis-grid">
           <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/background_smooth.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Scene background generalization"></video><div class="axis-meta"><span class="axis-name">Scene Background</span><span class="axis-note">Background context used for visual rendering only.</span></div></div>
           <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/table_surface_smooth.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Tabletop texture generalization"></video><div class="axis-meta"><span class="axis-name">Tabletop Texture</span><span class="axis-note">Support-surface visual material.</span></div></div>
@@ -338,7 +341,7 @@
         </div>
       </div>
       <div class="gen-group">
-        <div class="group-head equi">Equivariance factors <span class="muted">— task-relevant geometry; resampled by the Equi. channel</span></div>
+        <div class="group-head equi">Equivariance Factors <span class="muted">— task-relevant geometry; resampled by the Equi. channel</span></div>
         <div class="axis-grid two">
           <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/object_pose_generalization.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Object pose generalization"></video><div class="axis-meta"><span class="axis-name">Object Pose</span><span class="axis-note">Task-relevant initial object poses within valid bounds.</span></div></div>
           <div class="axis-card"><video class="axis-video" src="assets/video/7_generalizations/table_height_generalization.mp4#t=0.1" muted loop playsinline preload="metadata" aria-label="Table height generalization"></video><div class="axis-meta"><span class="axis-name">Table Height</span><span class="axis-note">Worksurface height resampling.</span></div></div>
@@ -354,14 +357,40 @@
     <div class="section-head">
       <p class="eyebrow">Results · 20,800 Rollouts</p>
       <h2>Task-level evaluation results.</h2>
-      <p class="lead">Stable-success counts (out of 50) for ACT, DP, π₀.₅, and GR00T N1.5 across the None / Equi. / Inv. / Full channels on all 26 task–embodiment settings. Under the matched None condition, GR00T N1.5 has the highest aggregate success; under the combined Full shift, GR00T has the highest aggregate count while π₀.₅ has the most strict task-level leads. Every policy degrades relative to its matched performance. Hover any count cell for successes out of 50.</p>
+      <p class="lead">Stable-success counts (out of 50) for ACT, DP, π₀.₅, and GR00T N1.5 across the None / Equi. / Inv. / Full channels on all 26 task–embodiment settings. GR00T N1.5 leads under matched None conditions (48.5%) and has the highest four-channel mean SR (28.3%). Under the combined Full shift, π₀.₅ leads with 25.5% success, versus 19.8% for GR00T N1.5. The tables below also report stage progress and success-conditioned efficiency.</p>
     </div>
 
     <div class="chart-panel wide">
-      <h4>Task-level stable success and stage completion (26 task–embodiment settings)</h4>
-      <div class="table-wrap"><table class="results-table" id="results-table" aria-describedby="rtable-cap"></table></div>
-      <p id="rtable-cap" class="dim evidence-caption">Each count cell is the number of reach-and-stop successes among 50 rollouts. <b>SR</b> and <b>LSCR</b> are the paper-reported four-channel mean stable success rate (%) and latched stage completion rate (%), respectively, for each task–policy pair. Rows are grouped by embodiment; the footer reproduces the paper-reported equal-weight task-macro SR (%) per channel, its four-channel mean, and all-task mean LSCR. Count-cell shading scales with the value.</p>
-      <p class="evidence-caption">⚠ Reporting convention: the 50 rollouts in each task–policy–channel cell are evaluation episodes, not independent retraining replicates, so this table does not estimate between-training variability. Tasks and embodiments are not factorially crossed; task-level contrasts therefore do not isolate embodiment effects.</p>
+      <h4 id="main-results-title">Policy Performance</h4>
+      <p class="table-subtitle">26 task–embodiment settings · 50 rollouts per channel · Paper results</p>
+      <div class="table-legend">
+        <span class="heat-key">Successes <span>0</span><span class="heat-swatch" aria-hidden="true"></span><span>50</span></span>
+        <span class="best-key"><span class="best-value">Best</span> SR / LSCR / Eff. across policies</span>
+        <span class="scroll-hint">Click a row to select · Click again to clear · Scroll to compare →</span>
+      </div>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="main-results-title"><table class="results-table" id="results-table" aria-labelledby="main-results-title" aria-describedby="rtable-cap"></table></div>
+      <p id="rtable-cap" class="dim evidence-caption">Darker blue means more successes out of 50. <b>SR</b>: stable success (%). <b>LSCR</b>: latched stage completion (%). <b>Eff.</b>: expert-normalized efficiency. Higher is better; — means no successful rollout. Outlined values are best across policies for each task and in the summary row.</p>
+      <details class="table-notes">
+        <summary>Reporting Notes</summary>
+        <p>SR and LSCR are four-channel means. Efficiency is the mean steps to successful task completion across human expert teleoperation trajectories for the task, divided by mean steps to stable success pooled across successful policy episodes in all four channels. Both use the same physics-step unit. The footer reproduces the paper’s task-macro values; efficiency averages include only tasks with a success (ACT 25, DP 20, π₀.₅ 23, GR00T N1.5 26).</p>
+        <p>The 50 rollouts per task–policy–channel are evaluation episodes, not independent retraining replicates; they do not estimate between-training variability. Tasks and embodiments are not factorially crossed, so task-level contrasts do not isolate embodiment effects.</p>
+      </details>
+    </div>
+
+    <div class="chart-panel wide">
+      <h4 id="channel-results-title">Latched Stage Completion</h4>
+      <p class="table-subtitle">Four evaluation channels · LSCR (%) · Four-channel mean</p>
+      <div class="table-legend">
+        <span class="heat-key">LSCR <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span>
+        <span class="best-key"><span class="best-value">Best Mean</span> Across policies</span>
+        <span class="scroll-hint">Click a row to select · Click again to clear · Scroll to compare →</span>
+      </div>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="channel-results-title"><table class="results-table lscr-table" id="lscr-table" aria-labelledby="channel-results-title" aria-describedby="lscr-table-cap"></table></div>
+      <p id="lscr-table-cap" class="dim evidence-caption">Darker blue means higher channel LSCR. Only the best <b>Mean</b> across policies is outlined. Mean values match the paper at one decimal place; the footer averages all 26 tasks equally.</p>
+      <details class="table-notes">
+        <summary>Metric Notes</summary>
+        <p>Channel values come from the supplied policy results. LSCR measures dependency-valid stages reached during an episode, including episodes without stable final success. The Mean column reports the four-channel task–policy average; its footer matches the paper’s all-task LSCR.</p>
+      </details>
     </div>
   </div>
 </section>
@@ -389,7 +418,7 @@
   year      = {2026}
 }</pre>
         <div class="actions">
-          <button class="btn" id="copy-bib">Copy BibTeX</button>
+          <button type="button" class="btn" id="copy-bib" data-copy-bib>Copy BibTeX</button>
         </div>
       </div>
     </div>
@@ -433,7 +462,7 @@
   </div>
 </footer>
 
-<div class="copy-toast" id="copy-toast">BibTeX copied</div>
+<div class="copy-toast" id="copy-toast" role="status" aria-live="polite">BibTeX copied</div>
 
 <script src="assets/js/data.js"></script>
 <script type="application/json" id="modal-manifest">{"fps": 20, "duration_s": 41.65, "frame_count": 833, "video_dir": "assets/video/modal", "asset_revision": "20260822-semantic-depth-v3", "modalities": ["rgb", "depth", "joint", "object", "tactile", "box2d", "box3d", "occ"], "labels": {"rgb": "RGB (Overhead)", "depth": "Depth", "joint": "Joint States", "object": "Object States", "tactile": "Tactile Signals", "box2d": "2D Boxes", "box3d": "3D Boxes", "occ": "Occupancy Grid", "occ_table": "Occupancy Grid + Table"}}</script>

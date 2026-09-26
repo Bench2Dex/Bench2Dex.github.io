@@ -8,6 +8,14 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fmt = (n,d=0)=>Number(n).toFixed(d);
   const pct = (n,d=1)=>fmt(n*100,d)+"%";
+  const bestHtml = (value, peers, label) => value!==null && value===Math.max(...peers.filter(v=>v!==null))
+    ? `<strong class="best-value">${label}</strong>` : label;
+  const heatColor = fraction => {
+    const t=Math.max(0,Math.min(1,fraction));
+    const r=Math.round(234+(30-234)*t), g=Math.round(243+(148-243)*t), b=Math.round(244+(166-244)*t);
+    return `rgb(${r},${g},${b})`;
+  };
+  const heatText = "#15201E";
 
   /* ---------- Proof strip ---------- */
   (function(){
@@ -156,25 +164,25 @@
           <div class="modal-emb">${emb?emb.name:'—'} · ${t.stages.length} stages</div>
 
           <div class="modal-section">
-            <h4>Task description</h4>
+            <h4>Task Description</h4>
             <p>${t.desc}</p>
           </div>
           <div class="modal-section">
-            <h4>Executable success condition</h4>
+            <h4>Executable Success Condition</h4>
             <p>${t.success}</p>
           </div>
           <div class="modal-section">
-            <h4>Stage timeline</h4>
+            <h4>Stage Timeline</h4>
             <div class="modal-stages">${t.stages.map((s,i)=>`<div class="st"><span style="color:var(--cyan)">${String(i+1).padStart(2,"0")}</span> · ${s}</div>`).join("")}</div>
           </div>
           <div class="modal-section">
-            <h4>Reported successes (GR00T N1.5, out of 50)</h4>
+            <h4>Reported Successes (GR00T N1.5, out of 50)</h4>
             <div class="modal-channels">
               ${ch.map((c,i)=>`<div class="ch"><div class="lab">${B.CHANNEL_LABEL[c]}</div><div class="v">${gr00t?gr00t[i]:'—'}<small> / 50</small></div></div>`).join("")}
             </div>
           </div>
           <div class="modal-section">
-            <h4>Website navigation labels</h4>
+            <h4>Website Navigation Labels</h4>
             <div class="task-tags" style="margin-top:4px;">${t.tags.map(x=>`<span class="t ${tagClass(x)}">${tagLabel(x)}</span>`).join("")}</div>
           </div>
         </div>
@@ -197,9 +205,9 @@
     const FR=$("#task-filters");
     const facets=[
       {k:"all",label:"All 26"},
-      {k:"tool-use",label:"Tool use"},
+      {k:"tool-use",label:"Tool Use"},
       {k:"articulated",label:"Articulated"},
-      {k:"long-horizon",label:"Long-horizon"},
+      {k:"long-horizon",label:"Long-Horizon"},
       {k:"bimanual",label:"Bimanual"},
       {k:"pouring",label:"Pouring"},
       {k:"sorting",label:"Sorting"},
@@ -515,42 +523,82 @@
     wrap.appendChild(svg);
   })();
 
+  /* Shared row interaction for both result tables; heatmap colors stay intact. */
+  function bindResultSelection(tbl){
+    const rows=$$("tbody tr.result-row",tbl);
+    const embodiments=$$("tbody td.emb",tbl);
+    const owners=new Map();
+    let owner=null;
+    rows.forEach(row=>{
+      owner=row.querySelector(".emb")||owner;
+      owners.set(row,owner);
+    });
+    const select=row=>{
+      rows.forEach(item=>{
+        const active=item===row;
+        item.classList.toggle("selected",active);
+        item.querySelector(".row-select").setAttribute("aria-pressed",String(active));
+      });
+      embodiments.forEach(cell=>cell.classList.toggle("selected-emb",cell===owners.get(row)));
+      hideTip();
+    };
+    rows.forEach(row=>{
+      const task=row.querySelector(".task");
+      const button=el("button","row-select",task.textContent);
+      button.type="button";
+      button.setAttribute("aria-label",`Highlight results for ${task.textContent.trim()}`);
+      button.setAttribute("aria-pressed","false");
+      task.replaceChildren(button);
+      row.addEventListener("click",event=>{
+        // A merged embodiment cell labels a group, not its first task.
+        if(event.target.closest(".emb")) return;
+        select(row.classList.contains("selected")?null:row);
+      });
+      row.addEventListener("mouseenter",()=>owners.get(row)?.classList.add("hover-emb"));
+      row.addEventListener("mouseleave",()=>embodiments.forEach(cell=>cell.classList.remove("hover-emb")));
+    });
+    tbl.closest(".table-wrap").addEventListener("keydown",event=>{
+      if(event.key==="Escape") select(null);
+    });
+    tbl.closest(".table-wrap").addEventListener("scroll",hideTip,{passive:true});
+  }
+
   /* ---------- Results: full comparison table (replaces heatmap) ---------- */
   (function(){
     const tbl=$("#results-table");
     if(!tbl) return;
-    function cellColor(v){
-      const t=Math.max(0,Math.min(1,v/B.ROLLOUTS_PER_CELL));
-      const r=Math.round(234+(30-234)*t), g=Math.round(243+(148-243)*t), b=Math.round(244+(166-244)*t);
-      return `rgb(${r},${g},${b})`;
-    }
     function cell(v){
       const frac=v/B.ROLLOUTS_PER_CELL;
-      const color=frac>0.5?"rgba(255,255,255,.92)":"#15201E";
-      return `<td class="num" style="background:${cellColor(v)};color:${color}">${v}</td>`;
+      return `<td class="num" style="background:${heatColor(frac)};color:${heatText}">${v}</td>`;
     }
     function avgPct(counts){ // counts: [none,equi,inv,full]
       const m=(counts[0]+counts[1]+counts[2]+counts[3])/4;
       return m/B.ROLLOUTS_PER_CELL*100;
     }
-    function avgCell(counts){
+    function avgCell(counts, taskId){
       const v=avgPct(counts);
-      return `<td class="avg">${v.toFixed(1)}%</td>`;
+      const all=B.POLICIES.map(p=>avgPct(B.RESULTS[taskId][p]));
+      return `<td class="avg">${bestHtml(v,all,`${v.toFixed(1)}%`)}</td>`;
     }
     function lscrCell(policy, taskId){
       const value=B.LSCR[taskId][policy];
-      return value===null
-        ? `<td class="lscr unreported">—</td>`
-        : `<td class="lscr">${value.toFixed(1)}%</td>`;
+      const all=B.POLICIES.map(p=>B.LSCR[taskId][p]);
+      return `<td class="lscr">${bestHtml(value,all,`${value.toFixed(1)}%`)}</td>`;
+    }
+    function effCell(policy, taskId){
+      const value=B.EFFICIENCY[taskId][policy];
+      if(value===null) return `<td class="eff unreported">—</td>`;
+      const all=B.POLICIES.map(p=>B.EFFICIENCY[taskId][p]);
+      return `<td class="eff">${bestHtml(value,all,value.toFixed(3))}</td>`;
     }
     // header
     const chs=B.CHANNELS;
     let head=`<thead><tr>
       <th rowspan="2" class="th-task">Task</th>
       <th rowspan="2" class="th-emb">Embodiment</th>
-      ${B.POLICIES.map(p=>`<th colspan="6" class="th-pol">${B.POLICY_LABEL[p]}</th>`).join("")}
+      ${B.POLICIES.map(p=>`<th colspan="7" class="th-pol">${B.POLICY_LABEL[p]}</th>`).join("")}
     </tr><tr>
-      ${B.POLICIES.map(()=>chs.map(c=>`<th class="th-ch">${B.CHANNEL_LABEL[c]}</th>`).join("")+`<th class="th-ch th-avg">SR</th><th class="th-ch th-lscr">LSCR</th>`).join("")}
+      ${B.POLICIES.map(()=>chs.map(c=>`<th class="th-ch">${B.CHANNEL_LABEL[c]}</th>`).join("")+`<th class="th-ch th-avg">SR</th><th class="th-ch th-lscr">LSCR</th><th class="th-ch th-eff">Eff.</th>`).join("")}
     </tr></thead>`;
     // body: group rows by embodiment (EMBODIMENTS order = paper table order)
     const taskById=id=>B.TASKS.find(t=>t.id===id);
@@ -563,130 +611,68 @@
         body += `<tr data-tid="${tid}" class="result-row ${ri===0&&gi>0?"grp":""}">
           <td class="task">${t.name}</td>
           ${embCell}
-          ${B.POLICIES.map(p=>chs.map((c,ci)=>cell(r[p][ci])).join("")+avgCell(r[p])+lscrCell(p,tid)).join("")}
+          ${B.POLICIES.map(p=>chs.map((c,ci)=>cell(r[p][ci])).join("")+avgCell(r[p],tid)+lscrCell(p,tid)+effCell(p,tid)).join("")}
         </tr>`;
       });
     });
-    // Footer: exact paper-reported task-macro SR and all-task mean LSCR.
+    // Footer: exact paper-reported task-macro SR, LSCR, and efficiency.
     body += `<tr class="mean">
-      <td colspan="2" class="mean-label">Task mean (%)</td>
+      <td colspan="2" class="mean-label">Task Mean</td>
       ${B.POLICIES.map(p=>{
         const summary=B.PAPER_SR_SUMMARY[p];
         const srs=summary.slice(0,4);
         const avg=summary[4];
         const lscr=B.LSCR_MEAN[p];
-        const lscrHtml=lscr===null ? `<td class="lscr mean-lscr unreported">—</td>` : `<td class="lscr mean-lscr">${lscr.toFixed(1)}%</td>`;
-        return srs.map(s=>`<td class="num mean-v">${s.toFixed(1)}%</td>`).join("")+`<td class="avg mean-avg">${avg.toFixed(1)}%</td>`+lscrHtml;
+        const eff=B.EFFICIENCY_MEAN[p];
+        return srs.map(s=>`<td class="num mean-v">${s.toFixed(1)}%</td>`).join("")
+          +`<td class="avg mean-avg">${bestHtml(avg,B.POLICIES.map(q=>B.PAPER_SR_SUMMARY[q][4]),`${avg.toFixed(1)}%`)}</td>`
+          +`<td class="lscr mean-lscr">${bestHtml(lscr,B.POLICIES.map(q=>B.LSCR_MEAN[q]),`${lscr.toFixed(1)}%`)}</td>`
+          +`<td class="eff mean-eff">${bestHtml(eff,B.POLICIES.map(q=>B.EFFICIENCY_MEAN[q]),eff.toFixed(3))}</td>`;
       }).join("")}
     </tr>`;
     body+="</tbody>";
     tbl.innerHTML=head+body;
-    const resultRows=$$("tbody tr.result-row",tbl);
-    const embodimentCells=$$("tbody td.emb",tbl);
-    const embodimentFor=row=>{
-      if(row.querySelector("td.emb")) return row.querySelector("td.emb");
-      let prior=row.previousElementSibling;
-      while(prior){
-        const cell=prior.querySelector("td.emb");
-        if(cell) return cell;
-        prior=prior.previousElementSibling;
-      }
-      return null;
-    };
-    const selectResult=row=>{
-      resultRows.forEach(item=>{
-        const active=item===row;
-        item.classList.toggle("selected",active);
-        item.setAttribute("aria-selected",active?"true":"false");
-      });
-      embodimentCells.forEach(cell=>cell.classList.toggle("selected-emb",cell===embodimentFor(row)));
-    };
-    resultRows.forEach(row=>{
-      row.tabIndex=0;
-      row.setAttribute("aria-label",`Highlight results for ${row.querySelector(".task")?.textContent.trim()||"this task"}`);
-      row.setAttribute("aria-selected","false");
-      row.addEventListener("click",()=>selectResult(row));
-      row.addEventListener("mouseenter",()=>{
-        const embodiment=embodimentFor(row);
-        if(embodiment) embodiment.classList.add("hover-emb");
-      });
-      row.addEventListener("mouseleave",()=>embodimentCells.forEach(cell=>cell.classList.remove("hover-emb")));
-      row.addEventListener("keydown",event=>{
-        if(event.key==="Enter"||event.key===" "){
-          event.preventDefault();
-          selectResult(row);
-        }
+    bindResultSelection(tbl);
+  })();
+
+  /* ---------- Per-channel latched stage completion ---------- */
+  (function(){
+    const tbl=$("#lscr-table"); if(!tbl) return;
+    const taskById=id=>B.TASKS.find(t=>t.id===id);
+    const channelMean=(policy,ci)=>B.TASKS.reduce((sum,t)=>sum+B.LSCR_CHANNELS[t.id][policy][ci],0)/B.TASKS.length*100;
+    const channelCell=(fraction,label,footer=false)=>`<td class="lscr-channel${footer?" mean-v":""}" style="--lscr-heat:${heatColor(fraction)};--lscr-heat-text:${heatText}">${label}</td>`;
+    const header=`<thead><tr><th rowspan="2" class="th-task">Task</th><th rowspan="2" class="th-emb">Embodiment</th>${B.POLICIES.map(p=>`<th colspan="5" class="th-pol">${B.POLICY_LABEL[p]}</th>`).join("")}</tr><tr>${B.POLICIES.map(()=>B.CHANNELS.map(c=>`<th class="th-ch">${B.CHANNEL_LABEL[c]}</th>`).join("")+`<th class="th-ch th-lscr">Mean</th>`).join("")}</tr></thead>`;
+    let body="<tbody>";
+    B.EMBODIMENTS.forEach((emb,gi)=>{
+      emb.tasks.forEach((tid,ri)=>{
+        const embCell=ri===0 ? `<td class="emb" rowspan="${emb.tasks.length}">${emb.name}</td>` : "";
+        const values=B.POLICIES.map(p=>{
+          const channels=B.LSCR_CHANNELS[tid][p].map(v=>channelCell(v,`${(v*100).toFixed(2)}%`)).join("");
+          const mean=B.LSCR[tid][p];
+          return channels+`<td class="lscr">${bestHtml(mean,B.POLICIES.map(q=>B.LSCR[tid][q]),`${mean.toFixed(1)}%`)}</td>`;
+        }).join("");
+        body+=`<tr data-tid="${tid}" class="result-row ${ri===0&&gi>0?"grp":""}"><td class="task">${taskById(tid).name}</td>${embCell}${values}</tr>`;
       });
     });
-    // tooltips on count cells (avg cells + footer excluded)
-    $$(".num:not(.avg):not(.mean-v)",tbl).forEach(td=>{
-      td.addEventListener("mouseenter",e=>{
-        const tr=td.closest("tr");
-        // locate policy/channel from cell index among count cells of this row
-        const countCells=$$("td.num:not(.avg):not(.mean-v)",tr); const idx=countCells.indexOf(td);
-        const pi=Math.floor(idx/4), ci=idx%4;
-        const v=td.textContent.trim();
-        const tname=tr.querySelector(".task")?.textContent.trim()||"";
-        showTip(e,`<div style="font-weight:600;color:#15201E">${tname}</div><div>${B.POLICY_LABEL[B.POLICIES[pi]]} · ${B.CHANNEL_LABEL[B.CHANNELS[ci]]}</div><div style="margin-top:3px">${v} / 50 successes</div>`);
-      });
-      td.addEventListener("mousemove",e=>moveTip(e));
-      td.addEventListener("mouseleave",hideTip);
-    });
-    // tooltips on footer channel cells (SR%)
-    $$(".mean-v",tbl).forEach(td=>{
-      td.addEventListener("mouseenter",e=>{
-        const tr=td.closest("tr");
-        const cells=$$(".mean-v",tr); const idx=cells.indexOf(td);
-        const pi=Math.floor(idx/4), ci=idx%4;
-        showTip(e,`<div style="font-weight:600;color:#15201E">${B.POLICY_LABEL[B.POLICIES[pi]]} · ${B.CHANNEL_LABEL[B.CHANNELS[ci]]}</div><div style="margin-top:3px">paper-reported task-macro SR ${td.textContent.trim()}</div>`);
-      });
-      td.addEventListener("mousemove",e=>moveTip(e));
-      td.addEventListener("mouseleave",hideTip);
-    });
-    // Tooltips on four-channel mean SR cells.
-    $$(".avg",tbl).forEach(td=>{
-      td.addEventListener("mouseenter",e=>{
-        const tr=td.closest("tr"); const tid=tr.dataset.tid||"";
-        const avgCells=$$(".avg",tr); const pi=avgCells.indexOf(td);
-        const isFooter=tr.classList.contains("mean");
-        if(isFooter){
-          showTip(e,`<div style="font-weight:600;color:#15201E">${B.POLICY_LABEL[B.POLICIES[pi]]} · four-channel mean</div><div style="margin-top:3px">paper-reported task-macro SR ${td.textContent.trim()}</div>`);
-        }else{
-          const r=B.RESULTS[tid];
-          const tname=tr.querySelector(".task")?.textContent.trim()||"";
-          showTip(e,`<div style="font-weight:600;color:#15201E">${tname}</div><div>${B.POLICY_LABEL[B.POLICIES[pi]]} · four-channel mean SR</div><div style="margin-top:3px">${td.textContent.trim()} = mean of ${r[B.POLICIES[pi]].join(", ")} (out of 50)</div>`);
-        }
-      });
-      td.addEventListener("mousemove",e=>moveTip(e));
-      td.addEventListener("mouseleave",hideTip);
-    });
-    // LSCR is reported in the paper as a four-channel task–policy mean (not per channel).
-    $$(".lscr",tbl).forEach(td=>{
-      td.addEventListener("mouseenter",e=>{
-        const tr=td.closest("tr"); const cells=$$(".lscr",tr); const pi=cells.indexOf(td);
-        const policy=B.POLICIES[pi];
-        if(tr.classList.contains("mean")){
-          showTip(e,`<div style="font-weight:600;color:#15201E">${B.POLICY_LABEL[policy]} · LSCR</div><div style="margin-top:3px">all-task mean LSCR ${td.textContent.trim()}</div>`);
-        }else{
-          const tname=tr.querySelector(".task")?.textContent.trim()||"";
-          showTip(e,`<div style="font-weight:600;color:#15201E">${tname}</div><div>${B.POLICY_LABEL[policy]} · LSCR</div><div style="margin-top:3px">four-channel mean LSCR ${td.textContent.trim()}</div>`);
-        }
-      });
-      td.addEventListener("mousemove",e=>moveTip(e));
-      td.addEventListener("mouseleave",hideTip);
-    });
+    body+=`<tr class="mean"><td colspan="2" class="mean-label">Task Mean (%)</td>${B.POLICIES.map(p=>B.CHANNELS.map((_,ci)=>{
+      const mean=channelMean(p,ci);
+      return channelCell(mean/100,`${mean.toFixed(1)}%`,true);
+    }).join("")+`<td class="lscr mean-lscr">${bestHtml(B.LSCR_MEAN[p],B.POLICIES.map(q=>B.LSCR_MEAN[q]),`${B.LSCR_MEAN[p].toFixed(1)}%`)}</td>`).join("")}</tr>`;
+    tbl.innerHTML=header+body+"</tbody>";
+    bindResultSelection(tbl);
   })();
 
   /* ---------- Evaluated baselines ---------- */
   (function(){
     const lb=$("#lb-table"); if(!lb) return;
-    const paperPolicyLabels={ACT:"ACT",DPC:"DP",PI05:"π₀.₅",GR00T:"GR00T"};
-    let h=`<thead><tr><th class="pn">Policy</th><th>None</th><th>Equi.</th><th>Inv.</th><th>Full</th><th class="avg">SR</th><th class="lscr">LSCR</th></tr></thead><tbody>`;
+    let h=`<thead><tr><th class="pn">Policy</th><th>None</th><th>Equi.</th><th>Inv.</th><th>Full</th><th class="avg">SR</th><th class="lscr">LSCR</th><th class="eff">Eff.</th></tr></thead><tbody>`;
     B.POLICIES.forEach(p=>{
       const summary=B.PAPER_SR_SUMMARY[p];
-      h+=`<tr><td class="pn">${paperPolicyLabels[p]}</td>`
+      h+=`<tr><td class="pn">${B.POLICY_LABEL[p]}</td>`
         +summary.slice(0,4).map(s=>`<td>${s.toFixed(1)}%</td>`).join("")
-        +`<td class="avg">${summary[4].toFixed(1)}%</td><td class="lscr">${B.LSCR_MEAN[p].toFixed(1)}%</td></tr>`;
+        +`<td class="avg">${bestHtml(summary[4],B.POLICIES.map(q=>B.PAPER_SR_SUMMARY[q][4]),`${summary[4].toFixed(1)}%`)}</td>`
+        +`<td class="lscr">${bestHtml(B.LSCR_MEAN[p],B.POLICIES.map(q=>B.LSCR_MEAN[q]),`${B.LSCR_MEAN[p].toFixed(1)}%`)}</td>`
+        +`<td class="eff">${bestHtml(B.EFFICIENCY_MEAN[p],B.POLICIES.map(q=>B.EFFICIENCY_MEAN[q]),B.EFFICIENCY_MEAN[p].toFixed(3))}</td></tr>`;
     });
     h+=`</tbody>`;
     lb.innerHTML=h;
@@ -710,12 +696,25 @@
 
   /* ---------- Copy BibTeX ---------- */
   (function(){
-    const btn=$("#copy-bib"), toast=$("#copy-toast"), pre=$("#bibtex");
-    btn.addEventListener("click",async()=>{
-      try{ await navigator.clipboard.writeText(pre.textContent); }
-      catch(e){ const ta=el("textarea"); ta.value=pre.textContent; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
-      toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1600);
-    });
+    const toast=$("#copy-toast"), pre=$("#bibtex");
+    $$("[data-copy-bib]").forEach(btn=>btn.addEventListener("click",async()=>{
+      let copied=false;
+      try{ await navigator.clipboard.writeText(pre.textContent); copied=true; }
+      catch(e){
+        const ta=el("textarea");
+        ta.value=pre.textContent;
+        ta.style.cssText="position:fixed;top:0;left:0;opacity:0;pointer-events:none;";
+        document.body.appendChild(ta);
+        ta.select();
+        try{ copied=document.execCommand("copy"); }
+        catch(copyError){ copied=false; }
+        finally{ ta.remove(); btn.focus({preventScroll:true}); }
+      }
+      clearTimeout(window.__soonT);
+      toast.textContent=copied?"BibTeX copied":"Copy failed. Please copy the citation below.";
+      toast.classList.add("show");
+      window.__soonT=setTimeout(()=>toast.classList.remove("show"),1600);
+    }));
   })();
 
   /* ---------- Placeholder-link feedback (bare '#' anchors) ---------- */
