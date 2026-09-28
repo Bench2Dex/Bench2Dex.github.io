@@ -1,18 +1,28 @@
-# Bench2Dex
-
+# Bench2Dex 🤖
 **Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands**
 
-This repository hosts the official Bench2Dex project website. Bench2Dex is a simulation benchmark with 26 bimanual manipulation tasks, 12 dexterous-hand embodiments, and approximately 1.3K human-teleoperated demonstrations.
+This repository hosts the official Bench2Dex project website. Bench2Dex is a simulation benchmark with 26 bimanual manipulation tasks 🧩, 12 dexterous-hand embodiments ✋, and 1.3K human-teleoperated demonstrations 🎮.
 
-## Project Resources
+## Project Resources 📚
+- 🌐 [Project Website](https://bench2dex.github.io/) — overview, task demonstrations, and evaluation results.
+- 📄 [Paper: arXiv:2609.15726](https://arxiv.org/abs/2609.15726) — the published preprint.
+- 💻 [Benchmark Source Code](https://github.com/Bench2Dex/Bench2Dex) — the main benchmark repository.
+- 📖 [Documentation](https://bench2dex.github.io/doc/) — environment setup, policy usage, and task descriptions.
 
-- [Project Website](https://bench2dex.github.io/) — overview, task demonstrations, and evaluation results.
-- [Paper: arXiv:2609.15726](https://arxiv.org/abs/2609.15726) — the published preprint.
-- [Benchmark Source Code](https://github.com/Bench2Dex/Bench2Dex) — the main benchmark repository.
-- [Documentation](https://bench2dex.github.io/doc/) — environment setup, policy usage, and task descriptions.
+## Datasets & Weights 📦
+We provide benchmark assets, human teleoperation datasets, and pre-trained policy checkpoints on both Hugging Face and ModelScope.
 
-## Citation
+### 🤗 Hugging Face
+- Assets: [Bench2Dex Assets](https://huggingface.co/datasets/Bench2Dex/Assets)
+- Dataset: [Bench2Dex Teleopdata](https://huggingface.co/datasets/Bench2Dex/teleopdata)
+- Checkpoints: [Bench2Dex Policy Checkpoints](https://huggingface.co/Bench2Dex/policy_ckpt)
 
+### 🔮 ModelScope
+- Assets: [Bench2Dex Assets](https://modelscope.cn/datasets/Bench2Dex/Bench2Dex)
+- Dataset: [Bench2Dex Teleopdata](https://modelscope.cn/datasets/Bench2Dex/teleopdata)
+- Checkpoints: [Bench2Dex Policy Checkpoints](https://modelscope.cn/models/Bench2Dex/New_Policy)
+
+## Citation 📝
 If you use Bench2Dex in your research, please cite our paper. On GitHub, click the copy button at the upper-right corner of the code block to copy the complete BibTeX entry. You can also use **Copy BibTeX** on the [project website](https://bench2dex.github.io/#docs).
 
 ```bibtex
