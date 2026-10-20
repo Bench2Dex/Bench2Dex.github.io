@@ -53,7 +53,6 @@
     $("#board-limit").closest("label").hidden=policies.length<=10 && state.rankShow==="all";
     $("#board-search").closest("label").hidden=policies.length<=6 && !state.query;
     $("#board-coverage").closest("label").hidden=policies.every(p=>M.aggregateEligible(p.id,state.rankMetric,state.rankChannel)) && state.coverage==="all";
-    $("#ranking-reset").hidden=state.rankMetric==="sr" && state.rankChannel==="mean" && state.rankDir==="descending" && state.rankShow==="all" && !state.query && state.coverage==="all" && !state.detail;
     $("#task-channel").closest("label").hidden=state.metric==="efficiency";
     root.querySelectorAll('[data-rank]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.rank===state.rankMetric));
     root.querySelectorAll('[data-task-metric]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.taskMetric===state.metric));
@@ -110,8 +109,8 @@
     $("#ranking-label").textContent=`${longLabels[state.rankMetric]} · Ranked by ${channelLabel(state.rankChannel)} · ${state.rankDir==="descending" ? "High to low" : "Low to high"}`;
     const total=metricPolicies(state.rankMetric).length;
     $("#ranking-count").textContent=`${visible.length} ${visible.length===1 ? "policy" : "policies"}${all.length!==total || visible.length!==all.length ? " shown · "+total+" total" : ""}${state.rankShow!=="all" ? " · Top ranks include ties" : ""}`;
-    $("#ranking-caption").textContent=(state.rankMetric==="efficiency" ? "Expert-normalized efficiency pools successful episodes across all four channels. Higher is better; — means no successful rollout. Read alongside SR." : `${labels[state.rankMetric]} (%) · Average weights every task and channel equally. Darker cells and longer bars indicate higher values (0–100%).`)+availabilityNote(state.rankMetric)+(metricPolicies(state.rankMetric).some(p=>!M.aggregateEligible(p.id,state.rankMetric,state.rankChannel)) ? " — ranks indicate incomplete comparable results." : "");
-    $(".tactile-comparison").hidden=state.rankMetric!=="sr";
+    const tactileNote=state.rankMetric==="sr" ? " GR00T with vs. without tactile input: mean SR 25.5% vs. 24.9%; 14 tasks improve, 10 decline, and 2 tie. Both variants use matched episode seeds, execution budgets, and stable-success dwell time; gains depend on the task." : "";
+    $("#ranking-caption").textContent=(state.rankMetric==="efficiency" ? "Expert-normalized efficiency pools successful episodes across all four channels. Higher is better; — means no successful rollout. Read alongside SR." : `${labels[state.rankMetric]} (%) · Average weights every task and channel equally. Darker cells and longer bars indicate higher values (0–100%).`)+availabilityNote(state.rankMetric)+tactileNote+(metricPolicies(state.rankMetric).some(p=>!M.aggregateEligible(p.id,state.rankMetric,state.rankChannel)) ? " — ranks indicate incomplete comparable results." : "");
     $("#results-export-ranking").disabled=!visible.length;
   }
   function metricCell(p,t,key,cid="mean",peers=null){
@@ -176,6 +175,12 @@
     $("#results-protocol-note").textContent=M.protocols.find(g=>g.id===state.group).description;
     document.querySelector("#board-release").textContent=`${group().length} policies · Reported Evaluations`;
   }
+  function resetTable(id,message){
+    render(id);
+    const wrap=$("#"+id)?.parentElement;
+    if(wrap){wrap.scrollTop=0;wrap.scrollLeft=0;}
+    announce(message);
+  }
   function focusButton(attribute,value){[...root.querySelectorAll(`[${attribute}]`)].find(e=>e.getAttribute(attribute)===value)?.focus({preventScroll:true});}
   root.addEventListener("click",event=>{
     const button=event.target.closest("button");if(!button) return;
@@ -202,7 +207,16 @@
   $("#policies-all").addEventListener("click",()=>{state.policies=[];state.policyShow="all";$(".policy-picker").open=false;render();});
   $("#policies-none").addEventListener("click",()=>{state.policies=[];state.policyShow="custom";render();});
   $("#emb-expand-all").addEventListener("click",()=>{state.collapsed=[];render();});
-  $("#ranking-reset").addEventListener("click",()=>{Object.assign(state,{rankMetric:"sr",rankChannel:"mean",rankDir:"descending",rankShow:"all",query:"",coverage:"all",detail:null});render();});
+  $("#ranking-reset").addEventListener("click",()=>{
+    Object.assign(state,{rankMetric:"sr",rankChannel:"mean",rankDir:"descending",rankShow:"all",query:"",coverage:"all",detail:null});
+    resetTable("overview-results","Overall Performance reset to defaults.");
+  });
+  $("#task-reset").addEventListener("click",()=>{
+    Object.assign(state,{metric:"sr",channel:"mean",emb:"",taskSort:"paper",taskDir:"descending",policyShow:"all",policies:[],taskDetail:null,collapsed:[]});
+    $("#policy-search").value="";
+    $(".policy-picker").open=false;
+    resetTable("per-task-results","Per-Task Scores reset to defaults.");
+  });
   $("#results-group").addEventListener("change",e=>{history.replaceState(null,"",location.pathname+"?group="+encodeURIComponent(e.target.value));readLocation();render();});
   function download(csv,name){
     const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download=`bench2dex-${name}.csv`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);announce("CSV exported.");
