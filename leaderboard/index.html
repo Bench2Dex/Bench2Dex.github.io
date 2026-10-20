@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bench2Dex Leaderboard</title>
+<meta name="description" content="Compare Bench2Dex policy evaluations: stable success, latched stage progress, and success-conditioned efficiency across 26 tasks and four channels.">
+<link rel="canonical" href="https://bench2dex.github.io/leaderboard/">
+<meta property="og:title" content="Bench2Dex Leaderboard">
+<meta property="og:description" content="Policy rankings, task-level comparisons, and complete evaluation results.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bench2dex.github.io/leaderboard/">
+<meta property="og:image" content="https://bench2dex.github.io/assets/img/og-cover.png">
+<link rel="icon" href="../assets/img/favicon.png" type="image/png">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/leaderboard.css">
+</head>
+<body class="leaderboard-page">
+<a class="skip-results" href="#results-explorer">Skip to Results</a>
+<header class="board-nav"><div class="board-container"><a class="board-brand" href="../index.html"><img src="../assets/img/figures/overview_logo.png" alt="Bench2Dex" width="1774" height="887"><span>Leaderboard</span></a><nav aria-label="Main Navigation"><a href="../index.html">Home</a><a href="https://arxiv.org/abs/2609.15726">Paper ↗</a><a href="https://bench2dex.github.io/doc/">Docs ↗</a><button type="button" class="btn btn-primary board-copy-bib" data-copy-bib>Copy BibTeX</button></nav></div></header>
+<main class="board-container">
+  <div class="board-heading"><div><p class="eyebrow">Bimanual Dexterous Manipulation</p><h1>Policy Leaderboard</h1><p>Compare policies. Understand where they succeed.</p><span id="board-release" class="board-release">Paper Baselines</span></div><div class="board-facts" aria-label="Evaluation Scope"><span><b>26</b>Tasks</span><span><b>12</b>Embodiments</span><span><b>4</b>Channels</span></div></div>
+  <nav class="board-jumps" aria-label="Results Sections"><a href="#policy-leaderboard">Leaderboard</a><a href="#per-task-scores">Per-Task Scores</a><a href="#protocol-notes">Evaluation Protocol</a></nav>
+  <div id="results-explorer" class="results-explorer results-stack">
+    <div class="board-global-tools">
+      <label class="results-field" id="results-group-control" hidden>Evaluation Group<select id="results-group"></select></label>
+      <p class="results-protocol-note" id="results-protocol-note"></p>
+      <div class="results-downloads"><button type="button" id="results-share">Copy View Link</button><button type="button" id="results-export-all">All Policies CSV ↓</button></div>
+    </div>
+
+    <section id="policy-leaderboard" class="board-section" aria-labelledby="ranking-title">
+      <div class="section-toolbar"><div><p class="eyebrow">01 / Policy Rankings</p><h2 id="ranking-title">Overall Performance</h2><p id="ranking-label" class="board-scope"></p></div><button type="button" id="results-export-ranking">Leaderboard CSV ↓</button></div>
+      <div class="board-controls">
+        <div class="control-group"><span class="control-label">Metric</span><div class="metric-switch" role="group" aria-label="Leaderboard Metric"><button type="button" data-rank="sr" aria-pressed="true">SR</button><button type="button" data-rank="lscr" aria-pressed="false">LSCR</button><button type="button" data-rank="efficiency" aria-pressed="false">Eff.</button></div></div>
+        <label class="results-field">Show<select id="board-limit"><option value="all">All Policies</option><option value="10">Top 10</option><option value="20">Top 20</option></select></label>
+        <label class="results-field">Coverage<select id="board-coverage"><option value="all">All Results</option><option value="complete">Complete</option><option value="partial">Incomplete</option></select></label>
+        <label class="results-field policy-search-field">Find a Policy<input id="board-search" type="search" placeholder="Policy or version…" autocomplete="off"></label>
+      </div>
+      <div class="table-guide"><span>Click a column heading to rank policies</span><span>Headers and names stay fixed while scrolling</span></div>
+      <div id="overview-table"></div>
+      <div class="section-footer"><span id="ranking-count"></span><button type="button" id="ranking-reset">Reset Ranking</button></div>
+      <p class="results-caption" id="ranking-caption"></p>
+      <div class="results-key"><span><strong class="best-value">Best Average</strong> Across all eligible policies, including ties</span><span>+ Policy details</span></div>
+      <p class="tactile-comparison"><b>GR00T · With vs. Without Tactile</b><br>Mean SR: <b>25.5% vs. 24.9%</b>. Across 26 tasks: 14 improve, 10 decline, 2 tie. Both variants use matched episode seeds, execution budgets, and stable-success dwell time; gains depend on the task.</p>
+    </section>
+
+    <section id="per-task-scores" class="board-section" aria-labelledby="task-title">
+      <div class="section-toolbar"><div><p class="eyebrow">02 / Task Breakdown</p><h2 id="task-title">Per-Task Scores</h2><p id="task-scope" class="board-scope"></p></div><button type="button" id="results-export-tasks">Per-Task CSV ↓</button></div>
+      <div class="board-controls">
+        <div class="control-group"><span class="control-label">Metric</span><div class="metric-switch" role="group" aria-label="Per-Task Metric"><button type="button" data-task-metric="sr" aria-pressed="true">SR</button><button type="button" data-task-metric="lscr" aria-pressed="false">LSCR</button><button type="button" data-task-metric="efficiency" aria-pressed="false">Eff.</button></div></div>
+        <label class="results-field">Channel<select id="task-channel"><option value="mean">Four-Channel Mean</option><option value="none">None</option><option value="equi">Equi.</option><option value="inv">Inv.</option><option value="full">Full</option></select></label>
+        <label class="results-field">Embodiment<select id="task-embodiment"><option value="">All Embodiments</option></select></label>
+        <details class="policy-picker" hidden><summary id="policy-choice-count">Select Policies</summary><div class="policy-picker-body"><label class="results-field">Find a Policy<input id="policy-search" type="search" placeholder="Policy name…" autocomplete="off"></label><div class="picker-actions"><button type="button" id="policies-all">Show All</button><button type="button" id="policies-none">Clear</button></div><div id="policy-options"></div></div></details>
+      </div>
+      <div class="task-table-heading"><p class="heat-key" id="task-heat-key">Darker = higher <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></p><button type="button" id="emb-expand-all" hidden>Expand All Groups</button></div>
+      <div id="task-matrix"></div>
+      <div class="section-footer"><span id="task-count"></span><span>Click a policy heading to sort · + Metric details</span></div>
+      <p class="results-caption" id="task-caption"></p>
+    </section>
+
+      <details class="table-notes results-notes" id="protocol-notes"><summary>Evaluation Protocol & Metric Definitions</summary>
+        <p><b>SR</b>: Stable Success Rate (%). <b>LSCR</b>: Latched Stage Completion Rate (%). <b>Eff.</b>: Success-Conditioned Efficiency. SR and LSCR use all 26 tasks equally and retain the paper’s reported precision. Coverage counts complete task records for the selected ranking metric. A documented four-channel SR or LSCR mean remains comparable when its channel breakdown is pending. Missing channel values are never inferred from the mean. Partial evaluations are unranked (—).</p>
+        <p>Efficiency is the mean steps to successful task completion across human expert teleoperation trajectories for the task, divided by mean steps to stable success pooled across successful policy episodes in all four channels. All four visual–proprioceptive baselines use executed physics-step counts and recorded task-level expert references. It is not an average of channel ratios. Paper baseline efficiency summaries include ACT: 25 tasks, DP: 19, π₀.₅: 23, and GR00T N1.5: 25. These successful-task counts appear beneath Eff.; coverage also includes explicitly reported no-success task records.</p>
+        <p><b>NR</b> denotes results not reported. — means no successful rollout; Not evaluated and N/A indicate distinct missing-data states. Zero is a reported value. Comparisons use the same task set, episode budget, termination rules, and expert reference within each evaluation group. Input variants are labeled separately.</p>
+        <p>The 20,800 rollouts refer to the four published visual–proprioceptive baselines. The GR00T N1.5 tactile variant adds 5,200 rollouts and reports four-channel mean SR only; channel SR, LSCR, and efficiency are not reported. The 50 rollouts per task–policy–channel are evaluation episodes, not independent retraining replicates. Tasks and embodiments are not factorially crossed, so task-level contrasts do not isolate embodiment effects.</p>
+        <p>Leaderboard CSV exports the policies currently shown in the main table. Per-Task CSV exports the selected policies and all matching tasks, including collapsed groups. Search does not change ranks or best-value scope. All Policies CSV includes every registered policy, task, and channel across evaluation groups, with sample sizes, metric status, and reported summaries.</p>
+      </details>
+    <details class="table-notes results-notes" id="citation-fallback" hidden><summary>BibTeX Citation</summary><pre id="bibtex" tabindex="0"></pre></details>
+    <div id="share-fallback" hidden><label class="results-field">Copy This View URL<input id="share-url" readonly></label></div>
+    <p id="results-status" class="sr-only" role="status" aria-live="polite"></p>
+  </div>
+
+</main>
+<footer class="board-container board-footer"><a href="../index.html">← Bench2Dex Project</a><span>Reported results · Full data available as CSV</span></footer>
+<div class="copy-toast" id="copy-toast" role="status" aria-live="polite"></div>
+<script src="../assets/js/citation.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/results-model.js"></script>
+<script src="../assets/js/results-explorer.js"></script>
+</body>
+</html>

@@ -1,10 +1,11 @@
 # Bench2Dex 🤖
-**Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands**
+**A Bimanual Manipulation Benchmark across Dexterous Hands with Simulated Fingertip Visuo-Tactile Support**
 
 This repository hosts the official Bench2Dex project website. Bench2Dex is a simulation benchmark with 26 bimanual manipulation tasks 🧩, 12 dexterous-hand embodiments ✋, and 1.3K human-teleoperated demonstrations 🎮.
 
 ## Project Resources 📚
 - 🌐 [Project Website](https://bench2dex.github.io/) — overview, task demonstrations, and evaluation results.
+- 🏆 [Leaderboard](https://bench2dex.github.io/leaderboard/) — policy comparisons and per-task scores.
 - 📄 [Paper: arXiv:2609.15726](https://arxiv.org/abs/2609.15726) — the published preprint.
 - 💻 [Benchmark Source Code](https://github.com/Bench2Dex/Bench2Dex) — the main benchmark repository.
 - 📖 [Documentation](https://bench2dex.github.io/doc/) — environment setup, policy usage, and task descriptions.
@@ -22,17 +23,21 @@ We provide benchmark assets, human teleoperation datasets, and pre-trained polic
 - Dataset: [Bench2Dex Teleopdata](https://modelscope.cn/datasets/Bench2Dex/teleopdata)
 - Checkpoints: [Bench2Dex Policy Checkpoints](https://modelscope.cn/models/Bench2Dex/New_Policy)
 
+## Contributing
+
+We welcome pull requests with evaluation results for new policies on Bench2Dex.
+
 ## Citation 📝
-If you use Bench2Dex in your research, please cite our paper. On GitHub, click the copy button at the upper-right corner of the code block to copy the complete BibTeX entry. You can also use **Copy BibTeX** on the [project website](https://bench2dex.github.io/#docs).
+If you use Bench2Dex in your research, please cite our paper. On GitHub, click the copy button at the upper-right corner of the code block to copy the complete BibTeX entry. You can also use **Copy BibTeX** on the [project website](https://bench2dex.github.io/#docs) or the [leaderboard](https://bench2dex.github.io/leaderboard/). Both pages share the citation in `assets/js/citation.js`.
 
 ```bibtex
 @misc{yang2026bench2dex,
-  title         = {{Bench2Dex}: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands},
+  title         = {{Bench2Dex}: A Bimanual Manipulation Benchmark across Dexterous Hands with Simulated Fingertip Visuo-Tactile Support},
   author        = {Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and
                    Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and
-                   He, Kaiyu and Wang, He and Zhong, Yuwen and Deng, Yi and Jiang, Muyun and
+                   He, Kaiyu and Li, Qifeng and Wang, He and Zhong, Yuwen and Deng, Yi and Jiang, Muyun and
                    Huang, Xianliang and Su, Haisheng and Zhang, Donghang and Zhang, Jian and
-                   Yang, Xue and Li, Hongyang and Wu, Zuxuan and Jiang, Yu-Gang and Jia, Xiaosong and Yan, Junchi},
+                   Yang, Xue and Li, Hongyang and Jia, Xiaosong and Yan, Junchi},
   year          = {2026},
   eprint        = {2609.15726},
   archivePrefix = {arXiv},

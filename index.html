@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands</title>
-<meta name="description" content="Bench2Dex is a simulation benchmark for visuo-tactile bimanual manipulation across 12 robot embodiments, with 26 task–embodiment settings, about 1.3K human-teleoperated demonstrations, synchronized multimodal observations, and a shared visuo-tactile representation.">
-<meta property="og:title" content="Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands">
-<meta property="og:description" content="Visuo-tactile bimanual dexterous manipulation across 12 robot embodiments. 26 task–embodiment settings · ≈1.3K demos.">
+<title>Bench2Dex: A Bimanual Manipulation Benchmark across Dexterous Hands with Simulated Fingertip Visuo-Tactile Support</title>
+<meta name="description" content="Bench2Dex is a simulation benchmark for bimanual manipulation across 12 dexterous hands, with 26 tasks, about 1.3K human-teleoperated demonstrations, and a unified visuo-tactile interface for multimodal policy learning.">
+<meta property="og:title" content="Bench2Dex: A Bimanual Manipulation Benchmark across Dexterous Hands with Simulated Fingertip Visuo-Tactile Support">
+<meta property="og:description" content="Bimanual manipulation across 12 dexterous hands with simulated visuo-tactile support. 26 tasks · ≈1.3K demonstrations.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bench2dex.github.io/">
 <meta property="og:image" content="https://bench2dex.github.io/assets/img/og-cover.png">
@@ -35,7 +35,7 @@
       <a href="#embodiments">Dataset</a>
       <a href="#tasks">Tasks</a>
       <a href="#evaluation">Evaluation</a>
-      <a href="#results">Results</a>
+      <a href="#results">Leaderboard</a>
       <a href="#docs">Docs</a>
     </div>
     <div class="nav-cta">
@@ -53,13 +53,13 @@
   <a href="#video">Video</a>
   <a href="#abstract">Abstract</a>
   <a href="#overview">Overview</a>
-  <a href="#why">Compare & Baselines</a>
+  <a href="#why">Compare</a>
   <a href="#embodiments">Embodiments</a>
   <a href="#data">Teleop & Data</a>
   <a href="#tasks">Tasks</a>
   <a href="#evaluation">Evaluation</a>
   <a href="#generalization">Generalization</a>
-  <a href="#results">Results</a>
+  <a href="#results">Leaderboard</a>
   <a href="#docs">Docs & Get Started</a>
 </div>
 
@@ -72,19 +72,20 @@
     <div class="hero-content">
       <img class="hero-logo" src="assets/img/figures/overview_logo.png" alt="Bench2Dex: two dexterous robot hands linked by visuo-tactile contact" width="1774" height="887" decoding="async" fetchpriority="high">
       <h1 class="sr-only">Bench2Dex</h1>
-      <p class="hero-subtitle">Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation<br>Across Dexterous Hands</p>
+      <p class="hero-subtitle">A Bimanual Manipulation Benchmark across Dexterous Hands<br>with Simulated Fingertip Visuo-Tactile Support</p>
       <div class="hero-contributors" aria-label="Authors and affiliations">
         <p class="hero-author-slot">Zhenjie Yang<sup>3*</sup>, Yideng Zhang<sup>1*</sup>, Dongjie Zhang<sup>2,5*</sup>, Chenyu Jiang<sup>2,5*</sup>, Xianshuai Liu<sup>1</sup>, Yufeng Li<sup>1,5</sup>,<br>
-        Zuhao Ge<sup>2</sup>, Xingyu Jiao<sup>2,5</sup>, Zheng Zhang<sup>1</sup>, Kaiyu He<sup>1</sup>, He Wang<sup>1</sup>, Yuwen Zhong<sup>1</sup>,<br>
+        Zuhao Ge<sup>2</sup>, Xingyu Jiao<sup>2,5</sup>, Zheng Zhang<sup>1</sup>, Kaiyu He<sup>1</sup>, Qifeng Li<sup>1</sup>, He Wang<sup>1</sup>, Yuwen Zhong<sup>1</sup>,<br>
         Yi Deng<sup>1</sup>, Muyun Jiang<sup>7</sup>, Xianliang Huang<sup>2</sup>, Haisheng Su<sup>1</sup>, Donghang Zhang<sup>4</sup>, Jian Zhang<sup>4</sup>,<br>
-        Xue Yang<sup>1,6</sup>, Hongyang Li<sup>3</sup>, Zuxuan Wu<sup>2</sup>, Yu-Gang Jiang<sup>2</sup>, Xiaosong Jia<sup>2†</sup>, Junchi Yan<sup>1†</sup></p>
+        Xue Yang<sup>1,6</sup>, Hongyang Li<sup>3</sup>, Xiaosong Jia<sup>2†</sup>, Junchi Yan<sup>1†</sup></p>
         <p class="hero-affiliation-slot"><sup>1</sup>Shanghai Jiao Tong University · <sup>2</sup>Fudan University · <sup>3</sup>The University of Hong Kong · <sup>4</sup>Inspire Robots<br>
         <sup>5</sup>Zhongguancun Academy · <sup>6</sup>COWARobot Co. Ltd · <sup>7</sup>Nanyang Technological University</p>
         <p class="hero-affiliation-slot"><sup>*</sup> Core contribution · <sup>†</sup> Corresponding authors</p>
       </div>
       <nav class="cta" aria-label="Project resources">
         <a class="btn btn-resource" href="https://arxiv.org/abs/2609.15726" target="_blank" rel="noopener"><svg class="btn-mark mark-arxiv" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.8423 0a1.0037 1.0037 0 0 0-.922.6078c-.1536.3687-.0438.6275.2938 1.1113l6.9185 8.3597-1.0223 1.1058a1.0393 1.0393 0 0 0 .003 1.4229l1.2292 1.3135-5.4391 6.4444c-.2803.299-.4538.823-.2971 1.1986a1.0253 1.0253 0 0 0 .9585.635.9133.9133 0 0 0 .6891-.3405l5.783-6.126 7.4902 8.0051a.8527.8527 0 0 0 .6835.2597.9575.9575 0 0 0 .8777-.6138c.1577-.377-.017-.7502-.306-1.1407l-7.0518-8.3418 1.0632-1.13a.9626.9626 0 0 0 .0089-1.3165L4.6336.4639s-.3733-.4535-.768-.463zm0 .272h.0166c.2179.0052.4874.2715.5644.3639l.005.006.0052.0055 10.169 10.9905a.6915.6915 0 0 1-.0072.945l-1.0666 1.133-1.4982-1.7724-8.5994-10.39c-.3286-.472-.352-.6183-.2592-.841a.7307.7307 0 0 1 .6704-.4401Zm14.341 1.5701a.877.877 0 0 0-.6554.2418l-5.6962 6.1584 1.6944 1.8319 5.3089-6.5138c.3251-.4335.479-.6603.3247-1.0292a1.1205 1.1205 0 0 0-.9763-.689zm-7.6557 12.2823 1.3186 1.4135-5.7864 6.1295a.6494.6494 0 0 1-.4959.26.7516.7516 0 0 1-.706-.4669c-.1119-.2682.0359-.6864.2442-.9083l.0051-.0055.0047-.0055z"/></svg>Paper</span>
-        <a class="btn btn-resource" href="https://bench2dex.github.io/doc/" target="_blank" rel="noopener"><span class="btn-mark mark-doc" aria-hidden="true"></span>Documentation</a>
+        <a class="btn btn-resource" href="leaderboard/index.html"><svg class="btn-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12h4v9H3zm7-9h4v18h-4zm7 5h4v13h-4z"/></svg>Leaderboard</a>
+        <a class="btn btn-resource" href="https://bench2dex.github.io/doc/" target="_blank" rel="noopener"><span class="btn-mark mark-doc" aria-hidden="true"></span>Docs</a>
         <a class="btn btn-resource" href="https://github.com/Bench2Dex/Bench2Dex" target="_blank" rel="noopener"><svg class="btn-mark mark-github" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a>
         <a class="btn btn-resource btn-huggingface" href="https://huggingface.co/Bench2Dex" target="_blank" rel="noopener"><svg class="btn-mark mark-hf" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M1.4446 11.5059c0 1.1021.1673 2.1585.4847 3.1563-.0378-.0028-.0691-.0058-.1058-.0058-.4209 0-.8015.16-1.0704.4512-.3454.3737-.4984.8335-.4316 1.293a1.576 1.576 0 0 0 .2148.5978c-.2319.1864-.4018.4456-.4844.7578-.0646.2448-.131.7543.2149 1.2794a1.4552 1.4552 0 0 0-.0625.1055c-.208.3923-.2207.8372-.0371 1.25.2783.6258.9696 1.1175 2.3126 1.6467.8356.3292 1.5988.5411 1.6056.543 1.1046.2847 2.104.4277 2.969.4277 1.4173 0 2.4754-.3849 3.1525-1.1446 1.538.2651 2.791.1403 3.592.006.6773.7555 1.7332 1.1387 3.1467 1.1387.8649 0 1.8643-.143 2.969-.4278.0068-.0019.77-.2138 1.6056-.543 1.343-.5292 2.0343-1.0208 2.3126-1.6466.1836-.4129.171-.8577-.037-1.25a1.4685 1.4685 0 0 0-.0626-.1056c.346-.525.2795-1.0346.2149-1.2793-.0826-.3122-.2525-.5714-.4844-.7579.11-.1816.1831-.3788.2148-.5977.0669-.4595-.0862-.9193-.4316-1.293-.2688-.2913-.6495-.4513-1.0704-.4513-.0209 0-.0376.0008-.0588.0018.3162-.9966.4846-2.0518.4846-3.1523 0-5.807-4.7362-10.5144-10.5789-10.5144-5.8426 0-10.5788 4.7073-10.5788 10.5144Zm10.5788-9.4831c5.2727 0 9.5476 4.246 9.5476 9.483a9.4201 9.4201 0 0 1-.2696 2.2365c-.0039-.0047-.0079-.011-.0117-.0156-.274-.3255-.6679-.5059-1.1075-.5059-.352 0-.714.1155-1.0763.3438-.2403.1517-.5058.422-.7793.7598-.2534-.3492-.608-.5832-1.0137-.6465a1.5174 1.5174 0 0 0-.2344-.0176c-.9263 0-1.4828.7993-1.6935 1.5177-.1046.2426-.6065 1.3482-1.3614 2.0978-1.1681 1.1601-1.4458 2.3534-.8396 3.6382-.843.1029-1.5836.0927-2.365-.006.5906-1.212.3626-2.4388-.8426-3.6322-.755-.7496-1.2568-1.8552-1.3614-2.0978-.2107-.7184-.7673-1.5177-1.6935-1.5177-.078 0-.1568.0054-.2344.0176-.4057.0633-.7604.2973-1.0137.6465-.2735-.3379-.539-.6081-.7794-.7598-.3622-.2283-.7243-.3438-1.0762-.3438-.4266 0-.8094.171-1.0821.4786a9.4208 9.4208 0 0 1-.2598-2.1936c0-5.237 4.2749-9.483 9.5475-9.483zM8.6443 7.0036c-.4838.0043-.9503.2667-1.1934.7227-.3536.6633-.1006 1.4873.5645 1.84.351.1862.4883-.5261.836-.6485.3107-.1095.841.399 1.0078.086.3536-.6634.1025-1.4874-.5625-1.84a1.3659 1.3659 0 0 0-.6524-.1602Zm6.8403 0c-.2199-.002-.4426.05-.6504.1602-.665.3526-.9181 1.1766-.5645 1.84.1669.313.6971-.1955 1.0079-.086.3476.1224.4867.8347.838.6485.6649-.3527.916-1.1767.5624-1.84-.243-.456-.7096-.7184-1.1934-.7227Zm-9.7565 1.418a.8768.8768 0 0 0-.877.877c0 .4846.3925.877.877.877a.8768.8768 0 0 0 .877-.877.8768.8768 0 0 0-.877-.877zm12.6434 0c-.4845 0-.879.3925-.879.877 0 .4846.3945.877.879.877a.8768.8768 0 0 0 .877-.877.8768.8768 0 0 0-.877-.877zM8.7927 11.459c-.179-.003-.2793.1107-.2793.416 0 .8097.3874 2.125 1.4279 2.924.207-.7123 1.3453-1.2832 1.5079-1.2012.2315.1167.2191.4417.6074.7266.3884-.285.374-.6098.6056-.7266.1627-.082 1.3009.4889 1.5079 1.2012 1.0404-.799 1.4278-2.1144 1.4278-2.924 0-1.2212-1.583.6402-3.5413.6485-1.4686-.0061-2.7266-1.0558-3.2639-1.0645zM4.312 14.4768c.5792.365 1.6964 2.2751 2.1056 3.0177.1371.2488.371.3536.582.3536.4188 0 .7465-.4138.0391-.9395-1.0636-.791-.6914-2.0846-.1836-2.1642a.4302.4302 0 0 1 .0664-.004c.4616 0 .666.7892.666.7892s.5959 1.4898 1.6213 2.508c.942.9356 1.062 1.703.4961 2.6661-.0164-.004-.0159.0236-.1484.2149-.1853.2673-.4322.4688-.7188.6152-.5062.2269-1.1397.2696-1.7833.2696-1.037 0-2.1017-.1824-2.6975-.336-.0293-.0075-3.6505-.9567-3.1916-1.8224.0771-.1454.2033-.2031.3633-.2031.6463 0 1.823.9551 2.3283.9551.113 0 .196-.0865.2285-.2031.2249-.8045-3.2787-1.0522-2.9846-2.1642.0519-.1967.193-.2757.3907-.2754.854 0 2.7704 1.4923 3.172 1.4923.0307 0 .0525-.0085.0645-.0274.2012-.3227.1096-.5865-1.3087-1.4395-1.4182-.8533-2.4315-1.329-1.8653-1.9416.0651-.0707.1574-.1015.2695-.1015.8611.0002 2.8948 1.84 2.8948 1.84s.5487.5683.8809.5683c.0762 0 .1416-.0315.1855-.1054.2355-.3946-2.1858-2.2183-2.3224-2.971-.0926-.51.0641-.7676.3555-.7676-.0006.008.1701-.0285.4942.1759zm16.2257.5918c-.1366.7526-2.5579 2.5764-2.3224 2.9709.044.074.1092.1055.1855.1055.3321 0 .881-.5684.881-.5684s2.0336-1.8397 2.8947-1.84c.1121 0 .2044.0308.2695.1016.5662.6125-.447 1.0882-1.8653 1.9415-1.4183.853-1.51 1.1168-1.3087 1.4396.012.0188.0337.0273.0644.0273.4016 0 2.3181-1.4923 3.1721-1.4923.1977-.0002.3388.0787.3907.2754.294 1.112-3.2095 1.3597-2.9846 2.1642.0325.1166.1156.2032.2285.2032.5054 0 1.682-.9552 2.3283-.9552.16 0 .2862.0577.3633.2032.459.8656-3.1623 1.8149-3.1916 1.8224-.5958.1535-1.6605.336-2.6975.336-.6351 0-1.261-.0409-1.7638-.2599-.2949-.1472-.5488-.3516-.7383-.625-.0411-.0682-.1026-.1476-.1426-.205-.5726-.9679-.455-1.7371.4903-2.676 1.0254-1.0182 1.6212-2.508 1.6212-2.508s.2044-.7891.666-.7891a.4318.4318 0 0 1 .0665.0039c.5078.0796.88 1.3732-.1836 2.1642-.7074.5257-.3797.9395.039.9395.211 0 .445-.1047.5821-.3535.4092-.7426 1.5264-2.6527 2.1056-3.0178.5588-.3524.99-.1816.8497.5918z"/></svg>Hugging Face</a>
         <!-- <span class="btn btn-resource is-unavailable" aria-disabled="true" title="URL to be confirmed"><svg class="btn-mark mark-ms" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.667 5.333V8H0v5.333h2.667v-2.666H.5V8.5h2.166v2.166h2.666V8H8V5.333Zm0 8v5.334H8V16H5.333v-2.667Zm13.333-8V8h2.667v2.667h2.666V8.5H23.5v2.166h-2.166v2.666H24V8h-2.667V5.333Zm5.333 8h-2.666V16H16v2.667h5.333zM8 10.667v2.666h2.667v-2.666zm2.667 2.666V16h2.666v-2.667zm2.666 0H16v-2.666h-2.667z"/></svg>ModelScope</span> -->
@@ -118,9 +119,9 @@
   <div class="container">
     <div class="section-head">
       <p class="eyebrow">Abstract</p>
-      <h2>A controlled platform for visuo-tactile learning across dexterous hands.</h2>
+      <h2>A bimanual manipulation benchmark with simulated visuo-tactile support.</h2>
     </div>
-    <p class="abstract-text">Tactile sensing provides contact information that can be difficult to infer from vision alone, but tactile hardware for dexterous hands has not converged to a common design. Dexterous hands differ in finger structure, contact surfaces, and sensor layouts, while simulated tactile signals still differ from measurements produced by physical sensors. These factors make it difficult to study visuo-tactile manipulation across diverse dexterous hands within a consistent experimental setting. We present <b>Bench2Dex</b>, a simulation benchmark for visuo-tactile bimanual manipulation across 12 dexterous hands. We adapt existing robot models with a shared simulated tactile interface that converts local contact geometry into image-like tactile observations. The interface provides a consistent observation format across different hand morphologies without attempting to reproduce the output of a specific physical tactile sensor. Bench2Dex includes 26 bimanual manipulation tasks that involve tool use, articulated-object interaction, and multi-stage manipulation, together with about 1.3K human-teleoperated demonstrations. The benchmark provides synchronized visual, tactile, proprioceptive, action, and object-state observations, together with executable task metrics. For robustness, we group seven perturbation types into invariance axis, where the correct action does not change, and equivariance axis, where the correct action changes together with the perturbation. We evaluate ACT, Diffusion Policy, π₀.₅, and GR00T N1.5 on Bench2Dex and report their performance and failure modes. Bench2Dex is meant as a platform for studying visuo-tactile learning across dexterous hands. It does not assume that simulated tactile observations can replace real tactile sensing; it offers a shared setting for algorithm development while tactile hardware and simulation models are still evolving. All code for training, inference, and teleoperation is open-sourced.</p>
+    <p class="abstract-text">Bimanual dexterous manipulation requires coordinated control of two hands in multi-stage, contact-rich tasks. We introduce <b>Bench2Dex</b>, a simulation benchmark for bimanual manipulation supporting 12 dexterous hands. The benchmark includes 26 tasks involving tool use, interaction with articulated objects, and multi-stage coordination, together with approximately 1.3K human-teleoperated demonstrations. It integrates demonstration collection, synchronized multimodal data, and automated metrics for task completion and intermediate progress within a common framework. <em>Taking a deliberate step beyond vision-only sensing</em>, we equip every supported hand model with simulated vision-based tactile sensing at the fingertips, encoding local contact geometry as image-like tactile observations. Through a <b>unified visuo-tactile interface</b>, we make these observations available alongside external vision and proprioception to support research on tactile representations and multimodal policy learning. We establish reference results using ACT, Diffusion Policy, π₀.₅, and GR00T N1.5 with visual and proprioceptive inputs. We assess robustness across four evaluation channels—<b>None</b>, <b>Equivariance-only</b>, <b>Invariance-only</b>, and <b>Full</b>—covering an unperturbed baseline and controlled combinations of seven scene perturbation types. By combining a bimanual manipulation benchmark across dexterous hands with simulated visuo-tactile support and automated policy evaluation, Bench2Dex provides the community with a common starting point for investigating when tactile information is useful and how manipulation policies can effectively incorporate it.</p>
   </div>
 </section>
 
@@ -142,9 +143,9 @@
 <section class="section evidence-band evidence-band--data" id="why" data-section-index="03">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Comparison · Evaluated Baselines</p>
+      <p class="eyebrow">Comparison</p>
       <h2>Comparison with representative manipulation benchmarks.</h2>
-      <p class="lead">Most benchmarks optimize a single axis — many tasks with one gripper, many demonstrations with one hand, or rich contact with one morphology. BENCH2DEX is built so that long-horizon bimanual dexterity, embodiment diversity, synchronized multimodal sensing, and diagnostic generalization are evaluated together.</p>
+      <p class="lead">Most manipulation benchmarks and datasets use a limited set of robot platforms, one gripper or hand design, or a narrow set of sensing modalities. Even large datasets spanning multiple embodiments lack evaluation protocols designed to compare dexterous manipulation policies across different arm–hand designs and contact surfaces. Bench2Dex connects demonstration collection, policy learning, and evaluation within a common framework.</p>
     </div>
     <div class="card-frame">
       <div class="bm-table-wrap">
@@ -184,14 +185,6 @@
       <p id="dexverse-note" class="evidence-caption"><em>Note.</em> <sup>∗</sup> Statistics based on publicly available data.</p>
       <p class="evidence-caption">In this comparison, Bench2Dex jointly supports diverse bimanual dexterous embodiments, teleoperated demonstration collection, vision-based tactile sensing, tool/device use, and articulated-object interaction. The matrix reproduces the paper’s benchmark-comparison table.</p>
     </div>
-    <div class="leaderboard">
-      <h4 class="lb-title">Evaluated Baselines</h4>
-      <p class="data-note"><span class="best-key"><span class="best-value">Best</span> Highest summary value across policies</span></p>
-      <div class="card-frame">
-        <div class="lb-wrap"><table class="lb-table" id="lb-table"></table></div>
-        <p class="evidence-caption">Values reproduce the paper’s four-policy summary: task-macro stable success rate (SR, %) over 1,300 rollouts per channel (26 task–embodiment settings × 50), four-channel mean SR, all-task mean LSCR, and success-conditioned expert-normalized efficiency (Eff.). Highlighted values mark the best SR, LSCR, and Eff. across policies.</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -201,7 +194,7 @@
     <div class="section-head">
       <p class="eyebrow">Embodiment Atlas · 12 Arm–Hand Morphologies</p>
       <h2>One benchmark, twelve arm–hand morphologies.</h2>
-      <p class="lead">Difference itself is the object of study. The same teleoperation interface is configured for every hand, while a shared visuo-tactile representation is reconstructed from embodiment-specific contact surfaces. Palm geometry, finger count, wrist, and active kinematics differ.</p>
+      <p class="lead">Bench2Dex supports 12 dexterous hand models with a common teleoperation framework and a unified visuo-tactile interface. The interface provides image-like observations of local contact geometry while preserving hand-specific sensing geometry across different arm–hand designs.</p>
     </div>
     <div class="atlas-grid" id="atlas-grid"></div>
   </div>
@@ -255,9 +248,9 @@
 <section class="section evidence-band evidence-band--split" id="tactile" data-section-index="07">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Shared Visuo-Tactile Representation</p>
-      <h2>Different hands, one shared visuo-tactile representation.</h2>
-      <p class="lead">BENCH2DEX reconstructs embodiment-specific contact surfaces and converts local geometric contact into a common image-like, surface-aligned visuo-tactile representation, generated offline by replay.</p>
+      <p class="eyebrow">Unified Visuo-Tactile Interface</p>
+      <h2>Different hands, one unified visuo-tactile interface.</h2>
+      <p class="lead">Bench2Dex equips every supported hand model with simulated vision-based tactile sensing at the fingertips. The unified visuo-tactile interface provides image-like observations of local contact geometry alongside external vision and proprioception, while retaining hand-specific sensing geometry. This supports research on when tactile information is useful and how policies can effectively incorporate it.</p>
     </div>
     <div class="tactile-wrap">
       <div>
@@ -293,13 +286,12 @@
     <div class="section-head">
       <p class="eyebrow">Executable Evaluation</p>
       <h2>From “success” to an executable protocol.</h2>
-      <p class="lead">A task is successful only when its executable terminal predicate remains satisfied for the required dwell time. We decompose evaluation into stable success, latched stage progress, efficiency, and safety — conceptually here, with seeds, budgets, and bootstrap CIs in the benchmark docs.</p>
+      <p class="lead">A task is successful only when its executable terminal predicate remains satisfied for the required dwell time. The evaluation suite measures task completion, stage-level progress, and success-conditioned efficiency under a fixed protocol, step budget, dwell time, random seed, and sampled generalization parameters.</p>
     </div>
     <div class="eval-tiers">
-      <div class="eval-tier"><div class="top-bar" style="background:var(--green);"></div><div class="num">01</div><div class="n">Stable Task Success</div><div class="d">Terminal predicate holds for the configured dwell time (0.5 s default), not at a transient frame.</div></div>
-      <div class="eval-tier"><div class="top-bar" style="background:var(--cyan);"></div><div class="num">02</div><div class="n">Latched Stage Progress</div><div class="d">LSCR counts ever-reached, dependency-valid milestones — progress that survives intentional reversals.</div></div>
-      <div class="eval-tier"><div class="top-bar" style="background:var(--amber);"></div><div class="num">03</div><div class="n">Efficiency</div><div class="d">Mean human expert teleoperation steps to completion divided by pooled mean steps to stable success among successful policy episodes.</div></div>
-      <div class="eval-tier"><div class="top-bar" style="background:var(--brick);"></div><div class="num">04</div><div class="n">Safety & Violations</div><div class="d">SafeSR, hard-violation and drop rates, high-speed proxy — diagnostics that complement success.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--green);"></div><div class="num">01</div><div class="n">Stable Success Rate (SR)</div><div class="d">Fraction of episodes in which the terminal predicate holds for the configured dwell time (0.5 s default).</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--cyan);"></div><div class="num">02</div><div class="n">Latched Stage Completion Rate (LSCR)</div><div class="d">LSCR counts ever-reached, dependency-valid milestones — progress that survives intentional reversals.</div></div>
+      <div class="eval-tier"><div class="top-bar" style="background:var(--amber);"></div><div class="num">03</div><div class="n">Success-Conditioned Efficiency</div><div class="d">Mean human expert teleoperation steps to completion divided by pooled mean steps to stable success among successful policy episodes.</div></div>
     </div>
     <div class="card-frame">
       <div class="eval-stages" id="eval-stages">
@@ -323,8 +315,8 @@
     </div>
     <div class="channel-grid" aria-label="Four evaluation channels">
       <div class="channel-card ch-none"><span class="ch-bar"></span><span class="ch-name">None</span><span class="ch-desc">Matched anchor; all factors are replayed exactly.</span></div>
-      <div class="channel-card ch-equi"><span class="ch-bar"></span><span class="ch-name">Equi.</span><span class="ch-desc">Matched anchor; only equivariance factors are resampled while the anchor's invariant context is preserved.</span></div>
-      <div class="channel-card ch-inv"><span class="ch-bar"></span><span class="ch-name">Inv.</span><span class="ch-desc">Matched anchor; only invariance factors are resampled while the anchor's task geometry is preserved.</span></div>
+      <div class="channel-card ch-equi"><span class="ch-bar"></span><span class="ch-name">Equivariance-only</span><span class="ch-desc">Matched anchor; only equivariance factors are resampled while the anchor's invariant context is preserved.</span></div>
+      <div class="channel-card ch-inv"><span class="ch-bar"></span><span class="ch-name">Invariance-only</span><span class="ch-desc">Matched anchor; only invariance factors are resampled while the anchor's task geometry is preserved.</span></div>
       <div class="channel-card ch-full"><span class="ch-bar"></span><span class="ch-name">Full</span><span class="ch-desc">Independent full-scene sample; no anchor is used. Both factor groups are resampled.</span></div>
     </div>
     <p class="data-note">None / Equi. / Inv. use matched anchors aligned by episode index; Full is sampled independently without an anchor.</p>
@@ -355,42 +347,16 @@
 <section class="section evidence-band evidence-band--results" id="results" data-section-index="11">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Results · 20,800 Rollouts</p>
-      <h2>Task-level evaluation results.</h2>
-      <p class="lead">Stable-success counts (out of 50) for ACT, DP, π₀.₅, and GR00T N1.5 across the None / Equi. / Inv. / Full channels on all 26 task–embodiment settings. GR00T N1.5 leads under matched None conditions (48.5%) and has the highest four-channel mean SR (28.3%). Under the combined Full shift, π₀.₅ leads with 25.5% success, versus 19.8% for GR00T N1.5. The tables below also report stage progress and success-conditioned efficiency.</p>
+      <p class="eyebrow">Results · 26,000 Evaluation Rollouts</p>
+      <h2>Policy Leaderboard</h2>
+      <p class="lead">The paper evaluates four visual–proprioceptive baselines across 26 tasks and four channels. π₀.₅ achieves the highest mean stable success rate (27.4%) and leads under the Full shift (26.2%). GR00T N1.5 leads in matched scenes (38.0%) and mean latched stage completion (45.2%). Explore the leaderboard for detailed policy comparisons and complete results.</p>
     </div>
 
-    <div class="chart-panel wide">
-      <h4 id="main-results-title">Policy Performance</h4>
-      <p class="table-subtitle">26 task–embodiment settings · 50 rollouts per channel · Paper results</p>
-      <div class="table-legend">
-        <span class="heat-key">Successes <span>0</span><span class="heat-swatch" aria-hidden="true"></span><span>50</span></span>
-        <span class="best-key"><span class="best-value">Best</span> SR / LSCR / Eff. across policies</span>
-        <span class="scroll-hint">Click a row to select · Click again to clear · Scroll to compare →</span>
-      </div>
-      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="main-results-title"><table class="results-table" id="results-table" aria-labelledby="main-results-title" aria-describedby="rtable-cap"></table></div>
-      <p id="rtable-cap" class="dim evidence-caption">Darker blue means more successes out of 50. <b>SR</b>: stable success (%). <b>LSCR</b>: latched stage completion (%). <b>Eff.</b>: expert-normalized efficiency. Higher is better; — means no successful rollout. Outlined values are best across policies for each task and in the summary row.</p>
-      <details class="table-notes">
-        <summary>Reporting Notes</summary>
-        <p>SR and LSCR are four-channel means. Efficiency is the mean steps to successful task completion across human expert teleoperation trajectories for the task, divided by mean steps to stable success pooled across successful policy episodes in all four channels. Both use the same physics-step unit. The footer reproduces the paper’s task-macro values; efficiency averages include only tasks with a success (ACT 25, DP 20, π₀.₅ 23, GR00T N1.5 26).</p>
-        <p>The 50 rollouts per task–policy–channel are evaluation episodes, not independent retraining replicates; they do not estimate between-training variability. Tasks and embodiments are not factorially crossed, so task-level contrasts do not isolate embodiment effects.</p>
-      </details>
-    </div>
-
-    <div class="chart-panel wide">
-      <h4 id="channel-results-title">Latched Stage Completion</h4>
-      <p class="table-subtitle">Four evaluation channels · LSCR (%) · Four-channel mean</p>
-      <div class="table-legend">
-        <span class="heat-key">LSCR <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span>
-        <span class="best-key"><span class="best-value">Best Mean</span> Across policies</span>
-        <span class="scroll-hint">Click a row to select · Click again to clear · Scroll to compare →</span>
-      </div>
-      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="channel-results-title"><table class="results-table lscr-table" id="lscr-table" aria-labelledby="channel-results-title" aria-describedby="lscr-table-cap"></table></div>
-      <p id="lscr-table-cap" class="dim evidence-caption">Darker blue means higher channel LSCR. Only the best <b>Mean</b> across policies is outlined. Mean values match the paper at one decimal place; the footer averages all 26 tasks equally.</p>
-      <details class="table-notes">
-        <summary>Metric Notes</summary>
-        <p>Channel values come from the supplied policy results. LSCR measures dependency-valid stages reached during an episode, including episodes without stable final success. The Mean column reports the four-channel task–policy average; its footer matches the paper’s all-task LSCR.</p>
-      </details>
+    <div class="paper-summary">
+      <div class="results-view-heading"><h3>Paper Baselines</h3><a class="btn btn-primary" href="leaderboard/index.html">Explore Leaderboard →</a></div>
+      <div class="explorer-table-wrap" tabindex="0" role="region" aria-label="Paper Baselines"><table class="policy-table overview-table" id="lb-table"></table></div>
+      <p class="results-caption">Four visual–proprioceptive baselines and a tactile GR00T variant. SR and LSCR are percentages; Eff. is success-conditioned efficiency. NR denotes results not reported. Gold outlines mark the best reported values. Explore the leaderboard for task details, evaluation coverage, and complete downloads.</p>
+      <p class="results-caption"><b>Tactile comparison.</b> GR00T N1.5 with tactile input achieves 25.5% mean SR versus 24.9% without tactile input: 14 tasks improve, 10 decline, and 2 tie. <a href="leaderboard/index.html#per-task-scores">Compare both variants across all 26 tasks →</a></p>
     </div>
   </div>
 </section>
@@ -406,17 +372,7 @@
     <div class="resource-grid" id="resource-grid"></div>
     <div style="margin-top:30px;">
       <div class="cite-box">
-        <pre id="bibtex">@misc{yang2026bench2dex,
-  title     = {Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous
-               Manipulation Across Dexterous Hands},
-  author    = {Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and
-               Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and
-               He, Kaiyu and Wang, He and Zhong, Yuwen and Deng, Yi and Jiang, Muyun and
-               Huang, Xianliang and Su, Haisheng and Zhang, Donghang and Zhang, Jian and
-               Yang, Xue and Li, Hongyang and Wu, Zuxuan and Jiang, Yu-Gang and Jia, Xiaosong and Yan, Junchi},
-  journal={arXiv preprint arXiv:2609.15726},
-  year      = {2026}
-}</pre>
+        <pre id="bibtex" tabindex="0"></pre>
         <div class="actions">
           <button type="button" class="btn" id="copy-bib" data-copy-bib>Copy BibTeX</button>
         </div>
@@ -443,7 +399,7 @@
         <a href="#embodiments">Embodiments</a>
         <a href="#data">Teleop & Data</a>
         <a href="#generalization">Generalization</a>
-        <a href="#results">Results</a>
+        <a href="#results">Leaderboard</a>
       </div>
       <div>
         <h5>Reproduce</h5>
@@ -465,7 +421,9 @@
 <div class="copy-toast" id="copy-toast" role="status" aria-live="polite">BibTeX copied</div>
 
 <script src="assets/js/data.js"></script>
+<script src="assets/js/results-model.js"></script>
 <script type="application/json" id="modal-manifest">{"fps": 20, "duration_s": 41.65, "frame_count": 833, "video_dir": "assets/video/modal", "asset_revision": "20260822-semantic-depth-v3", "modalities": ["rgb", "depth", "joint", "object", "tactile", "box2d", "box3d", "occ"], "labels": {"rgb": "RGB (Overhead)", "depth": "Depth", "joint": "Joint States", "object": "Object States", "tactile": "Tactile Signals", "box2d": "2D Boxes", "box3d": "3D Boxes", "occ": "Occupancy Grid", "occ_table": "Occupancy Grid + Table"}}</script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/citation.js"></script>
 </body>
 </html>
