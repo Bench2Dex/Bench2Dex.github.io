@@ -38,10 +38,10 @@
         <button type="button" class="table-reset" id="ranking-reset" aria-label="Reset Overall Performance to defaults">Reset Table</button>
       </div>
       <div class="table-guide"><span>Click a column heading to rank policies</span><span>Headers and names stay fixed while scrolling</span></div>
+      <div class="results-key table-key" aria-label="Overall Performance legend"><span id="ranking-best-key"><strong class="best-value" id="ranking-best-label">Best Average</strong> Across all eligible policies, including ties</span><span class="heat-key" id="ranking-heat-key">Darker = higher <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div>
       <div id="overview-table"></div>
       <div class="section-footer"><span id="ranking-count"></span></div>
       <p class="results-caption" id="ranking-caption"></p>
-      <div class="results-key"><span><strong class="best-value">Best Average</strong> Across all eligible policies, including ties</span><span>+ Policy details</span></div>
     </section>
 
     <section id="per-task-scores" class="board-section" aria-labelledby="task-title">
@@ -53,7 +53,7 @@
         <details class="policy-picker" hidden><summary id="policy-choice-count">Select Policies</summary><div class="policy-picker-body"><label class="results-field">Find a Policy<input id="policy-search" type="search" placeholder="Policy name…" autocomplete="off"></label><div class="picker-actions"><button type="button" id="policies-all">Show All</button><button type="button" id="policies-none">Clear</button></div><div id="policy-options"></div></div></details>
         <button type="button" class="table-reset" id="task-reset" aria-label="Reset Per-Task Scores to defaults">Reset Table</button>
       </div>
-      <div class="task-table-heading"><p class="heat-key" id="task-heat-key">Darker = higher <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></p><button type="button" id="emb-expand-all" hidden>Expand All Groups</button></div>
+      <div class="results-key table-key" aria-label="Per-Task Scores legend"><span id="task-best-key"><strong class="best-value" id="task-best-label">Best Mean</strong> Across all eligible policies, including ties</span><span class="heat-key" id="task-heat-key">Darker = higher <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div>
       <div id="task-matrix"></div>
       <div class="section-footer"><span id="task-count"></span><span>Click a policy heading to sort · + Metric details</span></div>
       <p class="results-caption" id="task-caption"></p>
@@ -64,7 +64,7 @@
         <p>Efficiency is the mean steps to successful task completion across human expert teleoperation trajectories for the task, divided by mean steps to stable success pooled across successful policy episodes in all four channels. All four visual–proprioceptive baselines use executed physics-step counts and recorded task-level expert references. It is not an average of channel ratios. Paper baseline efficiency summaries include ACT: 25 tasks, DP: 19, π₀.₅: 23, and GR00T N1.5: 25. These successful-task counts appear beneath Eff.; coverage also includes explicitly reported no-success task records.</p>
         <p><b>NR</b> denotes results not reported. — means no successful rollout; Not evaluated and N/A indicate distinct missing-data states. Zero is a reported value. Comparisons use the same task set, episode budget, termination rules, and expert reference within each evaluation group. Input variants are labeled separately.</p>
         <p>The 20,800 rollouts refer to the four published visual–proprioceptive baselines. The GR00T N1.5 tactile variant adds 5,200 rollouts and reports four-channel mean SR only; channel SR, LSCR, and efficiency are not reported. The 50 rollouts per task–policy–channel are evaluation episodes, not independent retraining replicates. Tasks and embodiments are not factorially crossed, so task-level contrasts do not isolate embodiment effects.</p>
-        <p>Leaderboard CSV exports the policies currently shown in the main table. Per-Task CSV exports the selected policies and all matching tasks, including collapsed groups. Search does not change ranks or best-value scope. All Policies CSV includes every registered policy, task, and channel across evaluation groups, with sample sizes, metric status, and reported summaries.</p>
+        <p>Leaderboard CSV exports the policies currently shown in the main table. Per-Task CSV exports the selected policies and all matching tasks. Search does not change ranks or best-value scope. All Policies CSV includes every registered policy, task, and channel across evaluation groups, with sample sizes, metric status, and reported summaries.</p>
       </details>
     <details class="table-notes results-notes" id="citation-fallback" hidden><summary>BibTeX Citation</summary><pre id="bibtex" tabindex="0"></pre></details>
     <div id="share-fallback" hidden><label class="results-field">Copy This View URL<input id="share-url" readonly></label></div>

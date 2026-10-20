@@ -38,7 +38,6 @@
     state.policyShow=enumValue(q.get("policy_show"),["all","custom"],"all");
     state.policies=[...new Set((q.get("policies")||"").split(","))].filter(id=>group().some(p=>p.id===id));
     state.taskDetail=enumValue(q.get("task_detail")||q.get("task"),tasks().map(t=>t.id),null);
-    state.collapsed=(q.get("collapsed")||"").split(",").filter(id=>B.EMBODIMENTS.some(e=>e.id===id));
     $("#results-group").innerHTML=M.protocols.map(p=>`<option value="${esc(p.id)}">${esc(p.label)}</option>`).join("");
     $("#results-group-control").hidden=M.protocols.length<2;
     $("#task-embodiment").innerHTML='<option value="">All Embodiments</option>'+B.EMBODIMENTS.filter(e=>tasks().some(t=>t.emb===e.id)).map(e=>`<option value="${esc(e.id)}">${esc(e.name)}</option>`).join("");
@@ -59,7 +58,7 @@
   }
   function saveLocation(){
     const q=new URLSearchParams({group:state.group,rank_metric:state.rankMetric,rank_channel:state.rankChannel,rank_dir:state.rankDir,metric:state.metric,channel:state.channel});
-    for(const [key,value] of [["show",state.rankShow!=="all" ? state.rankShow : ""],["q",state.query],["coverage",state.coverage!=="all" ? state.coverage : ""],["detail",state.detail],["emb",state.emb],["task_sort",state.taskSort!=="paper" ? state.taskSort : ""],["task_dir",state.taskSort!=="paper" ? state.taskDir : ""],["policy_show",state.policyShow!=="all" ? state.policyShow : ""],["policies",state.policies.join(",")],["task_detail",state.taskDetail],["collapsed",state.collapsed.join(",")]]) if(value) q.set(key,value);
+    for(const [key,value] of [["show",state.rankShow!=="all" ? state.rankShow : ""],["q",state.query],["coverage",state.coverage!=="all" ? state.coverage : ""],["detail",state.detail],["emb",state.emb],["task_sort",state.taskSort!=="paper" ? state.taskSort : ""],["task_dir",state.taskSort!=="paper" ? state.taskDir : ""],["policy_show",state.policyShow!=="all" ? state.policyShow : ""],["policies",state.policies.join(",")],["task_detail",state.taskDetail]]) if(value) q.set(key,value);
     history.replaceState(null,"",location.pathname+"?"+q+location.hash);
   }
   function orderedPolicies(list,key,cid,direction="descending"){
@@ -109,6 +108,8 @@
     $("#ranking-label").textContent=`${longLabels[state.rankMetric]} · Ranked by ${channelLabel(state.rankChannel)} · ${state.rankDir==="descending" ? "High to low" : "Low to high"}`;
     const total=metricPolicies(state.rankMetric).length;
     $("#ranking-count").textContent=`${visible.length} ${visible.length===1 ? "policy" : "policies"}${all.length!==total || visible.length!==all.length ? " shown · "+total+" total" : ""}${state.rankShow!=="all" ? " · Top ranks include ties" : ""}`;
+    $("#ranking-best-label").textContent=state.rankMetric==="efficiency" ? "Best Eff." : "Best Average";
+    $("#ranking-heat-key").hidden=state.rankMetric==="efficiency";
     const tactileNote=state.rankMetric==="sr" ? " GR00T with vs. without tactile input: mean SR 25.5% vs. 24.9%; 14 tasks improve, 10 decline, and 2 tie. Both variants use matched episode seeds, execution budgets, and stable-success dwell time; gains depend on the task." : "";
     $("#ranking-caption").textContent=(state.rankMetric==="efficiency" ? "Expert-normalized efficiency pools successful episodes across all four channels. Higher is better; — means no successful rollout. Read alongside SR." : `${labels[state.rankMetric]} (%) · Average weights every task and channel equally. Darker cells and longer bars indicate higher values (0–100%).`)+availabilityNote(state.rankMetric)+tactileNote+(metricPolicies(state.rankMetric).some(p=>!M.aggregateEligible(p.id,state.rankMetric,state.rankChannel)) ? " — ranks indicate incomplete comparable results." : "");
     $("#results-export-ranking").disabled=!visible.length;
@@ -137,23 +138,21 @@
     $("#policy-choice-count").textContent=state.policyShow==="custom" ? `${matrixPolicies().length} Selected Policies` : "Policies (All)";
   }
   function renderMatrix(){
-    const policies=matrixPolicies(),list=matrixTasks(),grouped=state.taskSort==="paper";
+    const policies=matrixPolicies(),list=matrixTasks();
     const headers='<th scope="col" class="task-name">Task / Embodiment</th>'+policies.map(p=>`<th scope="col" aria-sort="${state.taskSort===p.id ? state.taskDir : "none"}"><button type="button" data-task-sort="${esc(p.id)}">${policyTitle(p,` <span aria-hidden="true">${state.taskSort===p.id ? state.taskDir==="descending" ? "↓" : "↑" : "↕"}</span>`)}</button></th>`).join("");
-    let prevEmb=null;
     const rows=list.map(t=>{
-      const e=B.EMBODIMENTS.find(e=>e.id===t.emb),start=grouped && t.emb!==prevEmb;prevEmb=t.emb;
-      const collapsed=grouped && state.collapsed.includes(t.emb),open=state.taskDetail===t.id;
-      const count=list.filter(t=>t.emb===e.id).length;
-      const heading=start ? `<tr class="emb-group"><th colspan="${policies.length+1}"><button type="button" data-emb="${esc(t.emb)}" aria-expanded="${!collapsed}">${collapsed ? "+" : "−"} ${esc(e.name)} <span>${count} ${count===1 ? "task" : "tasks"}</span></button></th></tr>` : "";
+      const e=B.EMBODIMENTS.find(e=>e.id===t.emb),open=state.taskDetail===t.id;
       const peers=state.channel==="mean" ? M.peers(state.group,t.id,state.metric) : [];
-      return heading+`<tr data-task-row="${esc(t.id)}" ${collapsed ? "hidden" : ""} class="${open ? "is-selected" : ""}"><th scope="row" class="task-name"><button type="button" data-task-open="${esc(t.id)}" aria-expanded="${open}"><span class="task-toggle" aria-hidden="true">${open ? "−" : "+"}</span><span><span class="policy-label">${esc(t.name)}</span>${grouped ? "" : `<span class="policy-meta">${esc(e.name)}</span>`}</span></button></th>${policies.map(p=>metricCell(p,t,state.metric,state.channel,peers)).join("")}</tr>`+(open && !collapsed ? taskDetails(t,policies) : "");
+      return `<tr data-task-row="${esc(t.id)}" class="${open ? "is-selected" : ""}"><th scope="row" class="task-name"><button type="button" data-task-open="${esc(t.id)}" aria-expanded="${open}"><span class="task-toggle" aria-hidden="true">${open ? "−" : "+"}</span><span><span class="policy-label">${esc(t.name)}</span><span class="policy-meta">${esc(e.name)}</span></span></button></th>${policies.map(p=>metricCell(p,t,state.metric,state.channel,peers)).join("")}</tr>`+(open ? taskDetails(t,policies) : "");
     }).join("");
     $("#task-matrix").innerHTML=!policies.length ? empty("No policies selected. Use Policies to select models or show all.") : !list.length ? empty("No matching tasks. Adjust the task filters.") : table("per-task-results","Per-Task Scores",headers,rows,"task-matrix-table");
     $("#task-scope").textContent=`${longLabels[state.metric]} · ${state.channel==="mean" ? state.metric==="efficiency" ? "Pooled Successful Episodes" : "Four-Channel Mean" : B.CHANNEL_LABEL[state.channel]}`;
     $("#task-count").textContent=`${list.length} of ${tasks().length} tasks · ${policies.length} of ${metricPolicies(state.metric).length} policies`;
     $("#task-heat-key").hidden=state.metric==="efficiency";
-    $("#emb-expand-all").hidden=!grouped || !state.collapsed.length;
-    $("#task-caption").textContent=`${state.metric==="efficiency" ? "Efficiency pools successful episodes across all channels." : labels[state.metric]+" (%) · Fixed 0–100% color scale."} Outlined means are best across all eligible policies.${availabilityNote(state.metric)} Scroll within the table; headers and task names stay fixed.`;
+    $("#task-best-key").hidden=state.channel!=="mean" && state.metric!=="efficiency";
+    $("#task-best-label").textContent=state.metric==="efficiency" ? "Best Eff." : "Best Mean";
+    const bestNote=state.channel==="mean" || state.metric==="efficiency" ? " Outlined values are best across all eligible policies, including ties." : "";
+    $("#task-caption").textContent=`${state.metric==="efficiency" ? "Efficiency pools successful episodes across all channels." : labels[state.metric]+" (%) · Fixed 0–100% color scale."}${bestNote}${availabilityNote(state.metric)} Scroll within the table; headers and task names stay fixed.`;
     $("#results-export-tasks").disabled=!policies.length || !list.length;
     renderPicker();
   }
@@ -191,9 +190,8 @@
     if(d.policyOpen){state.detail=state.detail===d.policyOpen ? null : d.policyOpen;render("",`[data-policy-row="${CSS.escape(d.policyOpen)}"]`);focusButton("data-policy-open",d.policyOpen);return;}
     if(d.taskSort){if(state.taskSort!==d.taskSort){state.taskSort=d.taskSort;state.taskDir="descending";}else if(state.taskDir==="descending"){state.taskDir="ascending";}else{state.taskSort="paper";state.taskDir="descending";}render("per-task-results");focusButton("data-task-sort",d.taskSort);return;}
     if(d.taskOpen){state.taskDetail=state.taskDetail===d.taskOpen ? null : d.taskOpen;render("",`[data-task-row="${CSS.escape(d.taskOpen)}"]`);focusButton("data-task-open",d.taskOpen);return;}
-    if(d.emb){state.collapsed=state.collapsed.includes(d.emb) ? state.collapsed.filter(id=>id!==d.emb) : [...state.collapsed,d.emb];render();focusButton("data-emb",d.emb);return;}
     if(d.policyCsv){download(M.csv({policyIds:[d.policyCsv]}),"policy-"+d.policyCsv);return;}
-    if(d.focusPolicy){if(!hasMetric(group().find(p=>p.id===d.focusPolicy),state.metric)){state.metric=state.rankMetric;state.channel="mean";}state.policyShow="custom";state.policies=[d.focusPolicy];state.emb="";state.collapsed=[];render();location.hash="per-task-scores";$("#policy-choice-count").focus({preventScroll:true});return;}
+    if(d.focusPolicy){if(!hasMetric(group().find(p=>p.id===d.focusPolicy),state.metric)){state.metric=state.rankMetric;state.channel="mean";}state.policyShow="custom";state.policies=[d.focusPolicy];state.emb="";render();location.hash="per-task-scores";$("#policy-choice-count").focus({preventScroll:true});return;}
   });
   root.addEventListener("change",event=>{
     const id=event.target.dataset.pick;if(!id) return;
@@ -206,13 +204,12 @@
   $("#policy-search").addEventListener("input",renderPicker);
   $("#policies-all").addEventListener("click",()=>{state.policies=[];state.policyShow="all";$(".policy-picker").open=false;render();});
   $("#policies-none").addEventListener("click",()=>{state.policies=[];state.policyShow="custom";render();});
-  $("#emb-expand-all").addEventListener("click",()=>{state.collapsed=[];render();});
   $("#ranking-reset").addEventListener("click",()=>{
     Object.assign(state,{rankMetric:"sr",rankChannel:"mean",rankDir:"descending",rankShow:"all",query:"",coverage:"all",detail:null});
     resetTable("overview-results","Overall Performance reset to defaults.");
   });
   $("#task-reset").addEventListener("click",()=>{
-    Object.assign(state,{metric:"sr",channel:"mean",emb:"",taskSort:"paper",taskDir:"descending",policyShow:"all",policies:[],taskDetail:null,collapsed:[]});
+    Object.assign(state,{metric:"sr",channel:"mean",emb:"",taskSort:"paper",taskDir:"descending",policyShow:"all",policies:[],taskDetail:null});
     $("#policy-search").value="";
     $(".policy-picker").open=false;
     resetTable("per-task-results","Per-Task Scores reset to defaults.");
