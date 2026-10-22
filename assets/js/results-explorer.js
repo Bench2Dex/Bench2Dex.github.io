@@ -41,6 +41,8 @@
     if(state.policyShow==="custom" && state.policies.length && !taskPolicies.some(p=>state.policies.includes(p.id))) state.policyShow="all";
     for(const [id,key] of [["results-group","group"],["task-channel","channel"],["task-embodiment","emb"]]) $("#"+id).value=state[key];
     $("#task-channel").closest("label").hidden=state.metric==="efficiency";
+    $("#ranking-reset").hidden=state.rankMetric==="sr" && state.rankChannel==="mean" && state.rankDir==="descending";
+    $("#task-reset").hidden=state.metric==="sr" && state.channel==="mean" && !state.emb && state.taskSort==="paper" && state.policyShow==="all" && !state.taskDetail;
     root.querySelectorAll('[data-task-metric]').forEach(b=>b.setAttribute("aria-pressed",b.dataset.taskMetric===state.metric));
   }
   function saveLocation(){
@@ -75,7 +77,6 @@
     $("#ranking-label").textContent=R.overall.label(state);
     const total=group().length;
     $("#ranking-count").textContent=`${visible.length} ${visible.length===1 ? "policy" : "policies"}${visible.length!==total ? " shown · "+total+" total" : ""}`;
-    $("#ranking-best-label").textContent="Best SR / LSCR / Eff.";
     $("#ranking-caption").textContent=R.overall.caption;
   }
   function metricCell(p,t,key,cid="mean",peers=null){
@@ -102,18 +103,18 @@
   function renderMatrix(){
     const policies=matrixPolicies(),list=matrixTasks();
     $("#task-matrix").style.setProperty("--task-policy-count",policies.length);
-    const headers='<th scope="col" class="task-name">Task / Embodiment</th>'+policies.map(p=>`<th scope="col" aria-sort="${state.taskSort===p.id ? state.taskDir : "none"}"><button type="button" data-task-sort="${esc(p.id)}">${policyTitle(p,` <span aria-hidden="true">${state.taskSort===p.id ? state.taskDir==="descending" ? "↓" : "↑" : "↕"}</span>`)}</button></th>`).join("");
+    const headers='<th scope="col" class="task-name">Task / Embodiment</th>'+policies.map(p=>`<th scope="col" aria-sort="${state.taskSort===p.id ? state.taskDir : "none"}"><button type="button" data-task-sort="${esc(p.id)}" title="Sort tasks by ${esc(p.label)}" aria-label="Sort tasks by ${esc(p.label)}">${policyTitle(p,` <span class="sort-indicator" aria-hidden="true">${state.taskSort===p.id ? state.taskDir==="descending" ? "↓" : "↑" : "↕"}</span>`)}</button></th>`).join("");
     const rows=list.map(t=>{
       const e=B.EMBODIMENTS.find(e=>e.id===t.emb),open=state.taskDetail===t.id;
       const peers=state.channel==="mean" ? M.peers(state.group,t.id,state.metric) : [];
-      return `<tr data-task-row="${esc(t.id)}" class="${open ? "is-selected" : ""}"><th scope="row" class="task-name"><button type="button" data-task-open="${esc(t.id)}" aria-expanded="${open}"><span class="task-toggle" aria-hidden="true">${open ? "−" : "+"}</span><span><span class="policy-label">${esc(t.name)}</span><span class="policy-meta">${esc(e.name)}</span></span></button></th>${policies.map(p=>metricCell(p,t,state.metric,state.channel,peers)).join("")}</tr>`+(open ? taskDetails(t,policies) : "");
+      return `<tr data-task-row="${esc(t.id)}" class="${open ? "is-selected" : ""}"><th scope="row" class="task-name"><button type="button" data-task-open="${esc(t.id)}" aria-expanded="${open}"${open ? ` aria-controls="task-detail-${esc(t.id)}"` : ""} title="${open ? "Hide" : "Show"} channel details"><span class="task-toggle" aria-hidden="true">›</span><span><span class="policy-label">${esc(t.name)}</span><span class="policy-meta">${esc(e.name)}</span></span></button></th>${policies.map(p=>metricCell(p,t,state.metric,state.channel,peers)).join("")}</tr>`+(open ? taskDetails(t,policies) : "");
     }).join("");
     $("#task-matrix").innerHTML=!policies.length ? empty("No policies selected. Use Policies to select models or show all.") : !list.length ? empty("No matching tasks. Adjust the task filters.") : table("per-task-results","Per-Task Scores",headers,rows,"task-matrix-table");
-    $("#task-count").textContent=`${list.length} of ${tasks().length} tasks · ${policies.length} of ${metricPolicies(state.metric).length} policies`;
+    $("#task-count").textContent=`${list.length===tasks().length ? list.length : list.length+" / "+tasks().length} tasks`;
     $("#task-heat-key").hidden=state.metric==="efficiency";
     $("#task-best-key").hidden=state.channel!=="mean" && state.metric!=="efficiency";
-    $("#task-best-label").textContent=state.metric==="efficiency" ? "Best Eff." : "Best Mean";
-    $("#task-caption").textContent=`${state.metric==="efficiency" ? "Eff. uses successful episodes pooled across channels." : labels[state.metric]+" (%)."} NR = not reported; — = no successful rollout. Policy columns follow Overall Performance order.`;
+    $("#task-best-label").textContent=state.metric==="efficiency" ? "Best Eff." : "Best mean";
+    $("#task-caption").textContent=state.metric==="efficiency" ? "NR: not reported · —: no successful rollout" : "NR: not reported";
     renderPicker();
   }
   function render(resetTable="",anchorSelector=null){
@@ -131,8 +132,6 @@
       const wrap=next.closest("table").parentElement;
       wrap.scrollTop+=next.getBoundingClientRect().top-wrap.getBoundingClientRect().top-anchorTop;
     }
-    $("#results-protocol-note").textContent=M.protocols.find(g=>g.id===state.group).description;
-    document.querySelector("#board-release").textContent=`${group().length} policies · Reported Evaluations`;
   }
   function resetTable(id,message){
     render(id);
@@ -157,6 +156,7 @@
     if(state.policyShow==="all") state.policies=group().map(p=>p.id);
     state.policies=event.target.checked ? [...new Set([...state.policies,id])] : state.policies.filter(p=>p!==id);state.policyShow="custom";render();focusButton("data-pick",id);
   });
+  document.addEventListener("pointerdown",event=>{const picker=$(".policy-picker");if(picker.open && !picker.contains(event.target))picker.open=false;});
   root.addEventListener("keydown",event=>{if(event.key==="Escape")root.querySelectorAll('.policy-picker[open]').forEach(d=>{d.open=false;d.querySelector("summary").focus();});});
   for(const [id,key] of [["task-channel","channel"],["task-embodiment","emb"]]) $("#"+id).addEventListener("change",e=>{state[key]=e.target.value;render(id==="task-channel" ? "" : id==="task-embodiment" ? "per-task-results" : "overview-results");});
   $("#policies-all").addEventListener("click",()=>{state.policies=[];state.policyShow="all";$(".policy-picker").open=false;render();});
@@ -178,7 +178,7 @@
   $("#results-share").addEventListener("click",async()=>{saveLocation();try{await navigator.clipboard.writeText(location.href);announce("View link copied.");}catch{$("#share-fallback").hidden=false;$("#share-url").value=location.href;$("#share-url").focus();$("#share-url").select();}});
   window.addEventListener("popstate",()=>{readLocation();render();});
   function revealSection(){const e=document.getElementById(location.hash.slice(1));if(e?.matches("details"))e.open=true;}
-  document.querySelectorAll('.board-jumps a').forEach(a=>a.addEventListener("click",()=>{const e=document.getElementById(a.hash.slice(1));if(e?.matches("details"))e.open=true;}));
+  document.querySelectorAll('a[href="#protocol-notes"]').forEach(a=>a.addEventListener("click",()=>{const e=document.getElementById(a.hash.slice(1));if(e?.matches("details"))e.open=true;}));
   window.addEventListener("hashchange",revealSection);
   readLocation();render();revealSection();
 })();

@@ -28,51 +28,47 @@
   </div>
 </div></header>
 <main class="board-container">
-  <div class="board-heading"><div><p class="eyebrow">Bimanual Dexterous Manipulation</p><h1>Policy Leaderboard</h1><p>Compare policies. Understand where they succeed.</p><span id="board-release" class="board-release">Reported Evaluations</span></div><div class="board-facts" aria-label="Evaluation Scope"><span><b>26</b>Tasks</span><span><b>12</b>Embodiments</span><span><b>4</b>Channels</span></div></div>
-  <nav class="board-jumps" aria-label="Results Sections"><a href="#policy-leaderboard">Overall Performance</a><a href="#per-task-scores">Per-Task Scores</a><a href="#protocol-notes">Evaluation Protocol</a></nav>
+  <div class="board-heading"><h1>Policy Leaderboard</h1><div class="board-facts" aria-label="Evaluation scope"><span><b>26</b>Tasks</span><span><b>12</b>Embodiments</span><span><b>4</b>Channels</span></div></div>
   <div id="results-explorer" class="results-explorer results-stack">
     <div class="board-global-tools">
       <label class="results-field" id="results-group-control" hidden>Evaluation Group<select id="results-group"></select></label>
-      <p class="results-protocol-note" id="results-protocol-note"></p>
+      <p class="results-protocol-note">Evaluation settings vary by method. <a href="#protocol-notes">Protocol &amp; metrics ↓</a></p>
       <div class="results-downloads"><button type="button" id="results-share">Copy View Link</button><button type="button" id="results-export-all" title="Download all policies, tasks, four-channel scores and evaluation metadata">All Policies CSV ↓</button></div>
     </div>
 
     <section id="policy-leaderboard" class="board-section" aria-labelledby="ranking-title">
-      <div class="section-toolbar"><div><h2 id="ranking-title">Overall Performance</h2><p id="ranking-label" class="board-scope"></p></div><div class="section-actions"><button type="button" class="table-reset" id="ranking-reset" aria-label="Reset Overall Performance to defaults">Reset</button></div></div>
-      <div class="table-guide"><span>Click a column heading to rank policies</span><span>Headers and names stay fixed while scrolling</span></div>
-      <div class="results-key table-key" aria-label="Overall Performance legend"><span id="ranking-best-key"><strong class="best-value" id="ranking-best-label">Best SR / LSCR / Eff.</strong> Across all eligible policies, including ties</span><span class="heat-key" id="ranking-heat-key">Darker = higher <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div>
+      <div class="section-toolbar"><div class="section-heading"><h2 id="ranking-title">Overall Performance</h2><span class="section-count" id="ranking-count"></span></div><p id="ranking-label" class="sr-only" aria-live="polite"></p><div class="section-actions"><button type="button" class="table-reset" id="ranking-reset" aria-label="Reset Overall Performance to defaults" hidden>Reset</button></div></div>
       <div id="overview-table"></div>
-      <div class="section-footer"><span id="ranking-count"></span></div>
-      <p class="results-caption" id="ranking-caption"></p>
+      <div class="table-footer"><p class="table-note" id="ranking-caption"></p><div class="table-legend-compact"><strong class="best-value" title="Highest reported SR, LSCR or efficiency, including ties">Best</strong><span class="heat-key" aria-label="Color scale: 0 to 100 percent"><span>0</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div></div>
     </section>
 
     <section id="per-task-scores" class="board-section" aria-labelledby="task-title">
-      <div class="section-toolbar"><h2 id="task-title">Per-Task Scores</h2><div class="section-actions"><button type="button" class="table-reset" id="task-reset" aria-label="Reset Per-Task Scores to defaults">Reset</button></div></div>
+      <div class="section-toolbar"><div class="section-heading"><h2 id="task-title">Per-Task Scores</h2><span class="section-count" id="task-count"></span></div><div class="section-actions"><button type="button" class="table-reset" id="task-reset" aria-label="Reset Per-Task Scores to defaults" hidden>Reset</button></div></div>
       <div class="board-controls">
         <div class="control-group"><span class="control-label">Metric</span><div class="metric-switch" role="group" aria-label="Per-Task Metric"><button type="button" data-task-metric="sr" aria-pressed="true" title="Stable Success Rate">SR</button><button type="button" data-task-metric="lscr" aria-pressed="false" title="Latched Stage Completion Rate">LSCR</button><button type="button" data-task-metric="efficiency" aria-pressed="false" title="Success-Conditioned Efficiency">Eff.</button></div></div>
         <label class="results-field">Channel<select id="task-channel"><option value="mean">Four-channel mean</option><option value="none">None</option><option value="equi">Equi.</option><option value="inv">Inv.</option><option value="full">Full</option></select></label>
         <label class="results-field">Embodiment<select id="task-embodiment"><option value="">All embodiments</option></select></label>
         <div class="policy-control"><span class="control-label">Policies</span><details class="policy-picker"><summary id="policy-choice-count">All policies</summary><div class="policy-picker-body"><div class="picker-actions"><button type="button" id="policies-all">Select all</button><button type="button" id="policies-none">Clear</button></div><div id="policy-options"></div></div></details></div>
       </div>
-      <div class="results-key table-key" aria-label="Per-Task Scores legend"><span id="task-best-key"><strong class="best-value" id="task-best-label">Best Mean</strong> Across all eligible policies, including ties</span><span class="heat-key" id="task-heat-key">Darker = higher <span>0%</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div>
       <div id="task-matrix"></div>
-      <div class="section-footer"><span id="task-count"></span><span>Click a policy heading to sort · + Metric details</span></div>
-      <p class="results-caption" id="task-caption"></p>
+      <div class="table-footer"><p class="table-note" id="task-caption"></p><div class="table-legend-compact"><span id="task-best-key"><strong class="best-value" id="task-best-label" title="Highest mean across all policies, including ties">Best mean</strong></span><span class="heat-key" id="task-heat-key" aria-label="Color scale: 0 to 100 percent"><span>0</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div></div>
     </section>
 
-      <details class="table-notes results-notes" id="protocol-notes"><summary>Evaluation Protocol & Metric Definitions</summary>
-        <p><b>SR</b>: episodes reaching stable success (%). <b>LSCR</b>: dependency-valid task stages ever reached (%). Overall SR and LSCR weight all 26 tasks and four channels equally.</p>
-        <p><b>Eff.</b>: mean expert completion steps divided by mean policy steps to stable success among successful episodes, pooled across channels. Overall Eff. averages tasks with success (ACT: 25; DP: 19; π₀.₅: 23; each GR00T variant: 25).</p>
-        <p><b>Protocol.</b> Bench2Dex evaluations use 50 episodes per task and channel. GPT-6-Astra uses ICL and three episodes per task on Full only; 1× / 10× indicate execution-step budgets. Its Full SR is not a four-channel mean. External evaluation settings differ. Sources: <a href="https://openphoenix-team.github.io/Phoenix-pages/" target="_blank" rel="noopener noreferrer">Phoenix</a> · <a href="https://arxiv.org/html/2610.22471v1#S9.SS5" target="_blank" rel="noopener noreferrer">GPT-6-Astra</a>.</p>
-        <p><b>NR</b>: not reported. <b>—</b> in Rank: no score for the selected metric; in Eff.: no successful rollout.</p>
-      </details>
+    <details class="table-notes results-notes" id="protocol-notes"><summary>Evaluation Protocol &amp; Metrics</summary>
+      <dl class="metric-definitions">
+        <div><dt>SR <span>Stable Success Rate</span></dt><dd>Episodes reaching stable success (%), averaged equally across tasks and four channels.</dd></div>
+        <div><dt>LSCR <span>Latched Stage Completion Rate</span></dt><dd>Dependency-valid task stages ever reached (%), averaged equally across tasks and four channels.</dd></div>
+        <div><dt>Eff. <span>Success-Conditioned Efficiency</span></dt><dd>Mean expert completion steps / mean policy steps to stable success, pooled across successful episodes. Averaged over tasks with success.</dd></div>
+      </dl>
+      <p>Bench2Dex evaluations use 50 episodes per task and channel. GPT-6-Astra uses ICL and 3 episodes per task on Full only; 1× / 10× denote execution-step budgets. Full SR is not a four-channel mean. <a href="https://openphoenix-team.github.io/Phoenix-pages/" target="_blank" rel="noopener noreferrer">Phoenix protocol ↗</a> · <a href="https://arxiv.org/html/2610.22471v1#S9.SS5" target="_blank" rel="noopener noreferrer">GPT-6-Astra protocol ↗</a></p>
+    </details>
     <details class="table-notes results-notes" id="citation-fallback" hidden><summary>BibTeX Citation</summary><pre id="bibtex" tabindex="0"></pre></details>
     <div id="share-fallback" hidden><label class="results-field">Copy This View URL<input id="share-url" readonly></label></div>
     <p id="results-status" class="sr-only" role="status" aria-live="polite"></p>
   </div>
 
 </main>
-<footer class="board-container board-footer"><a href="../index.html">← Bench2Dex Project</a><span>Reported results · Full data available as CSV</span></footer>
+<footer class="board-container board-footer"><a href="../index.html">← Bench2Dex Project</a></footer>
 <div class="copy-toast" id="copy-toast" role="status" aria-live="polite"></div>
 <script src="../assets/js/citation.js"></script>
 <script src="../assets/js/data.js"></script>

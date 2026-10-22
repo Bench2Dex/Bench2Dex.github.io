@@ -21,9 +21,12 @@
     return `<td class="${r.value===null ? "missing" : "value"}${id==="sr" ? " summary-start" : ""}${active ? " ranking-active" : ""}${heat ? " heat-cell" : ""}"${heat ? ` style="--cell-heat:${R.heat(r.value/100)}"` : ""}>${value}</td>`;
   }
   function markup(policies,state,assetPrefix=""){
-    const headers='<th scope="col" class="rank-cell">Rank</th><th scope="col" class="policy-name">Model</th><th scope="col" class="type-cell">Type</th><th scope="col" class="contributor-cell">Contributor</th>'+columns.map(c=>{
+    const identity='<th scope="col" rowspan="2" class="rank-cell">Rank</th><th scope="col" rowspan="2" class="policy-name">Model</th><th scope="col" rowspan="2" class="type-cell">Type</th><th scope="col" rowspan="2" class="contributor-cell">Contributor</th>';
+    const headers=columns.map(c=>{
       const active=c.key===state.rankMetric && c.cid===state.rankChannel;
-      return `<th scope="col"${c.id==="sr" ? ' class="summary-start"' : ""} aria-sort="${active ? state.rankDir : "none"}"><button type="button" data-rank-column="${c.id}">${c.label} <span aria-hidden="true">${active ? state.rankDir==="descending" ? "↓" : "↑" : "↕"}</span><small>${c.unit}</small></button></th>`;
+      const title=c.cid!=="mean" ? `${c.label} channel SR (%)` : c.key==="efficiency" ? "Success-conditioned efficiency" : `${c.label}: four-channel mean (%)`;
+      const label=c.cid==="mean" && c.key!=="efficiency" ? `${c.label} (%)` : c.label;
+      return `<th scope="col"${c.id==="sr" ? ' class="summary-start"' : c.id==="none" ? ' class="channel-start"' : ""} aria-sort="${active ? state.rankDir : "none"}"><button type="button" data-rank-column="${c.id}" title="${title}" aria-label="Sort by ${title}">${label}<span class="sort-indicator" aria-hidden="true">${active ? state.rankDir==="descending" ? "↓" : "↑" : "↕"}</span></button></th>`;
     }).join("");
     const rows=policies.map(p=>{
       const rank=M.aggregateRank(p.id,state.rankMetric,state.rankChannel);
@@ -31,7 +34,7 @@
       const rankLabel=rank===null ? "Unranked: selected metric not reported" : `Rank ${rank}${medal ? ": "+metal[rank-1]+" medal" : ""}`;
       return `<tr data-policy-row="${esc(p.id)}"><td class="rank-cell"><span class="rank-number${medal ? " rank-medal" : ""}" aria-label="${esc(rankLabel)}">${rank===null ? "—" : medal ? medals[rank-1] : rank}</span></td><th scope="row" class="policy-name"><div class="model-identity"><img class="model-logo" src="${esc(assetPrefix+p.logoPath)}" alt="${esc(p.logoAlt)}" width="26" height="26" decoding="async"><div><a class="model-name policy-label" href="${esc(p.modelUrl)}" target="_blank" rel="noopener noreferrer">${policyTitle(p)}</a></div></div></th><td class="type-cell"><span class="policy-type type-${esc(p.type.toLowerCase())}">${esc(p.type)}</span></td><td class="contributor-cell"><a href="${esc(p.contributorUrl)}" target="_blank" rel="noopener noreferrer">${esc(p.contributor)}</a></td>${columns.map(c=>aggregateCell(p,c,state)).join("")}</tr>`;
     }).join("");
-    return `<caption class="sr-only">Policy Leaderboard</caption><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody>`;
+    return `<caption class="sr-only">Policy Leaderboard</caption><thead><tr class="ranking-groups">${identity}<th scope="colgroup" colspan="4" class="channel-group">SR by channel (%)</th><th scope="colgroup" colspan="3" class="summary-group">Overall</th></tr><tr class="ranking-columns">${headers}</tr></thead><tbody>${rows}</tbody>`;
   }
   function sort(state,id){
     const column=columns.find(c=>c.id===id);if(!column)return;
@@ -39,5 +42,5 @@
     state.rankMetric=column.key;state.rankChannel=column.cid;
   }
   const label=state=>`Ranked by ${{sr:"SR",lscr:"LSCR",efficiency:"Eff."}[state.rankMetric]}${state.rankChannel==="mean" ? "" : " · "+B.CHANNEL_LABEL[state.rankChannel]} · ${state.rankDir==="descending" ? "High to low" : "Low to high"}`;
-  R.overall={columns,ordered,markup,sort,label,caption:"Channel columns report SR (%); SR and LSCR are four-channel means. NR = not reported. GPT-6-Astra reports Full SR only."};
+  R.overall={columns,ordered,markup,sort,label,caption:"NR: not reported · GPT-6-Astra: Full SR only"};
 })();
