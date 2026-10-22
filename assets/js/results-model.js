@@ -48,14 +48,16 @@
     }
     if(policies.some(p=>!protocols.some(g=>g.id===p.protocolId))) throw new Error("Unknown evaluation protocol");
     if(protocols.some(p=>!p.taskIds.length || new Set(p.taskIds).size!==p.taskIds.length || p.taskIds.some(id=>!data.TASKS.some(t=>t.id===id)))) throw new Error("Invalid protocol task set");
-    const protocolFor=pid=>protocols.find(g=>g.id===policies.find(p=>p.id===pid)?.protocolId);
+    const policyFor=pid=>policies.find(p=>p.id===pid);
+    const published=pid=>policyFor(pid)?.externalReport && !!policyFor(pid).sourceUrl;
+    const protocolFor=pid=>protocols.find(g=>g.id===policyFor(pid)?.protocolId);
     const protocolReady=pid=>{
       const g=protocolFor(pid);
       return !!(g?.taskSetVersion && g.terminationVersion && g.expertReferenceVersion && Number.isInteger(g.episodesPerChannel) && g.episodesPerChannel>0);
     };
     function completeChannel(pid,tid,cid,key){
       const r=channel(pid,tid,cid),g=protocolFor(pid),n=reading(r,"episodes").value;
-      if(!protocolReady(pid) || n!==g.episodesPerChannel) return false;
+      if(!protocolReady(pid) || n!==(published(pid) ? policyFor(pid).episodesPerChannel : g.episodesPerChannel)) return false;
       const value=reading(r,key==="lscr" ? "lscr" : "successes").value;
       return value!==null && value>=0 && (key==="lscr" ? value<=100 : Number.isInteger(value) && value<=n);
     }
@@ -63,6 +65,11 @@
       // A paper-reported mean can be complete even when its breakdown is pending.
       // Mean-only SR requires explicit scope and matching task/channel budgets.
       const record=task(pid,tid);
+      // Published four-channel means are preserved without inventing rollout counts.
+      if(published(pid) && ["sr","lscr"].includes(key) && record?.[`${key}Scope`]==="four-channel-mean"){
+        const value=metric(pid,tid,key).value;
+        return value!==null && value>=0 && value<=100;
+      }
       if(key==="sr" && record?.srScope==="four-channel-mean"){
         const g=protocolFor(pid),value=metric(pid,tid,key).value;
         return protocolReady(pid) && record.srEpisodes===data.CHANNELS.length*g.episodesPerChannel
@@ -111,6 +118,8 @@
     const aggregateCoverage=(pid,key="sr",cid="mean")=>{
       if(cid==="mean") return coverage(pid,key);
       const cacheKey=JSON.stringify([pid,key,cid]);
+      if(published(pid) && key==="sr" && Number.isInteger(summary(pid).channelTaskCounts?.[data.CHANNELS.indexOf(cid)]))
+        return summary(pid).channelTaskCounts[data.CHANNELS.indexOf(cid)];
       if(!coverageCache.has(cacheKey)) coverageCache.set(cacheKey,tasks(protocolFor(pid).id).filter(t=>completeChannel(pid,t.id,cid,key)).length);
       return coverageCache.get(cacheKey);
     };
@@ -132,7 +141,7 @@
       });
     }
     function csv({policyIds=policies.map(p=>p.id),taskIds=null,summaryOnly=false,metricKey=null,channelId=null}={}){
-      const header=["scope","policy_id","policy","inputs","protocol","task_id","task","embodiment","channel","status","successes","successes_status","episodes","episodes_status","sr_percent","sr_status","lscr_percent","lscr_status","efficiency","efficiency_status","task_count","efficiency_task_count","model_version","checkpoint","training_setting","result_version","source_url","updated_at","task_set_version","termination_version","expert_reference_version","lscr_scope","lscr_episodes","sr_scope","sr_episodes"];
+      const header=["scope","policy_id","policy","inputs","protocol","task_id","task","embodiment","channel","status","successes","successes_status","episodes","episodes_status","sr_percent","sr_status","lscr_percent","lscr_status","efficiency","efficiency_status","task_count","efficiency_task_count","model_version","checkpoint","training_setting","result_version","source_url","updated_at","task_set_version","termination_version","expert_reference_version","lscr_scope","lscr_episodes","sr_scope","sr_episodes","evaluation_setting","episodes_per_reported_channel","step_budget_multiplier","type","contributor","model_url","model_logo"];
       header.push(...data.CHANNELS.map(c=>`summary_sr_${c}_percent`),...data.CHANNELS.map(c=>`summary_lscr_${c}_percent`));
       const rows=[header];
       const number=(r,key,isChannel=false)=>r.value===null ? "" : key==="successes" || key==="episodes" ? r.value : r.value.toFixed(key==="efficiency" ? 3 : key==="lscr" && isChannel ? 2 : 1);
@@ -152,9 +161,11 @@
             c==="mean" && include("efficiency") ? number(eff,"efficiency") : "",c==="mean" && include("efficiency") ? eff.status : "",
             t ? "" : r?.taskCount??"",t ? "" : r?.efficiencyTaskCount??"",
             p.modelVersion||"",p.checkpoint||"",p.trainingSetting||"",p.resultVersion||"",p.sourceUrl||"",p.updatedAt||"",
-            protocolFor(p.id).taskSetVersion||"",protocolFor(p.id).terminationVersion||"",protocolFor(p.id).expertReferenceVersion||"",
+            p.externalReport ? "" : protocolFor(p.id).taskSetVersion||"",p.externalReport ? "" : protocolFor(p.id).terminationVersion||"",p.externalReport ? "" : protocolFor(p.id).expertReferenceVersion||"",
             c==="mean" ? r?.lscrScope||"" : "",c==="mean" ? r?.lscrEpisodes??"" : "",
             c==="mean" ? r?.srScope||"" : "",c==="mean" ? r?.srEpisodes??"" : "",
+            p.evaluationSetting||protocolFor(p.id).description,p.externalReport ? p.episodesPerChannel??"" : protocolFor(p.id).episodesPerChannel,
+            p.externalReport ? p.stepBudgetMultiplier??"" : 1,p.type||"",p.contributor||"",p.modelUrl||"",p.logoPath||"",
             ...data.CHANNELS.map((_,i)=>!t && finite(r?.channelSr?.[i]) ? r.channelSr[i].toFixed(1) : ""),
             ...data.CHANNELS.map((_,i)=>!t && finite(r?.channelLscr?.[i]) ? r.channelLscr[i].toFixed(2) : "")]);
         };

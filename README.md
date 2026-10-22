@@ -28,7 +28,7 @@ We provide benchmark assets, human teleoperation datasets, and pre-trained polic
 We welcome pull requests with evaluation results for new policies on Bench2Dex.
 
 ## Citation 📝
-If you use Bench2Dex in your research, please cite our paper. On GitHub, click the copy button at the upper-right corner of the code block to copy the complete BibTeX entry. You can also use **Copy BibTeX** on the [project website](https://bench2dex.github.io/#docs) or the [leaderboard](https://bench2dex.github.io/leaderboard/). Both pages share the citation in `assets/js/citation.js`.
+If you use Bench2Dex in your research, please cite our paper.
 
 ```bibtex
 @misc{yang2026bench2dex,

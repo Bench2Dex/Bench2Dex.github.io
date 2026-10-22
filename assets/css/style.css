@@ -1045,7 +1045,7 @@ h1,h2,h3,h4{font-family:var(--display); font-weight:650; color:var(--bone); marg
 .results-view-heading .heat-key,#across-heat-key{font-size:12px; color:var(--text-dim); display:flex; align-items:center; gap:7px;}
 .explorer-table-wrap{max-width:100%; overflow:auto; border:1px solid var(--line); border-radius:6px; isolation:isolate;}
 .policy-table{border-collapse:separate; border-spacing:0; width:100%; font-size:14px; line-height:1.5; font-variant-numeric:tabular-nums;}
-.policy-table th,.policy-table td{padding:12px 16px; text-align:right; border-bottom:1px solid var(--line);}
+.policy-table th,.policy-table td{padding:12px 16px; text-align:center; border-bottom:1px solid var(--line);}
 .policy-table thead th{background:var(--paper); font-size:12px; color:var(--text-dim); font-weight:600; white-space:nowrap;}
 .policy-table th:first-child{text-align:left;}
 .policy-table thead th button{padding:0; border:0; background:transparent; font-size:12px; font-weight:600; white-space:nowrap;}
@@ -1147,8 +1147,6 @@ h1,h2,h3,h4{font-family:var(--display); font-weight:650; color:var(--bone); marg
   .full-results > summary span{display:block; margin:4px 0 0 16px;}
 }
 
-/* Homepage paper snapshot stays compact; the live board has its own page. */
-.paper-summary{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:24px;}
-.paper-summary .policy-table th:first-child{width:40%;}
-.paper-summary .results-caption{margin-top:14px;}
-@media(max-width:600px){.paper-summary{padding:16px 10px;}.paper-summary .policy-table{font-size:12px;}.paper-summary .policy-table th,.paper-summary .policy-table td{padding:12px 8px;}}
+/* The homepage uses the same Overall Performance card as the full leaderboard. */
+.paper-summary{padding:0;}
+.paper-summary .section-toolbar .btn{font-size:11px;padding:8px 12px;white-space:nowrap;}

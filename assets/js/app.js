@@ -523,21 +523,23 @@
     wrap.appendChild(svg);
   })();
 
-  /* ---------- Published baselines: shared reporting rules ---------- */
+  /* ---------- Overall Performance: shared with the full leaderboard ---------- */
   (function(){
-    const lb=$("#lb-table"); if(!lb) return;
-    const R=window.BenchResults,M=R.model;
-    const policies=M.policies.filter(p=>B.POLICIES.includes(p.id) || p.id===B.TACTILE_COMPARISON.policyId);
-    let h=`<thead><tr><th class="pn">Policy</th><th class="avg">SR</th><th class="lscr">LSCR</th><th class="eff">Eff.</th></tr></thead><tbody>`;
-    policies.forEach(p=>{
-      h+=`<tr><th scope="row" class="pn">${R.escape(p.label)}</th>`
-        +["sr","lscr","efficiency"].map((key,i)=>{
-          const r=M.metric(p.id,null,key);
-          const value=M.eligible(p.id,key) ? R.marked(r,M.peers(p.protocolId,null,key),key) : R.escape(R.format(r,key));
-          return `<td class="${["avg","lscr","eff"][i]}">${value}</td>`;
-        }).join("")+`</tr>`;
+    const lb=$("#lb-table");if(!lb)return;
+    const R=window.BenchResults,M=R.model,state={group:M.protocols[0].id,rankMetric:"sr",rankChannel:"mean",rankDir:"descending"};
+    function render(){
+      const policies=R.overall.ordered(M.group(state.group),state);
+      lb.innerHTML=R.overall.markup(policies,state);
+      $("#home-ranking-label").textContent=R.overall.label(state);
+      $("#home-ranking-count").textContent=`${policies.length} policies`;
+      $("#home-ranking-caption").textContent=R.overall.caption;
+    }
+    lb.addEventListener("click",event=>{
+      const button=event.target.closest("[data-rank-column]");if(!button)return;
+      const id=button.dataset.rankColumn;R.overall.sort(state,id);render();
+      lb.querySelector(`[data-rank-column="${id}"]`).focus({preventScroll:true});
     });
-    lb.innerHTML=h+`</tbody>`;
+    render();
   })();
 
   /* ---------- Resources grid ---------- */
