@@ -41,6 +41,15 @@
     state.rankDir=state.rankMetric===column.key && state.rankChannel===column.cid && state.rankDir==="descending" ? "ascending" : "descending";
     state.rankMetric=column.key;state.rankChannel=column.cid;
   }
-  const label=state=>`Ranked by ${{sr:"SR",lscr:"LSCR",efficiency:"Eff."}[state.rankMetric]}${state.rankChannel==="mean" ? "" : " · "+B.CHANNEL_LABEL[state.rankChannel]} · ${state.rankDir==="descending" ? "High to low" : "Low to high"}`;
-  R.overall={columns,ordered,markup,sort,label,caption:"NR: not reported · GPT-6-Astra: Full SR only"};
+  const sortMetric=state=>`${state.rankChannel==="mean" ? "" : B.CHANNEL_LABEL[state.rankChannel]+" "}${{sr:"SR",lscr:"LSCR",efficiency:"Eff."}[state.rankMetric]} ${state.rankDir==="descending" ? "↓" : "↑"}`;
+  const label=state=>`Sorted by ${sortMetric(state)}${state.rankChannel==="mean" && state.rankMetric!=="efficiency" ? " · Four-channel mean" : ""}`;
+  function updated(policies){
+    // Use the recorded result update, never the visitor's current date.
+    const latest=policies.map(p=>p.updatedAt).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d||"")).sort().at(-1);
+    if(!latest)return "";
+    const date=new Date(`${latest}T00:00:00+08:00`);
+    const text=new Intl.DateTimeFormat("en-US",{month:"long",day:"numeric",year:"numeric",timeZone:"Asia/Shanghai"}).format(date);
+    return `Updated <time datetime="${latest}">${esc(text)}</time> <span>(UTC+8)</span>`;
+  }
+  R.overall={columns,ordered,markup,sort,sortMetric,label,updated,caption:"NR: not reported · GPT-6-Astra: Full SR only"};
 })();

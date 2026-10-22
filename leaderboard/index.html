@@ -37,13 +37,19 @@
     </div>
 
     <section id="policy-leaderboard" class="board-section" aria-labelledby="ranking-title">
-      <div class="section-toolbar"><div class="section-heading"><h2 id="ranking-title">Overall Performance</h2><span class="section-count" id="ranking-count"></span></div><p id="ranking-label" class="sr-only" aria-live="polite"></p><div class="section-actions"><button type="button" class="table-reset" id="ranking-reset" aria-label="Reset Overall Performance to defaults" hidden>Reset</button></div></div>
+      <div class="section-toolbar">
+        <div class="section-intro"><div class="section-heading"><h2 id="ranking-title">Overall Performance</h2><span class="section-count" id="ranking-count"></span></div><p id="ranking-label" class="table-sort-status" aria-live="polite"></p></div>
+        <div class="section-meta"><p class="table-updated" id="ranking-updated"></p><div class="section-actions"><button type="button" class="table-reset" id="ranking-reset" aria-label="Reset Overall Performance to defaults" hidden>Reset</button></div></div>
+      </div>
       <div id="overview-table"></div>
       <div class="table-footer"><p class="table-note" id="ranking-caption"></p><div class="table-legend-compact"><strong class="best-value" title="Highest reported SR, LSCR or efficiency, including ties">Best</strong><span class="heat-key" aria-label="Color scale: 0 to 100 percent"><span>0</span><span class="heat-swatch" aria-hidden="true"></span><span>100%</span></span></div></div>
     </section>
 
     <section id="per-task-scores" class="board-section" aria-labelledby="task-title">
-      <div class="section-toolbar"><div class="section-heading"><h2 id="task-title">Per-Task Scores</h2><span class="section-count" id="task-count"></span></div><div class="section-actions"><button type="button" class="table-reset" id="task-reset" aria-label="Reset Per-Task Scores to defaults" hidden>Reset</button></div></div>
+      <div class="section-toolbar">
+        <div class="section-intro"><div class="section-heading"><h2 id="task-title">Per-Task Scores</h2><span class="section-count" id="task-count"></span></div><p id="task-sort-label" class="table-sort-status" aria-live="polite"></p></div>
+        <div class="section-meta"><p class="table-updated" id="task-updated"></p><div class="section-actions"><button type="button" class="table-reset" id="task-reset" aria-label="Reset Per-Task Scores to defaults" hidden>Reset</button></div></div>
+      </div>
       <div class="board-controls">
         <div class="control-group"><span class="control-label">Metric</span><div class="metric-switch" role="group" aria-label="Per-Task Metric"><button type="button" data-task-metric="sr" aria-pressed="true" title="Stable Success Rate">SR</button><button type="button" data-task-metric="lscr" aria-pressed="false" title="Latched Stage Completion Rate">LSCR</button><button type="button" data-task-metric="efficiency" aria-pressed="false" title="Success-Conditioned Efficiency">Eff.</button></div></div>
         <label class="results-field">Channel<select id="task-channel"><option value="mean">Four-channel mean</option><option value="none">None</option><option value="equi">Equi.</option><option value="inv">Inv.</option><option value="full">Full</option></select></label>

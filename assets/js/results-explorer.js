@@ -75,24 +75,26 @@
     const {visible}=rankingPolicies();
     $("#overview-table").innerHTML=`<div class="explorer-table-wrap" role="region" aria-label="Policy Leaderboard" tabindex="0"><table id="overview-results" class="policy-table ranking-table">${R.overall.markup(visible,state,"../")}</table></div>`;
     $("#ranking-label").textContent=R.overall.label(state);
+    $("#ranking-updated").innerHTML=R.overall.updated(group());
     const total=group().length;
     $("#ranking-count").textContent=`${visible.length} ${visible.length===1 ? "policy" : "policies"}${visible.length!==total ? " shown · "+total+" total" : ""}`;
     $("#ranking-caption").textContent=R.overall.caption;
   }
-  function metricCell(p,t,key,cid="mean",peers=null){
+  function metricCell(p,t,key,cid="mean",peers=null,summary=false){
     const r=M.metric(p.id,t.id,key,cid);
     const scale=key==="successes" ? M.channel(p.id,t.id,cid)?.episodes : 100;
-    const heat=r.value!==null && key!=="efficiency" && Number.isFinite(scale) && scale>0;
+    const heat=!summary && r.value!==null && key!=="efficiency" && Number.isFinite(scale) && scale>0;
     const canBest=cid==="mean" && M.comparable(p.id,t.id,key);
     const value=canBest ? R.marked(r,peers||M.peers(state.group,t.id,key),key) : cellValue(r,key,cid);
-    return `<td class="${r.value===null ? "missing" : "value"}${heat ? " heat-cell" : ""}"${heat ? ` style="--cell-heat:${R.heat(r.value/scale)}"` : ""}>${value}</td>`;
+    return `<td class="${r.value===null ? "missing" : "value"}${summary ? " detail-summary" : ""}${heat ? " heat-cell" : ""}"${heat ? ` style="--cell-heat:${R.heat(r.value/scale)}"` : ""}>${value}</td>`;
   }
   function taskDetails(t,policies){
     const key=state.metric,channels=key==="efficiency" ? ["mean"] : [...B.CHANNELS,"mean"];
-    const heading=c=>c==="mean" ? key==="efficiency" ? "Eff." : "Mean" : B.CHANNEL_LABEL[c];
-    const headers='<th scope="col" class="policy-name">Policy</th>'+channels.map(c=>`<th scope="col"${c===state.channel ? ' class="detail-channel-active"' : ""}>${heading(c)}</th>`).join("");
-    const rows=policies.map(p=>`<tr><th scope="row" class="policy-name">${policyTitle(p)}</th>${channels.map(c=>metricCell(p,t,key,c)).join("")}</tr>`).join("");
-    return `<tr class="task-detail-row" id="task-detail-${esc(t.id)}"><td colspan="${policies.length+1}"><div class="task-detail"><h3>${esc(t.name)} <span>${longLabels[key]}</span></h3>${table("task-metric-results",longLabels[key],headers,rows,"task-metric-table")}</div></td></tr>`;
+    const heading=c=>c==="mean" ? labels[key]+(key==="efficiency" ? "" : " (%)") : B.CHANNEL_LABEL[c];
+    const summaryTitle=key==="efficiency" ? "Success-conditioned efficiency" : `${labels[key]}: four-channel mean (%)`;
+    const headers='<th scope="col" class="policy-name">Model</th>'+channels.map(c=>`<th scope="col" class="${c==="mean" ? "detail-summary " : ""}${c===state.channel ? "detail-channel-active" : ""}"${c==="mean" ? ` title="${summaryTitle}" aria-label="${summaryTitle}"` : ""}>${heading(c)}</th>`).join("");
+    const rows=policies.map(p=>`<tr><th scope="row" class="policy-name"><div class="model-identity"><img class="model-logo" src="${esc("../"+p.logoPath)}" alt="${esc(p.logoAlt)}" width="20" height="20" decoding="async"><a class="model-name" href="${esc(p.modelUrl)}" target="_blank" rel="noopener noreferrer">${policyTitle(p)}</a></div></th>${channels.map(c=>metricCell(p,t,key,c,null,c==="mean")).join("")}</tr>`).join("");
+    return `<tr class="task-detail-row" id="task-detail-${esc(t.id)}"><td colspan="${policies.length+1}"><div class="task-detail"><h3><span class="task-detail-name">${esc(t.name)}</span> <span>${longLabels[key]}</span></h3>${table("task-metric-results",longLabels[key],headers,rows,"task-metric-table")}</div></td></tr>`;
   }
   function renderPicker(){
     const policies=orderedPolicies(metricPolicies(state.metric),state.rankMetric,state.rankChannel,state.rankDir);
@@ -111,9 +113,13 @@
     }).join("");
     $("#task-matrix").innerHTML=!policies.length ? empty("No policies selected. Use Policies to select models or show all.") : !list.length ? empty("No matching tasks. Adjust the task filters.") : table("per-task-results","Per-Task Scores",headers,rows,"task-matrix-table");
     $("#task-count").textContent=`${list.length===tasks().length ? list.length : list.length+" / "+tasks().length} tasks`;
+    const taskPolicy=group().find(p=>p.id===state.taskSort);
+    const taskOrder=taskPolicy ? `${taskPolicy.label} · ${state.channel==="mean" ? "" : B.CHANNEL_LABEL[state.channel]+" "}${labels[state.metric]} ${state.taskDir==="descending" ? "↓" : "↑"}` : "benchmark order";
+    $("#task-sort-label").textContent=`Tasks: ${taskOrder} · Models: overall ${R.overall.sortMetric(state)}`;
+    $("#task-updated").innerHTML=R.overall.updated(group());
     $("#task-heat-key").hidden=state.metric==="efficiency";
     $("#task-best-key").hidden=state.channel!=="mean" && state.metric!=="efficiency";
-    $("#task-best-label").textContent=state.metric==="efficiency" ? "Best Eff." : "Best mean";
+    $("#task-best-label").textContent=`Best ${labels[state.metric]}`;
     $("#task-caption").textContent=state.metric==="efficiency" ? "NR: not reported · —: no successful rollout" : "NR: not reported";
     renderPicker();
   }
@@ -140,7 +146,18 @@
     announce(message);
   }
   function focusButton(attribute,value){[...root.querySelectorAll(`[${attribute}]`)].find(e=>e.getAttribute(attribute)===value)?.focus({preventScroll:true});}
+  function toggleTask(id){
+    state.taskDetail=state.taskDetail===id ? null : id;
+    render("",`[data-task-row="${CSS.escape(id)}"]`);
+    focusButton("data-task-open",id);
+  }
   root.addEventListener("click",event=>{
+    const taskButton=event.target.closest("[data-task-open]");
+    if(taskButton){toggleTask(taskButton.dataset.taskOpen);return;}
+    const row=event.target.closest("tr[data-task-row]");
+    if(row && !event.target.closest("a,button,input,select,textarea") && !window.getSelection()?.toString()){
+      toggleTask(row.dataset.taskRow);return;
+    }
     const button=event.target.closest("button");if(!button) return;
     const d=button.dataset;
     if(d.rankColumn){
@@ -149,7 +166,6 @@
     }
     if(d.taskMetric){state.metric=d.taskMetric;if(d.taskMetric==="efficiency") state.channel="mean";render();return;}
     if(d.taskSort){if(state.taskSort!==d.taskSort){state.taskSort=d.taskSort;state.taskDir="descending";}else if(state.taskDir==="descending"){state.taskDir="ascending";}else{state.taskSort="paper";state.taskDir="descending";}render("per-task-results");focusButton("data-task-sort",d.taskSort);return;}
-    if(d.taskOpen){state.taskDetail=state.taskDetail===d.taskOpen ? null : d.taskOpen;render("",`[data-task-row="${CSS.escape(d.taskOpen)}"]`);focusButton("data-task-open",d.taskOpen);return;}
   });
   root.addEventListener("change",event=>{
     const id=event.target.dataset.pick;if(!id) return;

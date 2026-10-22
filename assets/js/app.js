@@ -531,6 +531,7 @@
       const policies=R.overall.ordered(M.group(state.group),state);
       lb.innerHTML=R.overall.markup(policies,state);
       $("#home-ranking-label").textContent=R.overall.label(state);
+      $("#home-ranking-updated").innerHTML=R.overall.updated(M.group(state.group));
       $("#home-ranking-count").textContent=`${policies.length} policies`;
       $("#home-ranking-caption").textContent=R.overall.caption;
     }
