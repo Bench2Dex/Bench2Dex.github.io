@@ -59,6 +59,7 @@
 .board-controls .policy-picker[open] > summary::after{content:"⌃";}
 .board-controls select:disabled{color:var(--text-faint);background:var(--paper);}
 .board-section .explorer-table-wrap{position:relative;overflow-anchor:none;border-radius:0;border-left:0;border-right:0;max-height:min(70vh,680px);scrollbar-width:thin;scrollbar-color:#a8b8cc #f0f3f7;overscroll-behavior:contain;scroll-padding-top:54px;}
+.board-section .explorer-table-wrap:has(> .ranking-table){overscroll-behavior-y:auto;}
 .board-section .policy-table{font-size:13px;}
 .board-section .policy-table th,.board-section .policy-table td{padding:8px 12px;}
 .board-section .policy-table thead th{position:sticky;top:0;z-index:4;font-size:11px;background:#f0f3f7;border-bottom:1px solid #d5dee8;}
