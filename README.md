@@ -31,17 +31,10 @@ We welcome pull requests with evaluation results for new policies on Bench2Dex.
 If you use Bench2Dex in your research, please cite our paper.
 
 ```bibtex
-@misc{yang2026bench2dex,
-  title         = {{Bench2Dex}: A Bimanual Manipulation Benchmark across Dexterous Hands with Simulated Fingertip Visuo-Tactile Support},
-  author        = {Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and
-                   Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and
-                   He, Kaiyu and Li, Qifeng and Wang, He and Zhong, Yuwen and Deng, Yi and Jiang, Muyun and
-                   Huang, Xianliang and Su, Haisheng and Zhang, Donghang and Zhang, Jian and
-                   Yang, Xue and Li, Hongyang and Jia, Xiaosong and Yan, Junchi},
-  year          = {2026},
-  eprint        = {2609.15726},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.RO},
-  url           = {https://arxiv.org/abs/2609.15726}
+@article{yang2026bench2dex,
+  title={Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands},
+  author={Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and He, Kaiyu and others},
+  journal={arXiv preprint arXiv:2609.15726},
+  year={2026}
 }
 ```
