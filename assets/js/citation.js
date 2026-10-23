@@ -1,7 +1,7 @@
 /* Shared citation and copy controls for the homepage and leaderboard. */
 (function(){
   "use strict";
-  const bibtex="@misc{yang2026bench2dex,\n  title     = {Bench2Dex: A Bimanual Manipulation Benchmark across Dexterous Hands with Simulated Fingertip Visuo-Tactile Support},\n  author    = {Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and\n               Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and\n               He, Kaiyu and Li, Qifeng and Wang, He and Zhong, Yuwen and Deng, Yi and Jiang, Muyun and\n               Huang, Xianliang and Su, Haisheng and Zhang, Donghang and Zhang, Jian and\n               Yang, Xue and Li, Hongyang and Jia, Xiaosong and Yan, Junchi},\n  journal={arXiv preprint arXiv:2609.15726},\n  year      = {2026}\n}";
+  const bibtex="@article{yang2026bench2dex,title={Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands},author={Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and He, Kaiyu and others},journal={arXiv preprint arXiv:2609.15726},year={2026}}";
   const pre=document.querySelector("#bibtex"),toast=document.querySelector("#copy-toast");
   if(pre) pre.textContent=bibtex;
   let toastTimer;
