@@ -109,6 +109,8 @@
         .map(p=>metric(p.id,tid,key,cid));
     }
     const rank=(pid,key="sr")=>!eligible(pid,key) ? null : 1+group(protocolFor(pid).id).filter(p=>eligible(p.id,key) && metric(p.id,null,key).value>metric(pid,null,key).value).length;
+    const taskRank=(pid,tid,key="sr")=>metric(pid,tid,key).value===null || !comparable(pid,tid,key) ? null
+      : 1+group(protocolFor(pid).id).filter(p=>comparable(p.id,tid,key) && metric(p.id,tid,key).value>metric(pid,tid,key).value).length;
     // Channel rankings use reported task-macro summaries, never rounded row averages.
     const aggregateMetric=(pid,key="sr",cid="mean")=>{
       if(cid==="mean") return metric(pid,null,key);
@@ -181,7 +183,7 @@
       const quote=value=>'"'+String(value).replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';
       return "\uFEFF"+rows.map(row=>row.map(quote).join(",")).join("\r\n")+"\r\n";
     }
-    return { policies,protocols,group,tasks,channel,task,summary,metric,coverage,peers,eligible,comparable,rank,aggregateMetric,aggregateCoverage,aggregateEligible,aggregateRank,sorted,csv,
+    return { policies,protocols,group,tasks,channel,task,summary,metric,coverage,peers,eligible,comparable,rank,taskRank,aggregateMetric,aggregateCoverage,aggregateEligible,aggregateRank,sorted,csv,
       totalEpisodes:data.EVALUATION_CHANNELS.reduce((sum,r)=>sum+(reading(r,"episodes").value||0),0) };
   }
   window.BenchResults={create,reading,format,heat,escape,best,marked};

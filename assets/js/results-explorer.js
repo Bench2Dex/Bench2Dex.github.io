@@ -92,8 +92,14 @@
     const key=state.metric,channels=key==="efficiency" ? ["mean"] : [...B.CHANNELS,"mean"];
     const heading=c=>c==="mean" ? labels[key]+(key==="efficiency" ? "" : " (%)") : B.CHANNEL_LABEL[c];
     const summaryTitle=key==="efficiency" ? "Success-conditioned efficiency" : `${labels[key]}: four-channel mean (%)`;
-    const headers='<th scope="col" class="policy-name">Model</th>'+channels.map(c=>`<th scope="col" class="${c==="mean" ? "detail-summary " : ""}${c===state.channel ? "detail-channel-active" : ""}"${c==="mean" ? ` title="${summaryTitle}" aria-label="${summaryTitle}"` : ""}>${heading(c)}</th>`).join("");
-    const rows=policies.map(p=>`<tr><th scope="row" class="policy-name"><div class="model-identity"><img class="model-logo" src="${esc("../"+p.logoPath)}" alt="${esc(p.logoAlt)}" width="20" height="20" decoding="async"><a class="model-name" href="${esc(p.modelUrl)}" target="_blank" rel="noopener noreferrer">${policyTitle(p)}</a></div></th>${channels.map(c=>metricCell(p,t,key,c,null,c==="mean")).join("")}</tr>`).join("");
+    const ordered=M.sorted(policies,{key,direction:"descending"},p=>M.metric(p.id,t.id,key))
+      .sort((a,b)=>Number(M.comparable(b.id,t.id,key))-Number(M.comparable(a.id,t.id,key)));
+    const headers=`<th scope="col" class="rank-cell" title="Rank within this task by ${summaryTitle}">Rank</th><th scope="col" class="policy-name">Model</th>`+channels.map(c=>`<th scope="col" class="${c==="mean" ? "detail-summary " : ""}${c===state.channel ? "detail-channel-active" : ""}"${c==="mean" ? ` title="${summaryTitle}" aria-label="${summaryTitle}" aria-sort="descending"` : ""}>${heading(c)}${c==="mean" ? ' <span class="sort-indicator" aria-hidden="true">↓</span>' : ""}</th>`).join("");
+    const rows=ordered.map(p=>{
+      const rank=M.taskRank(p.id,t.id,key),medals=["🥇","🥈","🥉"],metal=["gold","silver","bronze"],medal=rank!==null && rank<=3;
+      const rankLabel=rank===null ? "Unranked: task metric unavailable" : `Rank ${rank}${medal ? ": "+metal[rank-1]+" medal" : ""}`;
+      return `<tr data-policy-row="${esc(p.id)}"><td class="rank-cell"><span class="rank-number${medal ? " rank-medal" : ""}" aria-label="${esc(rankLabel)}">${rank===null ? "—" : medal ? medals[rank-1] : rank}</span></td><th scope="row" class="policy-name"><div class="model-identity"><img class="model-logo" src="${esc("../"+p.logoPath)}" alt="${esc(p.logoAlt)}" width="20" height="20" decoding="async"><a class="model-name" href="${esc(p.modelUrl)}" target="_blank" rel="noopener noreferrer">${policyTitle(p)}</a></div></th>${channels.map(c=>metricCell(p,t,key,c,null,c==="mean")).join("")}</tr>`;
+    }).join("");
     return `<tr class="task-detail-row" id="task-detail-${esc(t.id)}"><td colspan="${policies.length+1}"><div class="task-detail"><h3><span class="task-detail-name">${esc(t.name)}</span> <span>${longLabels[key]}</span></h3>${table("task-metric-results",longLabels[key],headers,rows,"task-metric-table")}</div></td></tr>`;
   }
   function renderPicker(){

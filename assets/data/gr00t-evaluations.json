@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-22",
+  "updatedAt": "2026-10-27",
   "channelMapping": {
     "none": "None",
     "cov_only": "Equi.",
@@ -1613,6 +1613,864 @@
           "sr": 8.5,
           "lscr": 20.8,
           "efficiency": 0.896476965
+        }
+      ]
+    },
+    {
+      "policyId": "GR00T_N17_TACTILE",
+      "updatedAt": "2026-10-27",
+      "episodesPerChannel": 50,
+      "summaryNote": "LSCR aggregates use reported rounded channel values. Task efficiency pools successful episodes across channels; overall efficiency averages tasks with success.",
+      "summary": {
+        "channelSr": [
+          44.23076923076923,
+          14.538461538461538,
+          30.692307692307693,
+          29.153846153846153
+        ],
+        "channelLscr": [
+          64.21846153846154,
+          32.268076923076926,
+          49.91538461538462,
+          47.05923076923077
+        ],
+        "sr": 29.653846153846153,
+        "lscr": 48.36528846153846,
+        "efficiency": 0.9496384615384615,
+        "efficiencyTaskCount": 26
+      },
+      "tasks": [
+        {
+          "taskId": "03",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 11,
+              "lscr": 68.0,
+              "efficiency": 0.9503
+            },
+            {
+              "id": "cov_only",
+              "successes": 3,
+              "lscr": 47.33,
+              "efficiency": 1.0118
+            },
+            {
+              "id": "inv_only",
+              "successes": 25,
+              "lscr": 84.67,
+              "efficiency": 1.0388
+            },
+            {
+              "id": "inv_cov",
+              "successes": 20,
+              "lscr": 77.33,
+              "efficiency": 1.024
+            }
+          ],
+          "sr": 29.5,
+          "lscr": 69.3,
+          "efficiency": 1.0159
+        },
+        {
+          "taskId": "06",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 42,
+              "lscr": 94.5,
+              "efficiency": 0.9135
+            },
+            {
+              "id": "cov_only",
+              "successes": 5,
+              "lscr": 48.5,
+              "efficiency": 0.8771
+            },
+            {
+              "id": "inv_only",
+              "successes": 26,
+              "lscr": 79.5,
+              "efficiency": 0.9119
+            },
+            {
+              "id": "inv_cov",
+              "successes": 23,
+              "lscr": 72.0,
+              "efficiency": 0.8984
+            }
+          ],
+          "sr": 48.0,
+          "lscr": 73.6,
+          "efficiency": 0.9076
+        },
+        {
+          "taskId": "07",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 40,
+              "lscr": 92.0,
+              "efficiency": 0.8421
+            },
+            {
+              "id": "cov_only",
+              "successes": 18,
+              "lscr": 53.0,
+              "efficiency": 0.8108
+            },
+            {
+              "id": "inv_only",
+              "successes": 30,
+              "lscr": 82.0,
+              "efficiency": 0.8261
+            },
+            {
+              "id": "inv_cov",
+              "successes": 35,
+              "lscr": 81.5,
+              "efficiency": 0.8324
+            }
+          ],
+          "sr": 61.5,
+          "lscr": 77.1,
+          "efficiency": 0.8309
+        },
+        {
+          "taskId": "08",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 41,
+              "lscr": 93.0,
+              "efficiency": 1.2205
+            },
+            {
+              "id": "cov_only",
+              "successes": 14,
+              "lscr": 52.0,
+              "efficiency": 1.2816
+            },
+            {
+              "id": "inv_only",
+              "successes": 29,
+              "lscr": 75.0,
+              "efficiency": 1.222
+            },
+            {
+              "id": "inv_cov",
+              "successes": 34,
+              "lscr": 77.0,
+              "efficiency": 1.2099
+            }
+          ],
+          "sr": 59.0,
+          "lscr": 74.2,
+          "efficiency": 1.2251
+        },
+        {
+          "taskId": "09",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 37,
+              "lscr": 87.0,
+              "efficiency": 0.8887
+            },
+            {
+              "id": "cov_only",
+              "successes": 14,
+              "lscr": 66.0,
+              "efficiency": 0.9299
+            },
+            {
+              "id": "inv_only",
+              "successes": 31,
+              "lscr": 90.0,
+              "efficiency": 0.8798
+            },
+            {
+              "id": "inv_cov",
+              "successes": 23,
+              "lscr": 83.0,
+              "efficiency": 0.8678
+            }
+          ],
+          "sr": 52.5,
+          "lscr": 81.5,
+          "efficiency": 0.887
+        },
+        {
+          "taskId": "12",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 24,
+              "lscr": 67.0,
+              "efficiency": 0.9899
+            },
+            {
+              "id": "cov_only",
+              "successes": 8,
+              "lscr": 36.5,
+              "efficiency": 0.89
+            },
+            {
+              "id": "inv_only",
+              "successes": 32,
+              "lscr": 82.5,
+              "efficiency": 0.9621
+            },
+            {
+              "id": "inv_cov",
+              "successes": 24,
+              "lscr": 70.5,
+              "efficiency": 0.9679
+            }
+          ],
+          "sr": 44.0,
+          "lscr": 64.1,
+          "efficiency": 0.9647
+        },
+        {
+          "taskId": "21",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 21,
+              "lscr": 75.33,
+              "efficiency": 0.9001
+            },
+            {
+              "id": "cov_only",
+              "successes": 7,
+              "lscr": 28.67,
+              "efficiency": 0.8981
+            },
+            {
+              "id": "inv_only",
+              "successes": 8,
+              "lscr": 41.33,
+              "efficiency": 0.9134
+            },
+            {
+              "id": "inv_cov",
+              "successes": 14,
+              "lscr": 42.67,
+              "efficiency": 0.8819
+            }
+          ],
+          "sr": 25.0,
+          "lscr": 47.0,
+          "efficiency": 0.8968
+        },
+        {
+          "taskId": "22",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 34,
+              "lscr": 74.0,
+              "efficiency": 0.9586
+            },
+            {
+              "id": "cov_only",
+              "successes": 10,
+              "lscr": 33.5,
+              "efficiency": 0.9147
+            },
+            {
+              "id": "inv_only",
+              "successes": 22,
+              "lscr": 58.0,
+              "efficiency": 0.9545
+            },
+            {
+              "id": "inv_cov",
+              "successes": 31,
+              "lscr": 69.5,
+              "efficiency": 0.9504
+            }
+          ],
+          "sr": 48.5,
+          "lscr": 58.7,
+          "efficiency": 0.9505
+        },
+        {
+          "taskId": "24",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 9,
+              "lscr": 39.5,
+              "efficiency": 0.9782
+            },
+            {
+              "id": "cov_only",
+              "successes": 1,
+              "lscr": 13.5,
+              "efficiency": 1.0757
+            },
+            {
+              "id": "inv_only",
+              "successes": 5,
+              "lscr": 23.5,
+              "efficiency": 0.9529
+            },
+            {
+              "id": "inv_cov",
+              "successes": 2,
+              "lscr": 22.0,
+              "efficiency": 0.9865
+            }
+          ],
+          "sr": 8.5,
+          "lscr": 24.6,
+          "efficiency": 0.9775
+        },
+        {
+          "taskId": "26",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 12,
+              "lscr": 58.0,
+              "efficiency": 0.9016
+            },
+            {
+              "id": "cov_only",
+              "successes": 1,
+              "lscr": 28.0,
+              "efficiency": 0.8375
+            },
+            {
+              "id": "inv_only",
+              "successes": 4,
+              "lscr": 26.0,
+              "efficiency": 0.9462
+            },
+            {
+              "id": "inv_cov",
+              "successes": 7,
+              "lscr": 27.5,
+              "efficiency": 0.9138
+            }
+          ],
+          "sr": 12.0,
+          "lscr": 34.9,
+          "efficiency": 0.9099
+        },
+        {
+          "taskId": "27",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 29,
+              "lscr": 69.0,
+              "efficiency": 0.9654
+            },
+            {
+              "id": "cov_only",
+              "successes": 5,
+              "lscr": 15.5,
+              "efficiency": 1.0074
+            },
+            {
+              "id": "inv_only",
+              "successes": 12,
+              "lscr": 38.0,
+              "efficiency": 1.0201
+            },
+            {
+              "id": "inv_cov",
+              "successes": 12,
+              "lscr": 44.5,
+              "efficiency": 0.9801
+            }
+          ],
+          "sr": 29.0,
+          "lscr": 41.8,
+          "efficiency": 0.9834
+        },
+        {
+          "taskId": "32",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 11,
+              "lscr": 30.0,
+              "efficiency": 0.9899
+            },
+            {
+              "id": "cov_only",
+              "successes": 5,
+              "lscr": 13.5,
+              "efficiency": 0.9113
+            },
+            {
+              "id": "inv_only",
+              "successes": 16,
+              "lscr": 38.5,
+              "efficiency": 0.963
+            },
+            {
+              "id": "inv_cov",
+              "successes": 8,
+              "lscr": 25.5,
+              "efficiency": 0.9388
+            }
+          ],
+          "sr": 20.0,
+          "lscr": 26.9,
+          "efficiency": 0.9591
+        },
+        {
+          "taskId": "34",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 8,
+              "lscr": 59.2,
+              "efficiency": 0.9806
+            },
+            {
+              "id": "cov_only",
+              "successes": 8,
+              "lscr": 48.8,
+              "efficiency": 1.0152
+            },
+            {
+              "id": "inv_only",
+              "successes": 11,
+              "lscr": 58.8,
+              "efficiency": 1.0305
+            },
+            {
+              "id": "inv_cov",
+              "successes": 6,
+              "lscr": 53.2,
+              "efficiency": 1.0141
+            }
+          ],
+          "sr": 16.5,
+          "lscr": 55.0,
+          "efficiency": 1.0117
+        },
+        {
+          "taskId": "42",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 28,
+              "lscr": 81.33,
+              "efficiency": 0.9249
+            },
+            {
+              "id": "cov_only",
+              "successes": 12,
+              "lscr": 48.0,
+              "efficiency": 0.9118
+            },
+            {
+              "id": "inv_only",
+              "successes": 14,
+              "lscr": 80.67,
+              "efficiency": 0.9087
+            },
+            {
+              "id": "inv_cov",
+              "successes": 22,
+              "lscr": 81.33,
+              "efficiency": 0.8726
+            }
+          ],
+          "sr": 38.0,
+          "lscr": 72.8,
+          "efficiency": 0.9047
+        },
+        {
+          "taskId": "43",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 3,
+              "lscr": 28.5,
+              "efficiency": 0.9454
+            },
+            {
+              "id": "cov_only",
+              "successes": 0,
+              "lscr": 17.0,
+              "efficiency": null
+            },
+            {
+              "id": "inv_only",
+              "successes": 1,
+              "lscr": 23.0,
+              "efficiency": 0.9389
+            },
+            {
+              "id": "inv_cov",
+              "successes": 0,
+              "lscr": 18.5,
+              "efficiency": null
+            }
+          ],
+          "sr": 2.0,
+          "lscr": 21.7,
+          "efficiency": 0.9438
+        },
+        {
+          "taskId": "44",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 35,
+              "lscr": 82.5,
+              "efficiency": 0.9996
+            },
+            {
+              "id": "cov_only",
+              "successes": 17,
+              "lscr": 52.5,
+              "efficiency": 0.9853
+            },
+            {
+              "id": "inv_only",
+              "successes": 27,
+              "lscr": 68.0,
+              "efficiency": 0.9958
+            },
+            {
+              "id": "inv_cov",
+              "successes": 24,
+              "lscr": 64.0,
+              "efficiency": 1.0041
+            }
+          ],
+          "sr": 51.5,
+          "lscr": 66.8,
+          "efficiency": 0.9973
+        },
+        {
+          "taskId": "51",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 30,
+              "lscr": 73.33,
+              "efficiency": 0.9096
+            },
+            {
+              "id": "cov_only",
+              "successes": 14,
+              "lscr": 50.0,
+              "efficiency": 1.0322
+            },
+            {
+              "id": "inv_only",
+              "successes": 24,
+              "lscr": 62.67,
+              "efficiency": 1.0799
+            },
+            {
+              "id": "inv_cov",
+              "successes": 27,
+              "lscr": 60.0,
+              "efficiency": 1.0687
+            }
+          ],
+          "sr": 47.5,
+          "lscr": 61.5,
+          "efficiency": 1.0159
+        },
+        {
+          "taskId": "60",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 24,
+              "lscr": 59.0,
+              "efficiency": 0.9455
+            },
+            {
+              "id": "cov_only",
+              "successes": 3,
+              "lscr": 8.0,
+              "efficiency": 0.9388
+            },
+            {
+              "id": "inv_only",
+              "successes": 5,
+              "lscr": 12.5,
+              "efficiency": 0.9421
+            },
+            {
+              "id": "inv_cov",
+              "successes": 9,
+              "lscr": 19.0,
+              "efficiency": 0.9345
+            }
+          ],
+          "sr": 20.5,
+          "lscr": 24.6,
+          "efficiency": 0.9422
+        },
+        {
+          "taskId": "61",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 16,
+              "lscr": 51.33,
+              "efficiency": 0.9565
+            },
+            {
+              "id": "cov_only",
+              "successes": 1,
+              "lscr": 13.33,
+              "efficiency": 0.9981
+            },
+            {
+              "id": "inv_only",
+              "successes": 13,
+              "lscr": 42.0,
+              "efficiency": 0.9763
+            },
+            {
+              "id": "inv_cov",
+              "successes": 11,
+              "lscr": 42.67,
+              "efficiency": 0.9631
+            }
+          ],
+          "sr": 20.5,
+          "lscr": 37.3,
+          "efficiency": 0.9656
+        },
+        {
+          "taskId": "62",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 29,
+              "lscr": 73.33,
+              "efficiency": 0.9547
+            },
+            {
+              "id": "cov_only",
+              "successes": 10,
+              "lscr": 40.67,
+              "efficiency": 0.9419
+            },
+            {
+              "id": "inv_only",
+              "successes": 22,
+              "lscr": 63.33,
+              "efficiency": 0.9593
+            },
+            {
+              "id": "inv_cov",
+              "successes": 20,
+              "lscr": 60.67,
+              "efficiency": 0.9302
+            }
+          ],
+          "sr": 40.5,
+          "lscr": 59.5,
+          "efficiency": 0.9483
+        },
+        {
+          "taskId": "64",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 19,
+              "lscr": 57.0,
+              "efficiency": 0.7507
+            },
+            {
+              "id": "cov_only",
+              "successes": 0,
+              "lscr": 11.5,
+              "efficiency": null
+            },
+            {
+              "id": "inv_only",
+              "successes": 3,
+              "lscr": 12.0,
+              "efficiency": 0.7281
+            },
+            {
+              "id": "inv_cov",
+              "successes": 1,
+              "lscr": 9.0,
+              "efficiency": 0.7223
+            }
+          ],
+          "sr": 11.5,
+          "lscr": 22.4,
+          "efficiency": 0.7465
+        },
+        {
+          "taskId": "67",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 9,
+              "lscr": 37.0,
+              "efficiency": 0.9145
+            },
+            {
+              "id": "cov_only",
+              "successes": 10,
+              "lscr": 29.0,
+              "efficiency": 0.9469
+            },
+            {
+              "id": "inv_only",
+              "successes": 13,
+              "lscr": 47.0,
+              "efficiency": 0.9815
+            },
+            {
+              "id": "inv_cov",
+              "successes": 8,
+              "lscr": 38.5,
+              "efficiency": 0.9836
+            }
+          ],
+          "sr": 20.0,
+          "lscr": 37.9,
+          "efficiency": 0.9582
+        },
+        {
+          "taskId": "73",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 3,
+              "lscr": 59.0,
+              "efficiency": 0.8712
+            },
+            {
+              "id": "cov_only",
+              "successes": 1,
+              "lscr": 15.0,
+              "efficiency": 0.9186
+            },
+            {
+              "id": "inv_only",
+              "successes": 0,
+              "lscr": 23.5,
+              "efficiency": null
+            },
+            {
+              "id": "inv_cov",
+              "successes": 0,
+              "lscr": 10.5,
+              "efficiency": null
+            }
+          ],
+          "sr": 2.0,
+          "lscr": 27.0,
+          "efficiency": 0.883
+        },
+        {
+          "taskId": "76",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 3,
+              "lscr": 26.5,
+              "efficiency": 0.8793
+            },
+            {
+              "id": "cov_only",
+              "successes": 0,
+              "lscr": 9.5,
+              "efficiency": null
+            },
+            {
+              "id": "inv_only",
+              "successes": 0,
+              "lscr": 21.0,
+              "efficiency": null
+            },
+            {
+              "id": "inv_cov",
+              "successes": 0,
+              "lscr": 19.5,
+              "efficiency": null
+            }
+          ],
+          "sr": 1.5,
+          "lscr": 19.1,
+          "efficiency": 0.8793
+        },
+        {
+          "taskId": "79",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 34,
+              "lscr": 79.0,
+              "efficiency": 0.968
+            },
+            {
+              "id": "cov_only",
+              "successes": 5,
+              "lscr": 19.0,
+              "efficiency": 0.949
+            },
+            {
+              "id": "inv_only",
+              "successes": 6,
+              "lscr": 17.0,
+              "efficiency": 0.9134
+            },
+            {
+              "id": "inv_cov",
+              "successes": 1,
+              "lscr": 9.0,
+              "efficiency": 1.0241
+            }
+          ],
+          "sr": 23.0,
+          "lscr": 31.0,
+          "efficiency": 0.9601
+        },
+        {
+          "taskId": "80",
+          "channels": [
+            {
+              "id": "none",
+              "successes": 23,
+              "lscr": 55.33,
+              "efficiency": 1.0218
+            },
+            {
+              "id": "cov_only",
+              "successes": 17,
+              "lscr": 40.67,
+              "efficiency": 0.9967
+            },
+            {
+              "id": "inv_only",
+              "successes": 20,
+              "lscr": 47.33,
+              "efficiency": 1.0264
+            },
+            {
+              "id": "inv_cov",
+              "successes": 17,
+              "lscr": 44.67,
+              "efficiency": 1.0587
+            }
+          ],
+          "sr": 38.5,
+          "lscr": 47.0,
+          "efficiency": 1.0256
         }
       ]
     }
