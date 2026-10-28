@@ -1,7 +1,12 @@
 /* Shared citation and copy controls for the homepage and leaderboard. */
 (function(){
   "use strict";
-  const bibtex="@article{yang2026bench2dex,title={Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands},author={Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and He, Kaiyu and others},journal={arXiv preprint arXiv:2609.15726},year={2026}}";
+  const bibtex=`"@article{yang2026bench2dex,
+  title={Bench2Dex: Benchmarking Visuo-Tactile Bimanual Dexterous Manipulation Across Dexterous Hands},
+  author={Yang, Zhenjie and Zhang, Yideng and Zhang, Dongjie and Jiang, Chenyu and Liu, Xianshuai and Li, Yufeng and Ge, Zuhao and Jiao, Xingyu and Zhang, Zheng and He, Kaiyu and others},
+  journal={arXiv preprint arXiv:2609.15726},
+  year={2026}
+  }";`
   const pre=document.querySelector("#bibtex"),toast=document.querySelector("#copy-toast");
   if(pre) pre.textContent=bibtex;
   let toastTimer;
