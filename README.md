@@ -5,7 +5,7 @@ This repository hosts the official Bench2Dex project website. Bench2Dex is a sim
 
 ## Project Resources 📚
 - 🌐 [Project Website](https://bench2dex.github.io/) — overview, task demonstrations, and evaluation results.
-- 🏆 [Leaderboard](https://bench2dex.github.io/leaderboard/) — policy comparisons and per-task scores.
+- 🏆 [Leaderboard](https://bench2dex.github.io/Bench2Dex-Leaderboard/) — policy comparisons and per-task scores.
 - 📄 [Paper: arXiv:2609.15726](https://arxiv.org/abs/2609.15726) — the published preprint.
 - 💻 [Benchmark Source Code](https://github.com/Bench2Dex/Bench2Dex) — the main benchmark repository.
 - 📖 [Documentation](https://bench2dex.github.io/doc/) — environment setup, policy usage, and task descriptions.
@@ -25,7 +25,7 @@ We provide benchmark assets, human teleoperation datasets, and pre-trained polic
 
 ## Contributing
 
-We welcome pull requests with evaluation results for new policies on Bench2Dex.
+Submit new policy evaluations to the [leaderboard repository](https://github.com/Bench2Dex/Bench2Dex-Leaderboard).
 
 ## Citation 📝
 If you use Bench2Dex in your research, please cite our paper.
