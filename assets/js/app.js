@@ -147,6 +147,65 @@
       return { policy:p, vals:r[p] };
     });
   }
+  function initTaskPlayer(player){
+    const video=$("video",player), play=$(".task-play",player), mute=$(".task-mute",player);
+    const seek=$(".task-seek",player), time=$(".task-time",player), fullscreen=$(".task-fullscreen",player);
+    const format=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
+    const expanded=()=>document.fullscreenElement===player || document.webkitFullscreenElement===player || player.classList.contains("is-expanded");
+    const update=()=>{
+      const duration=Number.isFinite(video.duration)?video.duration:0;
+      play.textContent=video.paused?"▶":"❚❚";
+      play.setAttribute("aria-label",video.paused?"Play replay":"Pause replay");
+      mute.textContent=video.muted?"Unmute":"Mute";
+      mute.setAttribute("aria-label",video.muted?"Unmute replay":"Mute replay");
+      seek.disabled=!duration;
+      seek.value=duration?Math.round(video.currentTime/duration*1000):0;
+      seek.setAttribute("aria-valuetext",`${format(video.currentTime)} of ${format(duration)}`);
+      time.textContent=`${format(video.currentTime)} / ${format(duration)}`;
+    };
+    const updateFullscreen=()=>{
+      const label=expanded()?"Exit fullscreen":"Enter fullscreen";
+      fullscreen.setAttribute("aria-label",label);
+      fullscreen.title=label;
+      fullscreen.setAttribute("aria-pressed",expanded()?"true":"false");
+    };
+    const exitFullscreen=()=>{
+      player.classList.remove("is-expanded");
+      if(document.fullscreenElement===player) document.exitFullscreen().catch(()=>{});
+      else if(document.webkitFullscreenElement===player) document.webkitExitFullscreen();
+      updateFullscreen();
+    };
+    const toggleFullscreen=async()=>{
+      if(expanded()){ exitFullscreen(); return; }
+      // Fullscreen the wrapper so browsers retain the video-only rotation and
+      // keep the controls upright. Native video fullscreen can bypass CSS.
+      try{
+        if(player.requestFullscreen) await player.requestFullscreen();
+        else if(player.webkitRequestFullscreen) player.webkitRequestFullscreen();
+        else player.classList.add("is-expanded");
+      }catch(e){ player.classList.add("is-expanded"); }
+      updateFullscreen();
+    };
+    const togglePlay=()=>{ if(video.paused) video.play().catch(()=>{}); else video.pause(); };
+    play.addEventListener("click",togglePlay);
+    video.addEventListener("click",togglePlay);
+    mute.addEventListener("click",()=>{ video.muted=!video.muted; });
+    seek.addEventListener("input",()=>{
+      if(Number.isFinite(video.duration)) video.currentTime=Number(seek.value)/1000*video.duration;
+      update();
+    });
+    fullscreen.addEventListener("click",toggleFullscreen);
+    ["loadedmetadata","durationchange","timeupdate","play","pause","volumechange"].forEach(event=>video.addEventListener(event,update));
+    document.addEventListener("fullscreenchange",updateFullscreen);
+    document.addEventListener("webkitfullscreenchange",updateFullscreen);
+    update(); updateFullscreen();
+    return { expanded, exitFullscreen, dispose(){
+      exitFullscreen();
+      video.pause();
+      document.removeEventListener("fullscreenchange",updateFullscreen);
+      document.removeEventListener("webkitfullscreenchange",updateFullscreen);
+    } };
+  }
   function openModal(t){
     const ov=el("div","modal-overlay"); const emb=embById(t.emb);
     const ch = (["none","equi","inv","full"]);
@@ -154,7 +213,18 @@
     ov.innerHTML=`
       <div class="modal modal--duo">
         <div class="modal-clip modal-clip--media">
-          <video class="task-front-video" src="assets/video/tasks/${t.id}.mp4" autoplay muted loop playsinline preload="auto" controls aria-label="${t.name} front-view replay"></video>
+          <div class="task-player" role="group" aria-label="${t.name} replay player">
+            <div class="task-video-frame">
+              <video class="task-front-video" src="assets/video/tasks/${t.id}.mp4" autoplay muted loop playsinline preload="auto" aria-label="${t.name} front-view replay"></video>
+            </div>
+            <div class="task-player-controls">
+              <button class="task-play" type="button" aria-label="Pause replay">❚❚</button>
+              <input class="task-seek" type="range" min="0" max="1000" value="0" aria-label="Seek replay">
+              <span class="task-time">0:00 / 0:00</span>
+              <button class="task-mute" type="button" aria-label="Unmute replay">Unmute</button>
+              <button class="task-fullscreen" type="button" aria-label="Enter fullscreen" title="Enter fullscreen" aria-pressed="false">⛶</button>
+            </div>
+          </div>
           <button class="modal-close" aria-label="Close">×</button>
           <span class="hero-badge" style="top:14px;left:14px;">Front view</span>
         </div>
@@ -189,10 +259,21 @@
       </div>`;
     document.body.appendChild(ov);
     requestAnimationFrame(()=>ov.classList.add("open"));
-    const close=()=>{ ov.classList.remove("open"); setTimeout(()=>ov.remove(),250); };
+    const player=initTaskPlayer($(".task-player",ov));
+    const esc=e=>{
+      if(e.key!=="Escape") return;
+      if(player.expanded()){ player.exitFullscreen(); return; }
+      close();
+    };
+    const close=()=>{
+      player.dispose();
+      document.removeEventListener("keydown",esc);
+      ov.classList.remove("open");
+      setTimeout(()=>ov.remove(),250);
+    };
     $(".modal-close",ov).addEventListener("click",close);
     ov.addEventListener("click",e=>{ if(e.target===ov) close(); });
-    document.addEventListener("keydown",function esc(e){ if(e.key==="Escape"){close(); document.removeEventListener("keydown",esc);} });
+    document.addEventListener("keydown",esc);
   }
 
   /* ---------- Filters + grid ---------- */
