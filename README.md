@@ -25,7 +25,7 @@ We provide benchmark assets, human teleoperation datasets, and pre-trained polic
 
 ## Contributing
 
-Submit new policy evaluations to the [leaderboard repository](https://github.com/Bench2Dex/Bench2Dex-Leaderboard).
+Submit your policy's Bench2Dex results via PR to the [Leaderboard repository](https://github.com/Bench2Dex/Bench2Dex-Leaderboard#readme): include its README, results JSON, and organization logo. Submit the matching evaluation logs to the [HF Leaderboard repository](https://huggingface.co/datasets/Bench2Dex/Leaderboard#readme) in their original Bench2Dex format after removing sensitive information. Follow the linked submission instructions.
 
 ## Citation 📝
 If you use Bench2Dex in your research, please cite our paper.

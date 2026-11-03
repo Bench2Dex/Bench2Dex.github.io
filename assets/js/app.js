@@ -607,10 +607,10 @@
   /* ---------- Overall Performance: shared with the full leaderboard ---------- */
   (function(){
     const lb=$("#lb-table");if(!lb)return;
-    const R=window.BenchResults,M=R.model,state={group:M.protocols[0].id,rankMetric:"sr",rankChannel:"mean",rankDir:"descending"};
+    const R=window.BenchResults;if(!R?.model||!R?.overall)return;const M=R.model,state={group:M.protocols[0].id,rankMetric:"sr",rankChannel:"mean",rankDir:"descending"};
     function render(){
       const policies=R.overall.ordered(M.group(state.group),state);
-      lb.innerHTML=R.overall.markup(policies,state,"https://bench2dex.github.io/Bench2Dex-Leaderboard/");
+      lb.innerHTML=R.overall.markup(policies,state,window.BenchLeaderboardBase||"https://bench2dex.github.io/Bench2Dex-Leaderboard/");
       $("#home-ranking-label").textContent=R.overall.label(state);
       $("#home-ranking-updated").innerHTML=R.overall.updated(M.group(state.group));
       $("#home-ranking-count").textContent=`${policies.length} policies`;

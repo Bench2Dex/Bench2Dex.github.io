@@ -9,7 +9,7 @@ name: Deploy homepage to GitHub Pages
 
 on:
   push:
-    branches: [release]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
