@@ -4,7 +4,10 @@ const base=local ? "http://127.0.0.1:8772/" : "https://bench2dex.github.io/Bench
 window.BenchLeaderboardBase=base;
 function load(src){return new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=src;script.onload=resolve;script.onerror=()=>reject(new Error("Unable to load leaderboard resources"));document.head.appendChild(script);});}
 try{
-  for(const name of ["evaluations","results-model","overall-table"])await load(base+"assets/js/"+name+".js?v="+(name==="evaluations" ? Date.now() : "submissions-v1"));
+  for(const name of ["evaluations","results-model","overall-table"]){
+    const version=name==="evaluations" ? Date.now() : window.BenchLeaderboardAssetVersions?.[name]||"submissions-v1";
+    await load(base+"assets/js/"+name+".js?v="+version);
+  }
 }catch(error){
   console.error(error);
   const table=document.getElementById("lb-table");
