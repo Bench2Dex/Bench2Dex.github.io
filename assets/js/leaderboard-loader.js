@@ -13,4 +13,4 @@ try{
   const table=document.getElementById("lb-table");
   if(table)table.innerHTML='<caption>Results are temporarily unavailable.</caption>';
 }
-await load(new URL("./app.js?v=submissions-v1",import.meta.url).href);
+await load(new URL("./app.js?v=score-v1",import.meta.url).href);

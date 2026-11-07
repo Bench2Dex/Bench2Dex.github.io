@@ -1169,3 +1169,6 @@ h1,h2,h3,h4{font-family:var(--display); font-weight:650; color:var(--bone); marg
 /* The homepage uses the same Overall Performance card as the full leaderboard. */
 .paper-summary{padding:0;}
 .paper-summary .section-toolbar .btn{font-size:11px;padding:8px 12px;white-space:nowrap;}
+
+/* Shared Overall Performance includes the composite Score column. */
+#lb-table{min-width:1160px;}
